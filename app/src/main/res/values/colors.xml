@@ -7,4 +7,9 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="taem_green">#1AEAB6</color>
+    <color name="taem_grey">#7A7A7A</color>
+    <color name="taem_medium_grey">#D4D4D4</color>
+    <color name="taem_light_grey">#F2F2F2</color>
+    <color name="taem_background">#f8f8f8</color>
 </resources>

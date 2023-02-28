@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:title="Clock in/out"
+        android:icon="@drawable/team_clockinout"
+        android:id="@+id/clockinout"
+        app:labelVisibilityMode="labeled"
+        />
+    <item
+        android:title="Schedule"
+        android:icon="@drawable/taem_schedule"
+        android:id="@+id/schedule"
+        app:labelVisibilityMode="labeled"
+        />
+    <item
+        android:title="Attendance"
+        android:icon="@drawable/taem_time_and_attendace"
+        android:id="@+id/time_and_attendance"
+        />
+
+    <item
+        android:title="Driving Log"
+        android:icon="@drawable/taem_drivinglog"
+        android:id="@+id/drivinglog"
+        />
+    <item
+        android:title="Profile"
+        android:icon="@drawable/taem_profile"
+        android:id="@+id/profile"
+        />
+</menu>
