@@ -5,10 +5,17 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import `is`.hi.hbv601g.taem.Networking.Fetcher
 import `is`.hi.hbv601g.taem.Networking.SessionUser
 import `is`.hi.hbv601g.taem.databinding.ActivityLoginBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -16,17 +23,37 @@ class LoginActivity : AppCompatActivity() {
         val binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val loginButton = findViewById<Button>(R.id.login_button)
-        loginButton.setOnClickListener{ login() }
+        loginButton.setOnClickListener{ loginButtonHandler() }
         val registerButton = findViewById<Button>(R.id.sign_button)
         registerButton.setOnClickListener{ register()}
     }
-    private fun login() {
+    private suspend fun login(user: String, password: String): Int {
+        val errorMessage = findViewById<TextView>(R.id.error_message)
         val fetcher = Fetcher(this )
-        var sessionUser = fetcher.AuthenticationRequest("http://10.0.2.2:8080/auth/login", "dori", "123", this )
-        println("Test: $sessionUser")
+        val (sessionUser, responseCode) = fetcher.AuthenticationRequest("https://hbv501g-group-8-production.up.railway.app/auth/login", user, password, this )
+        // Dóri hvað viltu gera við sessionUser ?
+        return responseCode
+    }
+    fun loginButtonHandler() {
+        val user = findViewById<EditText>(R.id.username_field).text.toString()
+        val password = findViewById<EditText>(R.id.password_field).text.toString()
+        val errorMessage = findViewById<TextView>(R.id.error_message)
         val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
-        println("test:  $sessionUser")
+        if(user.isEmpty()) {
+            errorMessage.text = "Username cant be empty"
+        }
+        if(password.isEmpty()) {
+            errorMessage.text = ("Password can't be empty")
+        }
+        lifecycleScope.launch {
+            val responde = async { login(user, password) }.await()
+            if(responde == 401) { // 401 Unauthorized
+                errorMessage.text = ("Wrong password or username")
+            }
+            else {
+                startActivity(intent)
+            }
+        }
     }
     private fun register() {
 

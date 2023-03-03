@@ -27,21 +27,16 @@ class MainActivity : AppCompatActivity() {
                 R.id.time_and_attendance -> replaceFragment(TimeAndAttendaceFragment())
                 R.id.profile -> replaceFragment(ProfileFragment())
                 R.id.drivinglog -> replaceFragment(DrivingLogFragment())
-
                 else -> {
-
                 }
             }
             true
         }
-
     }
     private fun replaceFragment(fragment: Fragment) {
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.frame_layout,fragment)
         fragmentTransaction.commit()
-
     }
-
 }
