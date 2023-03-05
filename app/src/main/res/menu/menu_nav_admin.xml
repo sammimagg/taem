@@ -8,25 +8,26 @@
         app:labelVisibilityMode="labeled"
         />
     <item
-        android:title="Schedule"
-        android:icon="@drawable/taem_schedule"
+        android:title="Employees"
+        android:icon="@drawable/taem_profile"
         android:id="@+id/employees"
         app:labelVisibilityMode="labeled"
         />
     <item
-        android:title="Attendance"
+        android:title="Real-Time Insights"
         android:icon="@drawable/taem_time_and_attendace"
-        android:id="@+id/time_and_attendance"
+        android:id="@+id/real_time_insights"
         />
 
-    <item
-        android:title="Driving Log"
-        android:icon="@drawable/taem_drivinglog"
-        android:id="@+id/drivinglog"
-        />
+
     <item
         android:title="Profile"
         android:icon="@drawable/taem_profile"
         android:id="@+id/profile"
+        />
+    <item
+        android:title="More"
+        android:icon="@drawable/menu_icon"
+        android:id="@+id/more"
         />
 </menu>

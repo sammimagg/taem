@@ -1,6 +1,7 @@
 package `is`.hi.hbv601g.taem
 
 import android.content.Intent
+import android.graphics.Paint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -24,7 +25,8 @@ class LoginActivity : AppCompatActivity() {
         setContentView(binding.root)
         val loginButton = findViewById<Button>(R.id.login_button)
         loginButton.setOnClickListener{ loginButtonHandler() }
-        val registerButton = findViewById<Button>(R.id.sign_button)
+        val registerButton = findViewById<Button>(R.id.signUp_botton)
+        registerButton.paintFlags = registerButton.paintFlags or Paint.UNDERLINE_TEXT_FLAG
         registerButton.setOnClickListener{ register()}
     }
     private suspend fun login(user: String, password: String): Int {
@@ -39,6 +41,7 @@ class LoginActivity : AppCompatActivity() {
         val password = findViewById<EditText>(R.id.password_field).text.toString()
         val errorMessage = findViewById<TextView>(R.id.error_message)
         val intent = Intent(this, MainActivity::class.java)
+        val intentAdmin = Intent(this, MainAdminActivity::class.java)
         if(user.isEmpty()) {
             errorMessage.text = "Username cant be empty"
         }
@@ -51,7 +54,8 @@ class LoginActivity : AppCompatActivity() {
                 errorMessage.text = ("Wrong password or username")
             }
             else {
-                startActivity(intent)
+                //startActivity(intent) // Venjulegur notandi
+                startActivity(intentAdmin) // Admin notandi
             }
         }
     }

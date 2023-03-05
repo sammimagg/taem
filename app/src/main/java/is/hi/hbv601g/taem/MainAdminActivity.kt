@@ -3,27 +3,28 @@ package `is`.hi.hbv601g.taem
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import `is`.hi.hbv601g.taem.databinding.ActivityMainBinding
+import `is`.hi.hbv601g.taem.databinding.ActivityMainAdminBinding
 
-
-class MainActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityMainBinding
+class MainAdminActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityMainAdminBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityMainAdminBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.bottomNavigationView.setOnItemSelectedListener {
             when(it.itemId) {
                 R.id.clockinout -> replaceFragment(ClockInOutFragment())
-                R.id.employees -> replaceFragment(ScheduleFragment())
-                R.id.time_and_attendance -> replaceFragment(TimeAndAttendaceFragment())
+                R.id.employees -> replaceFragment(EmployeesFragment())
+                R.id.real_time_insights -> replaceFragment(RealTimeIngsightsFragment())
                 R.id.profile -> replaceFragment(ProfileFragment())
-                R.id.drivinglog -> replaceFragment(DrivingLogFragment())
+                R.id.more -> replaceFragment(MoreFragment())
                 else -> {
+
                 }
             }
             true
         }
+
     }
     private fun replaceFragment(fragment: Fragment) {
         val fragmentManager = supportFragmentManager
