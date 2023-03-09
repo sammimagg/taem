@@ -47,4 +47,7 @@ class Fetcher(context: Context) {
 
         return deferred.await()
     }
+    suspend fun getRealTimeInsights() {
+        // dóri ?
+    }
 }
