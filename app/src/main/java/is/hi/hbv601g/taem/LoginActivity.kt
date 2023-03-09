@@ -1,9 +1,11 @@
 package `is`.hi.hbv601g.taem
 
+import android.content.ContentValues
 import android.content.Intent
 import android.graphics.Paint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -12,6 +14,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import `is`.hi.hbv601g.taem.Networking.Fetcher
 import `is`.hi.hbv601g.taem.Networking.SessionUser
+import `is`.hi.hbv601g.taem.Storage.db
 import `is`.hi.hbv601g.taem.databinding.ActivityLoginBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -29,12 +32,13 @@ class LoginActivity : AppCompatActivity() {
         registerButton.paintFlags = registerButton.paintFlags or Paint.UNDERLINE_TEXT_FLAG
         registerButton.setOnClickListener{ register()}
     }
-    private suspend fun login(user: String, password: String): Int {
+    private suspend fun login(user: String, password: String): Pair<SessionUser?, Int> {
         val errorMessage = findViewById<TextView>(R.id.error_message)
         val fetcher = Fetcher(this )
         val (sessionUser, responseCode) = fetcher.AuthenticationRequest("https://hbv501g-group-8-production.up.railway.app/auth/login", user, password, this )
         // Dóri hvað viltu gera við sessionUser ?
-        return responseCode
+        // Ég vil nota það í að vita hvaða user er að sækja t.d. transactions
+        return Pair(sessionUser, responseCode)
     }
     fun loginButtonHandler() {
         val user = findViewById<EditText>(R.id.username_field).text.toString()
@@ -42,6 +46,7 @@ class LoginActivity : AppCompatActivity() {
         val errorMessage = findViewById<TextView>(R.id.error_message)
         val intent = Intent(this, MainActivity::class.java)
         val intentAdmin = Intent(this, MainAdminActivity::class.java)
+        val dbHelper = db.SessionUserContract.DBHelper(this)
         if(user.isEmpty()) {
             errorMessage.text = "Username cant be empty"
         }
@@ -49,11 +54,42 @@ class LoginActivity : AppCompatActivity() {
             errorMessage.text = ("Password can't be empty")
         }
         lifecycleScope.launch {
-            val responde = async { login(user, password) }.await()
-            if(responde == 401) { // 401 Unauthorized
+            val (sessionUser, responseCode) = async { login(user, password) }.await()
+            if(responseCode == 401) { // 401 Unauthorized
                 errorMessage.text = ("Wrong password or username")
             }
             else {
+                // TODO Gera pláss f. AccountType í SessionUser
+                val db = dbHelper.writableDatabase
+                println(sessionUser?.username)
+
+                val values = ContentValues().apply {
+                    put(`is`.hi.hbv601g.taem.Storage.db.SessionUserContract.SessionUserEntry.COLUMN_NAME_USERNAME,
+                        sessionUser?.username)
+                    put(`is`.hi.hbv601g.taem.Storage.db.SessionUserContract.SessionUserEntry.COLUMN_NAME_AUTH_TOKEN,
+                        sessionUser?.accessToken)
+                }
+
+                val newRowId = db?.insert(`is`.hi.hbv601g.taem.Storage.db.SessionUserContract.SessionUserEntry.TABLE_NAME,
+                                            null, values)
+
+                val db2 = dbHelper.readableDatabase
+                val cursor = db2.query(
+                    `is`.hi.hbv601g.taem.Storage.db.SessionUserContract.
+                    SessionUserEntry.TABLE_NAME,   // The table to query
+                    null,             // The array of columns to return (pass null to get all)
+                    null,              // The columns for the WHERE clause
+                    null,          // The values for the WHERE clause
+                    null,                   // don't group the rows
+                    null,                   // don't filter by row groups
+                    null               // The sort order
+                )
+
+                with(cursor) {
+                    moveToFirst()
+                    println("Fetch frá DB:" + getString(getColumnIndexOrThrow(`is`.hi.hbv601g.taem.Storage.db.SessionUserContract.SessionUserEntry.COLUMN_NAME_USERNAME)))
+                }
+
                 //startActivity(intent) // Venjulegur notandi
                 startActivity(intentAdmin) // Admin notandi
             }

@@ -32,6 +32,7 @@ class Fetcher(context: Context) {
             {response ->
                 Log.d("Reval: ", response.toString())
                 sessionUser = Gson().fromJson(response.toString(), SessionUser::class.java)
+                println(sessionUser.toString())
                 deferred.complete(Pair(sessionUser, responseCode))
             },
             {error ->
