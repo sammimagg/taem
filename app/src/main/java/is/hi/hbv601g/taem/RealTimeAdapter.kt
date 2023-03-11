@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
 
-class RealTimeAdapter(private val context: Activity, private val arrayList: Array<Employee>) : ArrayAdapter<Employee>(context,R.layout.real_time_item, arrayList){
+class RealTimeAdapter(private val context: Activity, private val arrayList: ArrayList<Employee>) : ArrayAdapter<Employee>(context,R.layout.real_time_item, arrayList){
     override fun getView(position: Int, convertView: View?,parent: ViewGroup): View {
         val inflater : LayoutInflater = LayoutInflater.from(context);
         val view : View = inflater.inflate(R.layout.real_time_item,null);
@@ -16,14 +16,26 @@ class RealTimeAdapter(private val context: Activity, private val arrayList: Arra
         val clockIn : TextView = view.findViewById(R.id.real_time_clock_in)
         val clockOut : TextView = view.findViewById(R.id.real_time_clock_out)
         val workedHour : TextView = view.findViewById(R.id.real_time_worked_hour);
+        val status : TextView = view.findViewById(R.id.real_time_status);
 
         fullName.text = arrayList[position].firstName + " " +  arrayList[position].lastname;
         clockIn.text = arrayList[position].clockIn;
         clockOut.text = arrayList[position].clockOut;
         workedHour.text = arrayList[position].workedHours
 
+        if (clockOut.text.isNullOrEmpty()) {
+            status.text = "Active";
+        }
+        else {
+
+            status.text = "Deactive";
+            view.alpha = 0.5f
+
+        }
+
 
 
         return view;
     }
+
 }
