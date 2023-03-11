@@ -36,7 +36,19 @@ class RealTimeIngsightsFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_real_time_ingsights,container,false)
         val listView = view.findViewById<ListView>(R.id.realtimeListview);
-        val userArrayList = arrayOf<Employee>(Employee("Sammi","magg"))
+        val userArrayList = arrayOf(
+            Employee("Sammi", "magg", "8:00", "16:00", "8H"),
+            Employee("John", "Doe", "9:00", "17:00", "8H"),
+            Employee("Sammi", "magg", "8:00", "16:00", "8H"),
+            Employee("John", "Doe", "9:00", "17:00", "8H"),
+            Employee("Sammi", "magg", "8:00", "16:00", "8H"),
+            Employee("John", "Doe", "9:00", "17:00", "8H"),
+            Employee("Sammi", "magg", "8:00", "16:00", "8H"),
+            Employee("John", "Doe", "9:00", "17:00", "8H"),
+            Employee("Jane", "Doe", "10:00", "18:00", "8H")
+        )
+
+
         val apapter = RealTimeAdapter(requireActivity(),userArrayList);
         listView.adapter =apapter;
         return view

@@ -31,7 +31,42 @@
                     android:textSize="25dp">
 
                 </TextView>
+
+                <TextView
+                    android:id="@+id/real_time_status"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Deactive" />
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/real_time_clock_in"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="8:00" />
+
+                <TextView
+                    android:id="@+id/real_time_clock_out"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="16:40" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/real_time_worked_hour"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="8H" />
+
         </LinearLayout>
+
     </RelativeLayout>
 </LinearLayout>
