@@ -1,14 +1,23 @@
 package `is`.hi.hbv601g.taem
 
 import android.app.Activity
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
+import androidx.annotation.RequiresApi
+import java.text.SimpleDateFormat
+import java.time.Duration
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.*
+import kotlin.collections.ArrayList
 
 class RealTimeAdapter(private val context: Activity, private val arrayList: ArrayList<Employee>) : ArrayAdapter<Employee>(context,R.layout.real_time_item, arrayList){
-    override fun getView(position: Int, convertView: View?,parent: ViewGroup): View {
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val inflater : LayoutInflater = LayoutInflater.from(context);
         val view : View = inflater.inflate(R.layout.real_time_item,null);
 
@@ -17,24 +26,52 @@ class RealTimeAdapter(private val context: Activity, private val arrayList: Arra
         val clockOut : TextView = view.findViewById(R.id.real_time_clock_out)
         val workedHour : TextView = view.findViewById(R.id.real_time_worked_hour);
         val status : TextView = view.findViewById(R.id.real_time_status);
+        val name = arrayList[position].firstName + " " +  arrayList[position].lastName;
+        // To trim to long names
+        if (name.length <= 17) {
+            fullName.text = arrayList[position].firstName + " " +  arrayList[position].lastName;
+        }
+        else {
+            val missMatch = name.length - 17;
+            var nameTrimmed = name.substring(0, name.length - missMatch);
+            nameTrimmed = "$nameTrimmed.";
+            fullName.text = nameTrimmed
+        }
 
-        fullName.text = arrayList[position].firstName + " " +  arrayList[position].lastName;
-        clockIn.text = arrayList[position].clockIn;
-        clockOut.text = arrayList[position].clockOut;
-        workedHour.text = arrayList[position].workedHours
-        if (clockOut.text.isNullOrEmpty() && !clockIn.text.isNullOrEmpty()) {
+        if (!arrayList[position].clockInTime.isNullOrEmpty()) {
+            val clockInTime = "2023-03-12T14:11:24.080115"
+            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS")
+            val clockInDateTime = LocalDateTime.parse(clockInTime, formatter)
+            val currentTime = LocalDateTime.now()
+            val duration = Duration.between(clockInDateTime, currentTime)
+            val hours = duration.toHours()
+            val minutes = duration.toMinutes() % 60
+            val workedHours = hours.toString() + "H " + minutes.toString() + "m"
+            workedHour.text = workedHours;
+
+
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS", Locale.getDefault())
+            val time = dateFormat.parse(arrayList[position].clockInTime)
+            val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
+            clockIn.text = timeFormat.format(time)
+        }
+        else {
+            clockIn.text = arrayList[position].clockInTime
+            workedHour.text = "";
+
+        }
+        clockOut.text = ""
+
+        if (arrayList[position].clockIn) {
             status.text = "Active";
         }
         else {
-
             status.text = "Deactive";
             view.alpha = 0.5f
-
         }
-
-
-
         return view;
     }
+
+
 
 }

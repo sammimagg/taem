@@ -68,6 +68,8 @@ class Fetcher() {
                 val employees = ArrayList<Employee>()
                 for (employeeResponse in employeeResponses) {
                     val employee = employeeResponse.employee
+                    employee.clockInTime = employeeResponse.clock_in_time;
+                    employee.clockIn = employeeResponse.clocked_in
                     employees.add(employee)
                 }
 

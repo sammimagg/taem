@@ -3,8 +3,9 @@ package `is`.hi.hbv601g.taem
 import java.util.*
 
 data class Employee(
-    var clockIn: String,
-    var clockOut: String,
+    var clockInTime: String?,
+    var clockOutTime: String?,
+    var clockIn: Boolean,
     var workedHours: String,
     val username: String,
     val password: String,
