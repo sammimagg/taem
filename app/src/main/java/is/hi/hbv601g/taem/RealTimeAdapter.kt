@@ -18,12 +18,11 @@ class RealTimeAdapter(private val context: Activity, private val arrayList: Arra
         val workedHour : TextView = view.findViewById(R.id.real_time_worked_hour);
         val status : TextView = view.findViewById(R.id.real_time_status);
 
-        fullName.text = arrayList[position].firstName + " " +  arrayList[position].lastname;
+        fullName.text = arrayList[position].firstName + " " +  arrayList[position].lastName;
         clockIn.text = arrayList[position].clockIn;
         clockOut.text = arrayList[position].clockOut;
         workedHour.text = arrayList[position].workedHours
-
-        if (clockOut.text.isNullOrEmpty()) {
+        if (clockOut.text.isNullOrEmpty() && !clockIn.text.isNullOrEmpty()) {
             status.text = "Active";
         }
         else {

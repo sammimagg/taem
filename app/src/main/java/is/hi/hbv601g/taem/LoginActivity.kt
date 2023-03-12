@@ -34,7 +34,7 @@ class LoginActivity : AppCompatActivity() {
     }
     private suspend fun login(user: String, password: String): Pair<SessionUser?, Int> {
         val errorMessage = findViewById<TextView>(R.id.error_message)
-        val fetcher = Fetcher(this )
+        val fetcher = Fetcher( )
         val (sessionUser, responseCode) = fetcher.AuthenticationRequest("https://hbv501g-group-8-production.up.railway.app/auth/login", user, password, this )
         // Dóri hvað viltu gera við sessionUser ?
         // Ég vil nota það í að vita hvaða user er að sækja t.d. transactions
