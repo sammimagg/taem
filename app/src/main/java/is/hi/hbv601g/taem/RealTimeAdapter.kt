@@ -39,7 +39,7 @@ class RealTimeAdapter(private val context: Activity, private val arrayList: Arra
         }
 
         if (!arrayList[position].clockInTime.isNullOrEmpty()) {
-            val clockInTime = "2023-03-12T14:11:24.080115"
+            val clockInTime = arrayList[position].clockInTime;
             val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS")
             val clockInDateTime = LocalDateTime.parse(clockInTime, formatter)
             val currentTime = LocalDateTime.now()

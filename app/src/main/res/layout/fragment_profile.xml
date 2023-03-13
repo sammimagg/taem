@@ -4,25 +4,136 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/taem_background"
+    android:background="#FFFFFF"
     tools:context=".ProfileFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="312dp"
-        android:layout_height="150dp"
-        android:text="Profile" />
-
-    <Button
-        android:id="@+id/fxSignOutButton"
+    <LinearLayout
+        android:id="@+id/linearLayout5"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="632dp"
-        android:text="Sign Out"
+        android:layout_height="50sp"
+        android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/imageView8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/logo" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="75dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout5">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5sp"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingStart="10sp"
+                android:paddingLeft="10sp"
+                android:paddingTop="10sp"
+                android:paddingEnd="10sp"
+                android:paddingRight="20sp"
+                android:paddingBottom="10sp"
+                android:background="@drawable/item_round">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="fill_parent"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Name"
+                    android:textColor="#606060"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="fill_parent"
+                    android:fontFamily="@font/poppins"
+                    android:text="Samúel Magnússon"
+                    android:textColor="#9A9A9A"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5sp"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingStart="10sp"
+                android:paddingLeft="10sp"
+                android:paddingTop="10sp"
+                android:paddingEnd="10sp"
+                android:paddingRight="20sp"
+                android:paddingBottom="10sp"
+                android:background="@drawable/item_round">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="fill_parent"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Name"
+                    android:textColor="#606060"
+                    android:textSize="16sp" />
+
+                <TextView
+
+                    android:layout_width="match_parent"
+                    android:layout_height="fill_parent"
+                    android:fontFamily="@font/poppins"
+                    android:text="Samúel Magnússon"
+                    android:textColor="#9A9A9A"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5sp"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingStart="10sp"
+                android:paddingLeft="10sp"
+                android:paddingTop="10sp"
+                android:paddingEnd="10sp"
+                android:paddingRight="20sp"
+                android:paddingBottom="10sp"
+                android:background="@drawable/item_round">
+
+                <TextView
+                    android:id="@+id/textView18"
+                    android:layout_width="match_parent"
+                    android:layout_height="fill_parent"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Name"
+                    android:textColor="#606060"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/textView20"
+                    android:layout_width="match_parent"
+                    android:layout_height="fill_parent"
+                    android:fontFamily="@font/poppins"
+                    android:text="Samúel Magnússon"
+                    android:textColor="#9A9A9A"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

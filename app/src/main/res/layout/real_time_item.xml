@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4sp"
         android:layout_marginBottom="4sp"
-        android:background="@drawable/item_round">
+        android:background="@drawable/item_round_shadow">
 
         <LinearLayout
             android:layout_width="fill_parent"
