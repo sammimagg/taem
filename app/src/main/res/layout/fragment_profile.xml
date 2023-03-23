@@ -7,133 +7,218 @@
     android:background="#FFFFFF"
     tools:context=".ProfileFragment">
 
-    <LinearLayout
-        android:id="@+id/linearLayout5"
-        android:layout_width="wrap_content"
-        android:layout_height="50sp"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <ImageView
-            android:id="@+id/imageView8"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/logo" />
-    </LinearLayout>
-
     <ScrollView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="75dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout5">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <ImageView
+                android:id="@+id/imageView8"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:padding="40sp"
+                android:src="@drawable/logo" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:hint="First Name"
+                app:endIconMode="clear_text">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/profieFirstname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:text="Samúel" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:hint="Last Name"
+                app:endIconMode="clear_text"
+                >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/profieLastName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:text="Magnússon" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:hint="Username"
+                app:endIconMode="clear_text">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/profieUsername"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:text="sammimagg" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:hint="Email"
+                app:endIconMode="clear_text">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/profieEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:text="sammimagg@gmail.com" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="match_parent"
+                android:hint="Phone number"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                app:endIconMode="clear_text">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/profiePhoneNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:text="845809" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="match_parent"
+                android:hint="SSN"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                app:endIconMode="clear_text">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/profieSSN"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:text="1602942809" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="match_parent"
+                android:hint="Job title"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                app:endIconMode="clear_text">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/profieJobtitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:text="Nemi" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="match_parent"
+                android:hint="Sick Days"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                app:endIconMode="clear_text">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/profieSickDays"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:text="0" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="match_parent"
+                android:hint="Vacation days"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                app:endIconMode="clear_text">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/profieVactionDays"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:text="3" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="match_parent"
+                android:hint="Start Data"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                app:endIconMode="clear_text">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/profileStartDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:text="04/04/2020" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5sp"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:paddingStart="10sp"
-                android:paddingLeft="10sp"
-                android:paddingTop="10sp"
-                android:paddingEnd="10sp"
-                android:paddingRight="20sp"
-                android:paddingBottom="10sp"
-                android:background="@drawable/item_round">
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="fill_parent"
-                    android:fontFamily="@font/poppins_medium"
-                    android:text="Name"
-                    android:textColor="#606060"
-                    android:textSize="16sp" />
+                <Button
+                    android:id="@+id/buttonProfileSave"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10sp"
+                    android:layout_marginRight="5sp"
+                    android:layout_weight="1"
+                    android:text="Save" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="fill_parent"
-                    android:fontFamily="@font/poppins"
-                    android:text="Samúel Magnússon"
-                    android:textColor="#9A9A9A"
-                    android:textSize="16sp" />
-            </LinearLayout>
+                <Button
+                    android:id="@+id/buttonProfileCancel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5sp"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:paddingStart="10sp"
-                android:paddingLeft="10sp"
-                android:paddingTop="10sp"
-                android:paddingEnd="10sp"
-                android:paddingRight="20sp"
-                android:paddingBottom="10sp"
-                android:background="@drawable/item_round">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="fill_parent"
-                    android:fontFamily="@font/poppins_medium"
-                    android:text="Name"
-                    android:textColor="#606060"
-                    android:textSize="16sp" />
-
-                <TextView
-
-                    android:layout_width="match_parent"
-                    android:layout_height="fill_parent"
-                    android:fontFamily="@font/poppins"
-                    android:text="Samúel Magnússon"
-                    android:textColor="#9A9A9A"
-                    android:textSize="16sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5sp"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:paddingStart="10sp"
-                android:paddingLeft="10sp"
-                android:paddingTop="10sp"
-                android:paddingEnd="10sp"
-                android:paddingRight="20sp"
-                android:paddingBottom="10sp"
-                android:background="@drawable/item_round">
-
-                <TextView
-                    android:id="@+id/textView18"
-                    android:layout_width="match_parent"
-                    android:layout_height="fill_parent"
-                    android:fontFamily="@font/poppins_medium"
-                    android:text="Name"
-                    android:textColor="#606060"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:id="@+id/textView20"
-                    android:layout_width="match_parent"
-                    android:layout_height="fill_parent"
-                    android:fontFamily="@font/poppins"
-                    android:text="Samúel Magnússon"
-                    android:textColor="#9A9A9A"
-                    android:textSize="16sp" />
+                    android:layout_marginLeft="5sp"
+                    android:layout_marginRight="10sp"
+                    android:layout_weight="1"
+                    android:text="Cancel"
+                    android:textColor="#232222"
+                    android:textColorHighlight="#009688" />
             </LinearLayout>
 
         </LinearLayout>
+
     </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
