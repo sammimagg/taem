@@ -25,7 +25,7 @@ class RealTimeAdapter(private val context: Activity, private val arrayList: Arra
         val clockIn : TextView = view.findViewById(R.id.real_time_clock_in)
         val clockOut : TextView = view.findViewById(R.id.real_time_clock_out)
         val workedHour : TextView = view.findViewById(R.id.real_time_worked_hour);
-        val status : TextView = view.findViewById(R.id.real_time_status);
+        val status : TextView = view.findViewById(R.id.jobTitle);
         val name = arrayList[position].firstName + " " +  arrayList[position].lastName;
         // To trim to long names
         if (name.length <= 17) {
