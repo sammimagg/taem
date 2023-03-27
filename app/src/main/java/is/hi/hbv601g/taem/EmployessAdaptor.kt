@@ -8,13 +8,10 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import androidx.annotation.RequiresApi
-import java.text.SimpleDateFormat
-import java.time.Duration
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
+import `is`.hi.hbv601g.taem.Persistance.EmployeeRTI
 import java.util.*
 
-class EmployessAdaptor(private val context: Activity, private val arrayList: ArrayList<Employee>) : ArrayAdapter<Employee>(context,R.layout.employess_item, arrayList) {
+class EmployessAdaptor(private val context: Activity, private val arrayList: ArrayList<EmployeeRTI>) : ArrayAdapter<EmployeeRTI>(context,R.layout.employess_item, arrayList) {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val inflater : LayoutInflater = LayoutInflater.from(context);
