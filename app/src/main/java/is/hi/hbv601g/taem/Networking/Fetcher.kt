@@ -2,18 +2,16 @@ package `is`.hi.hbv601g.taem.Networking
 
 import android.content.Context
 import android.util.Log
-import androidx.core.content.ContentProviderCompat.requireContext
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
-import com.google.gson.JsonObject
 import com.google.gson.reflect.TypeToken
-import `is`.hi.hbv601g.taem.Employee
+import `is`.hi.hbv601g.taem.Persistance.Employee
+import `is`.hi.hbv601g.taem.Persistance.EmployeeRTI
 import kotlinx.coroutines.CompletableDeferred
 import org.json.JSONObject
-import java.util.concurrent.CountDownLatch
 
 /*
 * ATH: Það þarf eitthvað að yfirfæra þetta í Async call.
@@ -53,10 +51,10 @@ class Fetcher() {
 
         return deferred.await()
     }
-    data class EmployeeResponse(val employee: Employee, val clock_in_time: String?, val clocked_in: Boolean)
-    suspend fun getRealTimeInsights(url: String, context: Context): ArrayList<Employee> {
+    data class EmployeeResponse(val employeeRTI: EmployeeRTI, val clock_in_time: String?, val clocked_in: Boolean)
+    suspend fun getRealTimeInsights(url: String, context: Context): ArrayList<EmployeeRTI> {
         val queue = Volley.newRequestQueue(context)
-        val employeeResponseDeferred = CompletableDeferred<ArrayList<Employee>>()
+        val employeeRTIResponseDeferred = CompletableDeferred<ArrayList<EmployeeRTI>>()
 
         val jsonArrayRequest = JsonArrayRequest(Request.Method.GET, url, null,
             { response ->
@@ -65,27 +63,46 @@ class Fetcher() {
                 val employeeResponses = gson.fromJson<ArrayList<EmployeeResponse>>(response.toString(), type)
 
                 // extract the employees from the employeeResponses list
-                val employees = ArrayList<Employee>()
+                val employeeRTIS = ArrayList<EmployeeRTI>()
                 for (employeeResponse in employeeResponses) {
-                    val employee = employeeResponse.employee
+                    val employee = employeeResponse.employeeRTI
                     employee.clockInTime = employeeResponse.clock_in_time;
                     employee.clockIn = employeeResponse.clocked_in
-                    employees.add(employee)
+                    employeeRTIS.add(employee)
                 }
 
                 // resolve the deferred object with the employees list
-                employeeResponseDeferred.complete(employees)
+                employeeRTIResponseDeferred.complete(employeeRTIS)
             },
             { error ->
                 // reject the deferred object with the error
-                employeeResponseDeferred.completeExceptionally(error)
+                employeeRTIResponseDeferred.completeExceptionally(error)
             }
         )
 
         queue.add(jsonArrayRequest)
-        return employeeResponseDeferred.await()
+        return employeeRTIResponseDeferred.await()
     }
 
+    suspend fun fetchEmployeeProfile(url: String, ssn: String, context: Context) : Employee {
+        val queue = Volley.newRequestQueue(context)
+        val employeeProfileResponseDeferred = CompletableDeferred<Employee>()
+        val json = JSONObject()
+        json.put("ssn", ssn)
+
+        val jsonObjectRequest = JsonObjectRequest(Request.Method.POST, url, json,
+            {response ->
+                Log.d("Reval: ", response.toString())
+                val employee = Gson().fromJson(response.toString(), Employee::class.java)
+                employeeProfileResponseDeferred.complete(employee)
+            },
+            {error ->
+                employeeProfileResponseDeferred.completeExceptionally(error)
+            })
+
+        queue.add(jsonObjectRequest)
+        return employeeProfileResponseDeferred.await()
+    }
 
 
 }
