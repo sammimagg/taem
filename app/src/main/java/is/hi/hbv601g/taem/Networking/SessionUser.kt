@@ -10,11 +10,6 @@ data class SessionUser(
         return "SessionUser(username='$username', authToken='$accessToken')"
     }
 
-    /**
-     * @TODO
-     * Refactor to /Persistance/
-     * add SSN to variables
-     */
 
 }
 

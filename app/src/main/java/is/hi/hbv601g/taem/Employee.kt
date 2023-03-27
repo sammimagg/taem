@@ -1,8 +1,8 @@
-package `is`.hi.hbv601g.taem.Persistance
+package `is`.hi.hbv601g.taem
 
 import java.util.*
 
-data class EmployeeRTI(
+data class Employee(
     var clockInTime: String?,
     var clockOutTime: String?,
     var clockIn: Boolean,
