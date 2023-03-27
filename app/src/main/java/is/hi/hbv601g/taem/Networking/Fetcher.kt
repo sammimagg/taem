@@ -87,10 +87,10 @@ class Fetcher() {
     suspend fun fetchEmployeeProfile(url: String, ssn: String, context: Context) : Employee {
         val queue = Volley.newRequestQueue(context)
         val employeeProfileResponseDeferred = CompletableDeferred<Employee>()
-        val json = JSONObject()
-        json.put("ssn", ssn)
-
-        val jsonObjectRequest = JsonObjectRequest(Request.Method.POST, url, json,
+        val jsonReq = JSONObject()
+        jsonReq.put("ssn", ssn)
+        print(jsonReq)
+        val jsonObjectRequest = JsonObjectRequest(Request.Method.PUT, url, jsonReq,
             {response ->
                 Log.d("Reval: ", response.toString())
                 val employee = Gson().fromJson(response.toString(), Employee::class.java)

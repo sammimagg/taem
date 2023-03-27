@@ -41,16 +41,17 @@ class ProfileFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false)
-        //val listView = view.findViewById<ListView>(R.id.employeesListview); //R.id.realtimeListview)
         lifecycleScope.launch {
             var response : Employee
-            response = async { getEmployeeInformation("https://www.hiv.is/api/employee/rti", "2911963149") }.await()
+            response = async { getEmployeeInformation("https://www.hiv.is/api/employee/", "2911963149") }.await()
+            print(response)
 
             val last_name_field : TextInputEditText = requireView().findViewById(R.id.profieLastName)
             last_name_field.setText(response.lastName)
         }
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_profile, container, false)
+        //val listView = view.findViewById<ListView>(R.id.employeesListview); //R.id.realtimeListview)
     }
 
     private suspend fun getEmployeeInformation(url: String, ssn: String) : Employee {
