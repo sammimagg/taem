@@ -5,14 +5,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ListView
-import androidx.lifecycle.lifecycleScope
-import com.google.android.material.textfield.TextInputEditText
-import `is`.hi.hbv601g.taem.Networking.Fetcher
-import `is`.hi.hbv601g.taem.Persistance.Employee
-import `is`.hi.hbv601g.taem.Persistance.EmployeeRTI
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -43,21 +35,6 @@ class ProfileFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_profile, container, false)
-        //val listView = view.findViewById<ListView>(R.id.employeesListview); //R.id.realtimeListview)
-        lifecycleScope.launch {
-            var response : Employee
-            response = async { getEmployeeInformation("https://www.hiv.is/api/employee/rti", "2911963149") }.await()
-
-            val last_name_field : TextInputEditText = requireView().findViewById(R.id.profieLastName)
-            last_name_field.setText(response.lastName)
-        }
-    }
-
-    private suspend fun getEmployeeInformation(url: String, ssn: String) : Employee {
-        val context = requireContext()
-        val fetcher = Fetcher();
-        val response = fetcher.fetchEmployeeProfile(url,ssn,context);
-        return response
     }
 
     companion object {

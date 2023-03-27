@@ -6,10 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
+import android.widget.TextView
 import androidx.lifecycle.lifecycleScope
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import `is`.hi.hbv601g.taem.Networking.Fetcher
-import `is`.hi.hbv601g.taem.Persistance.EmployeeRTI
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import java.util.*
@@ -29,7 +29,7 @@ private const val ARG_PARAM2 = "param2"
  */
 class RealTimeIngsightsFragment : Fragment() {
 
-    private lateinit var userArrayList : Array<EmployeeRTI>;
+    private lateinit var userArrayList : Array<Employee>;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,7 +45,7 @@ class RealTimeIngsightsFragment : Fragment() {
 
         val listView = view.findViewById<ListView>(R.id.realtimeListview);
         lifecycleScope.launch {
-            var response = ArrayList<EmployeeRTI>();
+            var response = ArrayList<Employee>();
             response = async { getRealTimeInsigtArray("https://www.hiv.is/api/employee/rti") }.await()
             var sortedList = sortListByActive(response);
             val apapter = RealTimeAdapter(requireActivity(),sortedList);
@@ -54,7 +54,7 @@ class RealTimeIngsightsFragment : Fragment() {
         val swipeRefreshLayout = view.findViewById<SwipeRefreshLayout>(R.id.swipeRefreshLayout)
         swipeRefreshLayout.setOnRefreshListener {
             lifecycleScope.launch {
-                var response = ArrayList<EmployeeRTI>();
+                var response = ArrayList<Employee>();
                 response = async { getRealTimeInsigtArray("https://www.hiv.is/api/employee/rti") }.await()
                 var sortedList = sortListByActive(response);
                 val apapter = RealTimeAdapter(requireActivity(),sortedList);
@@ -65,14 +65,14 @@ class RealTimeIngsightsFragment : Fragment() {
 
         return view
     }
-    private suspend fun getRealTimeInsigtArray(url: String): ArrayList<EmployeeRTI> {
+    private suspend fun getRealTimeInsigtArray(url: String): ArrayList<Employee> {
         val context = requireContext()
         val fetcher = Fetcher();
         val response = fetcher.getRealTimeInsights(url,context);
         return response
 
     }
-    private fun sortListByActive (list : ArrayList<EmployeeRTI>): ArrayList<EmployeeRTI> {
+    private fun sortListByActive (list : ArrayList<Employee>): ArrayList<Employee> {
 
         val sortedList = list.sortedWith(Comparator { employee1, employee2 ->
             if (employee1.clockIn && !employee2.clockIn) {
