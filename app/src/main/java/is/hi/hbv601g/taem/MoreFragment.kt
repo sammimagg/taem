@@ -1,32 +1,17 @@
 package `is`.hi.hbv601g.taem
 
 import android.os.Bundle
+import android.view.*
+import android.widget.LinearLayout
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [MoreFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class MoreFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+
     }
 
     override fun onCreateView(
@@ -37,23 +22,38 @@ class MoreFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_more, container, false)
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment MoreFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            MoreFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val timeAndAttendance: LinearLayout = view.findViewById(R.id.time_and_attednace)
+        val requestReviews: LinearLayout = view.findViewById(R.id.request_reviews)
+        val drivingLog: LinearLayout = view.findViewById(R.id.driving_log)
+        val makeSchedule: LinearLayout = view.findViewById(R.id.make_schedule)
+
+        timeAndAttendance.setOnClickListener {
+            (activity as? AppCompatActivity)?.replaceFragment(TimeAndAttendanceFragment(), R.id.frame_layout);
+        }
+
+        requestReviews.setOnClickListener {
+            (activity as? AppCompatActivity)?.replaceFragment(RequestReviewFragment(), R.id.frame_layout);
+        }
+
+        drivingLog.setOnClickListener {
+            (activity as? AppCompatActivity)?.replaceFragment(DrivingLogFragment(), R.id.frame_layout);
+        }
+
+        makeSchedule.setOnClickListener {
+            (activity as? AppCompatActivity)?.replaceFragment(MakeScheduleFragment(), R.id.frame_layout);
+        }
     }
+    fun AppCompatActivity.replaceFragment(fragment: Fragment, containerId: Int) {
+        supportFragmentManager.beginTransaction().apply {
+            replace(containerId, fragment)
+            addToBackStack(null)
+            commit()
+        }
+    }
+
+
 }

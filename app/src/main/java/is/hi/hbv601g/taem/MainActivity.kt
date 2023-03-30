@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
             when(it.itemId) {
                 R.id.clockinout -> replaceFragment(ClockInOutFragment())
                 R.id.employees -> replaceFragment(ScheduleFragment())
-                R.id.time_and_attendance -> replaceFragment(TimeAndAttendaceFragment())
+                R.id.time_and_attendance -> replaceFragment(TimeAndAttendanceFragment())
                 R.id.profile -> replaceFragment(ProfileFragment())
                 R.id.drivinglog -> replaceFragment(DrivingLogFragment())
                 else -> {

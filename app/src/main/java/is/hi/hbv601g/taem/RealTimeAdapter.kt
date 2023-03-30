@@ -23,7 +23,7 @@ class RealTimeAdapter(private val context: Activity, private val arrayList: Arra
         val view : View = inflater.inflate(R.layout.real_time_item,null);
 
         val fullName : TextView = view.findViewById(R.id.fullName);
-        val clockIn : TextView = view.findViewById(R.id.real_time_clock_in)
+        val clockIn : TextView = view.findViewById(R.id.transaction_date)
         val clockOut : TextView = view.findViewById(R.id.real_time_clock_out)
         val workedHour : TextView = view.findViewById(R.id.real_time_worked_hour);
         val status : TextView = view.findViewById(R.id.jobTitle);
