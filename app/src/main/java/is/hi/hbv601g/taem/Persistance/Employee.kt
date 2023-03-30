@@ -4,6 +4,7 @@ data class Employee (
     var username : String,
     var accountType : Int,
     var email : String,
+    var ssn : String,
     var firstName : String,
     var lastName : String,
     var company : String,
@@ -11,6 +12,8 @@ data class Employee (
     var salary : Double,
     var phoneNumber : String,
     var startDate : String,
+    var vacationDaysUsed : Int,
+    var sickDaysUsed : Int
     // @TODO finish this @Kristófer Breki
     )
 

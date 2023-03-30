@@ -104,5 +104,35 @@ class Fetcher() {
         return employeeProfileResponseDeferred.await()
     }
 
+    fun postEmployeeProfile(url : String, emp : Employee, context: Context) : String {
+        val queue = Volley.newRequestQueue(context)
+        // @TODO breyta fallinu í bakenda, bara uppfæra gildi sem eru ekki nöll
+        Log.d("ég er hérna", "")
+        val jsonReq = JSONObject()
+        jsonReq.put("username", emp.username)
+        jsonReq.put("ssn", emp.ssn)
+        jsonReq.put("firstName", emp.firstName)
+        jsonReq.put("lastName", emp.lastName)
+        jsonReq.put("email", emp.email)
+        jsonReq.put("jobTitle", emp.jobTitle)
+        jsonReq.put("phoneNumber", emp.phoneNumber)
+        /**
+         *    response.email = email_field.text.toString()
+        response.username = username_field.text.toString()
+        response.lastName = last_name_field.toString()
+        response.phoneNumber = phone_number_field.toString()
+        response.jobTitle = job_title_field.toString()
+         */
+        val jsonObjectRequest = JsonObjectRequest(Request.Method.POST, url, jsonReq,
+            { response ->
+                Log.d("Reval: ", response.toString())
+        },
+            { error ->
+                Log.d("eððoð: ", error.toString())
+        })
+        queue.add(jsonObjectRequest)
+        return "null";
+    }
+
 
 }
