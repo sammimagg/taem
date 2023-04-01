@@ -5,7 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ListView
+import androidx.databinding.DataBindingUtil.setContentView
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.textfield.TextInputEditText
 import `is`.hi.hbv601g.taem.Networking.Fetcher
@@ -46,12 +48,51 @@ class ProfileFragment : Fragment() {
             response = async { getEmployeeInformation("https://www.hiv.is/api/employee/", "2911963149") }.await()
             print(response)
 
+            val first_name_field : TextInputEditText = requireView().findViewById(R.id.profieFirstname)
+            val email_field : TextInputEditText = requireView().findViewById(R.id.profieEmail)
+            val username_field : TextInputEditText = requireView().findViewById(R.id.profieUsername)
             val last_name_field : TextInputEditText = requireView().findViewById(R.id.profieLastName)
+            val phone_number_field : TextInputEditText = requireView().findViewById(R.id.profiePhoneNumber)
+            val ssn_field : TextInputEditText = requireView().findViewById(R.id.profieSSN)
+            val job_title_field : TextInputEditText = requireView().findViewById(R.id.profieJobtitle)
+            val sick_days_field : TextInputEditText = requireView().findViewById(R.id.profieSickDays)
+            val vacation_days_field : TextInputEditText = requireView().findViewById(R.id.profieVactionDays)
+            val start_date_field : TextInputEditText = requireView().findViewById(R.id.profileStartDate)
+            first_name_field.setText(response.firstName)
             last_name_field.setText(response.lastName)
+            email_field.setText(response.email)
+            username_field.setText(response.username)
+            phone_number_field.setText(response.phoneNumber)
+            ssn_field.setText(response.ssn)
+            job_title_field.setText(response.jobTitle)
+            sick_days_field.setText(response.sickDaysUsed.toString())
+            vacation_days_field.setText(response.vacationDaysUsed.toString())
+            start_date_field.setText(response.startDate)
+
+            val saveButton = requireView().findViewById<Button>(R.id.buttonProfileSave)
+            saveButton.setOnClickListener{ saveButtonHandler(response) }
         }
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_profile, container, false)
         //val listView = view.findViewById<ListView>(R.id.employeesListview); //R.id.realtimeListview)
+    }
+
+    fun saveButtonHandler(response : Employee) {
+        val first_name_field : TextInputEditText = requireView().findViewById(R.id.profieFirstname)
+        val email_field : TextInputEditText = requireView().findViewById(R.id.profieEmail)
+        val username_field : TextInputEditText = requireView().findViewById(R.id.profieUsername)
+        val last_name_field : TextInputEditText = requireView().findViewById(R.id.profieLastName)
+        val phone_number_field : TextInputEditText = requireView().findViewById(R.id.profiePhoneNumber)
+        val job_title_field : TextInputEditText = requireView().findViewById(R.id.profieJobtitle)
+        response.firstName = first_name_field.text.toString()
+        response.email = email_field.text.toString()
+        response.username = username_field.text.toString()
+        response.lastName = last_name_field.toString()
+        response.phoneNumber = phone_number_field.toString()
+        response.jobTitle = job_title_field.toString()
+        print("takki ýtt")
+        val d = Fetcher().postEmployeeProfile("https://www.hiv.is/api/employee/", response, requireContext())
+        // Sammi return eh
     }
 
     private suspend fun getEmployeeInformation(url: String, ssn: String) : Employee {
