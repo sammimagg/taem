@@ -4,6 +4,7 @@ data class SessionUser(
     var username: String,
     var accessToken: String,
     var ssn : String,
+    var email : String,
 
     ) {
     override fun toString(): String {

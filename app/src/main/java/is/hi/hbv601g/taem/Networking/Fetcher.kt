@@ -134,5 +134,33 @@ class Fetcher() {
         return "null";
     }
 
+    suspend fun registerRequest(url: String, username: String, password: String, email: String, ssn: String, context: Context) : Boolean {
+        val queue = Volley.newRequestQueue(context)
+        val json = JSONObject()
+        json.put("username", username)
+        json.put("password", password)
+        json.put("email", email)
+        json.put("ssn", ssn)
+
+        var success = false
+
+        val deferred = CompletableDeferred<Boolean>()
+
+        val jsonObjectRequest = JsonObjectRequest(Request.Method.POST, url, json,
+            { response ->
+                Log.d("Reval: ", response.toString())
+                success = true
+                deferred.complete(success)
+            },
+            { error ->
+                Log.d("Reval: ", "Failed to fetch data")
+                Log.d("Error: ", error.toString())
+                deferred.complete(success)
+            })
+
+        queue.add(jsonObjectRequest)
+
+        return deferred.await()
+    }
 
 }
