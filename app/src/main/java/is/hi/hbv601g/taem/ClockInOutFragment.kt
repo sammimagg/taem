@@ -1,59 +1,79 @@
 package `is`.hi.hbv601g.taem
 
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
+import android.nfc.NdefMessage
+import android.nfc.NfcAdapter
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import java.nio.charset.Charset
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [ClockInOutFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ClockInOutFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+
+    private var nfcAdapter: NfcAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_clock_in_out, container, false)
+    }
+    private val hceReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            Log.d("ClockInOutFragment", "onReceive called, action: ${intent.action}")
+            if (intent.action == "is.hi.hbv601g.taem.HCE_RECEIVED") {
+                intent.getByteArrayExtra("commandApdu")?.let { commandApdu ->
+                    Log.d("ClockInOutFragment", "Received: ${String(commandApdu)}")
+                    // Call the interface method to perform the fragment transaction
+                    (activity as? OnScanSuccessListener)?.onScanSuccess()
+                }
+            }
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_clock_in_out, container, false)
+
+
+
+    override fun onResume() {
+        super.onResume()
+        LocalBroadcastManager.getInstance(requireContext()).registerReceiver(
+            hceReceiver, IntentFilter("is.hi.hbv601g.taem.HCE_RECEIVED")
+        )
+        Log.d("ClockInOutFragment", "onResume called")
+        Log.d("ClockInOutFragment", "BroadcastReceiver registered")
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ClockInOutFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ClockInOutFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    override fun onPause() {
+        super.onPause()
+        LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(hceReceiver)
+        Log.d("ClockInOutFragment", "onPause called")
+        Log.d("ClockInOutFragment", "BroadcastReceiver unregistered")
     }
+    fun handleNfcIntent(intent: Intent) {
+        if (NfcAdapter.ACTION_NDEF_DISCOVERED == intent.action) {
+            val rawMsgs = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES)
+            val msg = rawMsgs?.get(0) as NdefMessage
+            val record = msg.records[0]
+            val payload = record.payload
+
+            // Process the payload as a String
+            val data = String(payload, Charset.forName("UTF-8"))
+            Log.d("NFC", "Data received: $data")
+            print("im here")
+        }
+    }
+
+
+
+
 }

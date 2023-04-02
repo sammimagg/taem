@@ -2,4 +2,7 @@
     <string name="app_name">Taem</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="service_description">My HCE Service</string>
+    <string name="aid_group_description">My AID Group</string>
+
 </resources>
