@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:background="@color/app_background"
     tools:context=".ProfileFragment">
 
     <ScrollView
@@ -46,8 +46,7 @@
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
                 android:hint="Last Name"
-                app:endIconMode="clear_text"
-                >
+                app:endIconMode="clear_text">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/profieLastName"
@@ -95,9 +94,9 @@
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                 android:layout_width="match_parent"
-                android:hint="Phone number"
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
+                android:hint="Phone number"
                 app:endIconMode="clear_text">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -112,9 +111,9 @@
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                 android:layout_width="match_parent"
-                android:hint="SSN"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
+                android:hint="SSN"
                 app:endIconMode="clear_text">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -125,12 +124,13 @@
                     android:text="1602942809" />
 
             </com.google.android.material.textfield.TextInputLayout>
+
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                 android:layout_width="match_parent"
-                android:hint="Job title"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
+                android:hint="Job title"
                 app:endIconMode="clear_text">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -141,12 +141,13 @@
                     android:text="Nemi" />
 
             </com.google.android.material.textfield.TextInputLayout>
+
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                 android:layout_width="match_parent"
-                android:hint="Sick Days"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
+                android:hint="Sick Days"
                 app:endIconMode="clear_text">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -157,12 +158,13 @@
                     android:text="0" />
 
             </com.google.android.material.textfield.TextInputLayout>
+
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                 android:layout_width="match_parent"
-                android:hint="Vacation days"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
+                android:hint="Vacation days"
                 app:endIconMode="clear_text">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -173,12 +175,13 @@
                     android:text="3" />
 
             </com.google.android.material.textfield.TextInputLayout>
+
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                 android:layout_width="match_parent"
-                android:hint="Start Data"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
+                android:hint="Start Data"
                 app:endIconMode="clear_text">
 
                 <com.google.android.material.textfield.TextInputEditText

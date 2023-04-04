@@ -57,7 +57,7 @@
                 android:background="#00FFFFFF"
                 android:backgroundTint="#00FFFFFF"
                 app:icon="@drawable/edit"
-                app:iconTint="@color/taem_medium_grey" />
+                app:iconTint="@color/app_medium_grey" />
 
         </LinearLayout>
 

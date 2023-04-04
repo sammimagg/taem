@@ -6,7 +6,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/taem_green">
+        android:background="@color/app_green">
 
         <ImageView
             android:id="@+id/imageView"
@@ -17,7 +17,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.532"
-            app:srcCompat="@drawable/logo_white" />
+            app:srcCompat="@drawable/logo" />
 
         <LinearLayout
             android:id="@+id/linearLayout"

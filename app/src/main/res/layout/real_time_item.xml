@@ -33,7 +33,7 @@
                     android:layout_weight="8"
                     android:fontFamily="@font/poppins"
                     android:text="Samúel Magnússon"
-                    android:textColor="@color/black"
+                    android:textColor="@color/app_font_color"
                     android:textSize="24dp">
 
                 </TextView>
@@ -44,7 +44,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="8"
                     android:fontFamily="@font/poppins"
-                    android:text="Deactive" />
+                    android:text="Deactive"
+                    android:textColor="@color/app_font_secondary_color" />
             </LinearLayout>
 
             <LinearLayout
@@ -60,6 +61,7 @@
                     android:layout_weight="2"
                     android:fontFamily="@font/poppins_medium"
                     android:text="8:00"
+                    android:textColor="@color/app_font_secondary_color"
                     android:textSize="24sp" />
 
                 <TextView
@@ -86,7 +88,8 @@
                     android:fontFamily="@font/poppins"
                     android:gravity="start"
                     android:text="24H 59m"
-                    android:textAlignment="textStart" />
+                    android:textAlignment="textStart"
+                    android:textColor="@color/app_font_secondary_color" />
             </LinearLayout>
 
         </LinearLayout>

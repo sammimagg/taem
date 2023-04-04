@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavigationView.setOnItemSelectedListener {
             when(it.itemId) {
                 R.id.clockinout -> replaceFragment(ClockInOutFragment())
-                R.id.employees -> replaceFragment(ScheduleFragment())
+                R.id.employees -> replaceFragment(EmployeesFragment())
                 R.id.time_and_attendance -> replaceFragment(TimeAndAttendanceFragment())
                 R.id.profile -> replaceFragment(ProfileFragment())
                 R.id.drivinglog -> replaceFragment(DrivingLogFragment())

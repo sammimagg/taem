@@ -41,12 +41,11 @@ class MainAdminActivity : AppCompatActivity(), OnScanSuccessListener {
         super.onNewIntent(intent)
         val clockInOutFragment = supportFragmentManager.findFragmentByTag("clock_in_out_fragment") as? ClockInOutFragment
         clockInOutFragment?.handleNfcIntent(intent)
-        print("herna babay")
     }
     override fun onScanSuccess() {
         // Perform the fragment transaction here
         val newFragment = SuccesfulNfcScanFragment();
-        replaceFragment(newFragment,"succesful_nfc_scan")
+        replaceFragment(newFragment,"successful_nfc_scan")
     }
 
 

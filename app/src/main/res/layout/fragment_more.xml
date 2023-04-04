@@ -34,6 +34,7 @@
                 android:fontFamily="@font/poppins_medium"
                 android:gravity="center_vertical"
                 android:text="Time And Attendance"
+                android:textColor="@color/app_font_color"
                 android:textSize="20dp" />
 
         </LinearLayout>
@@ -61,6 +62,7 @@
                 android:fontFamily="@font/poppins_medium"
                 android:gravity="center_vertical"
                 android:text="Request Reviews"
+                android:textColor="@color/app_font_secondary_color"
                 android:textSize="20dp" />
 
         </LinearLayout>
@@ -88,6 +90,7 @@
                 android:fontFamily="@font/poppins_medium"
                 android:gravity="center_vertical"
                 android:text="Driving Log"
+                android:textColor="@color/app_font_secondary_color"
                 android:textSize="20dp" />
 
         </LinearLayout>
@@ -115,6 +118,7 @@
                 android:fontFamily="@font/poppins_medium"
                 android:gravity="center_vertical"
                 android:text="Make schedule"
+                android:textColor="@color/app_font_secondary_color"
                 android:textSize="20dp" />
         </LinearLayout>
 

@@ -23,10 +23,7 @@ class EmployeesFragment : Fragment() {
         super.onCreate(savedInstanceState)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_employees,container,false)
 
@@ -34,6 +31,7 @@ class EmployeesFragment : Fragment() {
         lifecycleScope.launch {
             var response = ArrayList<EmployeeRTI>();
             response = async { getRealTimeInsigtArray("https://www.hiv.is/api/employee/rti") }.await()
+            print(response)
             var sortedList = sortListByActive(response);
             val apapter = RealTimeAdapter(requireActivity(),sortedList);
             listView.adapter =apapter;

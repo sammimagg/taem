@@ -36,10 +36,7 @@ class RealTimeIngsightsFragment : Fragment() {
 
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_real_time_ingsights,container,false)
 
@@ -47,6 +44,8 @@ class RealTimeIngsightsFragment : Fragment() {
         lifecycleScope.launch {
             var response = ArrayList<EmployeeRTI>();
             response = async { getRealTimeInsigtArray("https://www.hiv.is/api/employee/rti") }.await()
+            //println("Hérna")
+            //println(response)
             var sortedList = sortListByActive(response);
             val apapter = RealTimeAdapter(requireActivity(),sortedList);
             listView.adapter =apapter;

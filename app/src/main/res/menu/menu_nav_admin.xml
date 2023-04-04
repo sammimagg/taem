@@ -26,8 +26,7 @@
         android:id="@+id/profile"
         />
     <item
-        android:title="More"
-        android:icon="@drawable/menu_icon"
         android:id="@+id/more"
-        />
+        android:icon="@drawable/menu_icon"
+        android:title="More" />
 </menu>

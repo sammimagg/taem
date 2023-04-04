@@ -61,7 +61,7 @@ class LoginActivity : AppCompatActivity() {
             else {
                 // TODO Gera pláss f. AccountType í SessionUser
                 val db = dbHelper.writableDatabase
-                println(sessionUser?.username)
+      
 
                 val values = ContentValues().apply {
                     put(`is`.hi.hbv601g.taem.Storage.db.SessionUserContract.SessionUserEntry.COLUMN_NAME_USERNAME,
@@ -87,7 +87,6 @@ class LoginActivity : AppCompatActivity() {
 
                 with(cursor) {
                     moveToFirst()
-                    println("Fetch frá DB:" + getString(getColumnIndexOrThrow(`is`.hi.hbv601g.taem.Storage.db.SessionUserContract.SessionUserEntry.COLUMN_NAME_USERNAME)))
                 }
 
                 //startActivity(intent) // Venjulegur notandi

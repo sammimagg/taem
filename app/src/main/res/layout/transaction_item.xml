@@ -30,6 +30,7 @@
                 android:fontFamily="@font/poppins_medium"
                 android:text="2023.04.12"
                 android:textAlignment="center"
+                android:textColor="@color/app_font_secondary_color"
                 android:textSize="16sp" />
 
             <TextView
@@ -40,6 +41,7 @@
                 android:fontFamily="@font/poppins_medium"
                 android:text="8:00am"
                 android:textAlignment="center"
+                android:textColor="@color/app_font_secondary_color"
                 android:textSize="16sp" />
 
             <TextView
@@ -50,6 +52,7 @@
                 android:fontFamily="@font/poppins_medium"
                 android:text="24:00am"
                 android:textAlignment="center"
+                android:textColor="@color/app_font_secondary_color"
                 android:textSize="16sp" />
 
         </LinearLayout>
