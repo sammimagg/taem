@@ -1,6 +1,7 @@
 package `is`.hi.hbv601g.taem
 
 import android.app.DatePickerDialog
+import android.content.Context
 import android.icu.util.Calendar
 import android.os.Bundle
 import android.text.Editable
@@ -11,6 +12,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import `is`.hi.hbv601g.taem.Networking.Fetcher
+import `is`.hi.hbv601g.taem.Persistance.ViewTransactionUserDAO
+import java.time.LocalDate
 
 
 class TimeAndAttendanceFragment : Fragment() {
@@ -59,7 +63,8 @@ class TimeAndAttendanceFragment : Fragment() {
                 printSelectedDates(dateTextView1.text.toString(), dateTextView2.text.toString())
             }
 
-            override fun afterTextChanged(s: Editable?) {}
+            override fun afterTextChanged(s: Editable?) {
+            }
         })
 
         // Add click listeners to date TextViews
@@ -91,6 +96,17 @@ class TimeAndAttendanceFragment : Fragment() {
     private fun printSelectedDates(startDate: String, endDate: String) {
         println("Start date: $startDate")
         println("End date: $endDate")
+    }
+
+    private suspend fun fetchyTransy(ssn : String, startDate: String,
+                                     endDate: String, context : Context) : ViewTransactionUserDAO {
+        return Fetcher().fetchTransactions(
+            "https://www.hiv.is/api/transaction/list",
+            ssn,
+            startDate,
+            endDate,
+            context
+        )
     }
 
 
