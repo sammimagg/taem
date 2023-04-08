@@ -1,15 +1,11 @@
 package `is`.hi.hbv601g.taem
 
 import android.content.Intent
-import android.nfc.NdefMessage
-import android.nfc.NfcAdapter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import `is`.hi.hbv601g.taem.databinding.ActivityMainAdminBinding
-import java.nio.charset.Charset
-import `is`.hi.hbv601g.taem.OnScanSuccessListener;
+
 class MainAdminActivity : AppCompatActivity(), OnScanSuccessListener {
     private lateinit var binding: ActivityMainAdminBinding
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,7 +40,7 @@ class MainAdminActivity : AppCompatActivity(), OnScanSuccessListener {
     }
     override fun onScanSuccess() {
         // Perform the fragment transaction here
-        val newFragment = SuccesfulNfcScanFragment();
+        val newFragment = SuccessfulNfcScanFragment();
         replaceFragment(newFragment,"successful_nfc_scan")
     }
 
