@@ -1,6 +1,7 @@
 package `is`.hi.hbv601g.taem
 
 import android.app.DatePickerDialog
+import android.content.Context
 import android.icu.util.Calendar
 import android.os.Bundle
 import android.text.Editable
@@ -9,8 +10,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.TextView
+import `is`.hi.hbv601g.taem.Networking.Fetcher
+import `is`.hi.hbv601g.taem.Persistance.Transaction
+import `is`.hi.hbv601g.taem.Persistance.ViewTransactionUserDAO
+import kotlinx.coroutines.*
 
 
 class TimeAndAttendanceFragment : Fragment() {
@@ -53,13 +57,28 @@ class TimeAndAttendanceFragment : Fragment() {
         })
 
         dateTextView2.addTextChangedListener(object : TextWatcher {
+            var debounceJob : Job? = null;
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 printSelectedDates(dateTextView1.text.toString(), dateTextView2.text.toString())
+                debounceJob?.cancel() // cancel the previous debounce job if it exists
+                debounceJob = GlobalScope.launch(Dispatchers.Main) {
+                    delay(500) // debounce for 500 milliseconds
+                    // perform your suspendable operation here
+                    var resultArray : ViewTransactionUserDAO = fetchyTransy("2911963149",
+                        dateTextView1.text.toString(),
+                        dateTextView2.text.toString(),
+                        requireContext())
+
+                    for (item in resultArray.transactionList) {
+                        print(item.toString())
+                    }
+                }
             }
 
-            override fun afterTextChanged(s: Editable?) {}
+            override fun afterTextChanged(s: Editable?) {
+            }
         })
 
         // Add click listeners to date TextViews
@@ -91,6 +110,17 @@ class TimeAndAttendanceFragment : Fragment() {
     private fun printSelectedDates(startDate: String, endDate: String) {
         println("Start date: $startDate")
         println("End date: $endDate")
+    }
+
+    private suspend fun fetchyTransy(ssn : String, startDate: String,
+                                     endDate: String, context : Context) : ViewTransactionUserDAO {
+        return Fetcher().fetchTransactions(
+            "https://www.hiv.is/api/transaction/list",
+            ssn,
+            startDate,
+            endDate,
+            context
+        )
     }
 
 

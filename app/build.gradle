@@ -59,5 +59,6 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.4.0-alpha02" // TESTING - Má kannski remova
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
     implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.0.0'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.12.4' // Þarf fyrir JSON formatting
 }
 
