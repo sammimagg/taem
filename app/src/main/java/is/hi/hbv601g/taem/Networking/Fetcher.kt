@@ -11,8 +11,11 @@ import com.google.gson.annotations.SerializedName
 import com.google.gson.reflect.TypeToken
 import `is`.hi.hbv601g.taem.Persistance.Employee
 import `is`.hi.hbv601g.taem.Persistance.EmployeeRTI
+import `is`.hi.hbv601g.taem.Persistance.ViewTransactionUserDAO
 import kotlinx.coroutines.CompletableDeferred
 import org.json.JSONObject
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 /*
 * ATH: Það þarf eitthvað að yfirfæra þetta í Async call.
@@ -173,6 +176,34 @@ class Fetcher() {
         queue.add(jsonObjectRequest)
 
         return deferred.await()
+    }
+
+    suspend fun fetchTransactions(url: String, ssn: String, dateFrom: String, dateTo: String, context: Context) : ViewTransactionUserDAO {
+        val inputFormatter = DateTimeFormatter.ofPattern("d/M/yyyy")
+        val outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+
+        val queue = Volley.newRequestQueue(context)
+        val employeeProfileResponseDeferred = CompletableDeferred<ViewTransactionUserDAO>()
+        val json = JSONObject()
+        json.put("ssn", ssn)
+        if(dateFrom != null) json.put("dateFrom",
+            outputFormatter.format(
+                LocalDate.parse(dateFrom, inputFormatter)))
+        if(dateTo != null) json.put("dateTo", outputFormatter.format(
+            LocalDate.parse(dateTo, inputFormatter)))
+
+        val jsonObjectRequest = JsonObjectRequest(Request.Method.PUT, url, json,
+            {response ->
+                Log.d("Reval: ", response.toString())
+                val reval = Gson().fromJson(response.toString(), ViewTransactionUserDAO::class.java)
+                employeeProfileResponseDeferred.complete(reval)
+            },
+            {error ->
+                employeeProfileResponseDeferred.completeExceptionally(error)
+            })
+
+        queue.add(jsonObjectRequest)
+        return employeeProfileResponseDeferred.await()
     }
 
 }
