@@ -1,5 +1,6 @@
 package `is`.hi.hbv601g.taem
 
+import DrivingLogFragment
 import android.content.Intent
 import android.nfc.NdefMessage
 import android.nfc.NfcAdapter

@@ -1,5 +1,6 @@
 package `is`.hi.hbv601g.taem
 
+import DrivingLogFragment
 import android.content.ContentValues
 import android.content.Intent
 import android.graphics.Paint
@@ -97,6 +98,10 @@ class LoginActivity : AppCompatActivity() {
     private fun register() {
         val intent = Intent(this, RegisterActivity::class.java)
         startActivity(intent)
+    }
 
+    private fun drivinglog() {
+        val intent = Intent(this, DrivingLogFragment::class.java)
+        startActivity(intent)
     }
 }

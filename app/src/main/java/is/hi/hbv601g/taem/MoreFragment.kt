@@ -1,5 +1,6 @@
 package `is`.hi.hbv601g.taem
 
+import DrivingLogFragment
 import android.os.Bundle
 import android.view.*
 import android.widget.LinearLayout

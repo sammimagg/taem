@@ -13,8 +13,16 @@ data class Employee (
     var phoneNumber : String,
     var startDate : String,
     var vacationDaysUsed : Int,
-    var sickDaysUsed : Int
+    var sickDaysUsed : Int,
     // @TODO finish this @Kristófer Breki
+    var remainingVacationDays : Int,
+    var remainingSickDays: Int,
+    var firstNameOfEmployee: String,
+    var lastNameOfEmployee: String,
+    var phoneNumberEmployee: Int,
+    var ssnEmployee: Int,
+    var status: String,
+    var accounttype: Int,
     )
 
 

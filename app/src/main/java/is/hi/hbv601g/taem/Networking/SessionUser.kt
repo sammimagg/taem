@@ -1,5 +1,7 @@
 package `is`.hi.hbv601g.taem.Networking
 
+import java.time.LocalDate
+
 data class SessionUser(
     var username: String,
     var accessToken: String,
@@ -11,6 +13,7 @@ data class SessionUser(
         return "SessionUser(username='$username', authToken='$accessToken')"
     }
 
+
     /**
      * @TODO
      * Refactor to /Persistance/
@@ -18,5 +21,12 @@ data class SessionUser(
      */
 
 }
+data class Driving(
+    val ssn: String,
+    val date: String,
+    val startTime: String,
+    val endTime: String,
+    val distance: Double
+)
 
 
