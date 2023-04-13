@@ -5,12 +5,14 @@ import java.time.LocalDate
 data class SessionUser(
     var username: String,
     var accessToken: String,
+    var accountType: String,
     var ssn : String,
     var email : String,
 
     ) {
     override fun toString(): String {
-        return "SessionUser(username='$username', authToken='$accessToken')"
+        return "SessionUser(username='$username', authToken='$accessToken', " +
+                "accountType='$accountType' ssn='$ssn', email='$email')"
     }
 
 

@@ -69,6 +69,10 @@ class LoginActivity : AppCompatActivity() {
                         sessionUser?.username)
                     put(`is`.hi.hbv601g.taem.Storage.db.SessionUserContract.SessionUserEntry.COLUMN_NAME_AUTH_TOKEN,
                         sessionUser?.accessToken)
+                    put(`is`.hi.hbv601g.taem.Storage.db.SessionUserContract.SessionUserEntry.COLUMN_NAME_ACCOUNT_TYPE,
+                        sessionUser?.accountType)
+                    put(`is`.hi.hbv601g.taem.Storage.db.SessionUserContract.SessionUserEntry.COLUMN_NAME_SSN,
+                        sessionUser?.ssn)
                 }
 
                 val newRowId = db?.insert(`is`.hi.hbv601g.taem.Storage.db.SessionUserContract.SessionUserEntry.TABLE_NAME,
@@ -78,16 +82,17 @@ class LoginActivity : AppCompatActivity() {
                 val cursor = db2.query(
                     `is`.hi.hbv601g.taem.Storage.db.SessionUserContract.
                     SessionUserEntry.TABLE_NAME,   // The table to query
-                    null,             // The array of columns to return (pass null to get all)
+                    arrayOf(`is`.hi.hbv601g.taem.Storage.db.SessionUserContract.SessionUserEntry.COLUMN_NAME_SSN),             // The array of columns to return (pass null to get all)
                     null,              // The columns for the WHERE clause
                     null,          // The values for the WHERE clause
                     null,                   // don't group the rows
                     null,                   // don't filter by row groups
-                    null               // The sort order
+                    null
                 )
 
                 with(cursor) {
-                    moveToFirst()
+                    moveToLast()
+                    println(cursor.getString(0))
                 }
 
                 //startActivity(intent) // Venjulegur notandi

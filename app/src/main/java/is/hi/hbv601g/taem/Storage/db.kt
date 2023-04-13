@@ -12,6 +12,8 @@ class db {
             const val COLUMN_NAME_USERNAME = "username"
             const val COLUMN_NAME_AUTH_TOKEN = "auth_token"
             const val COLUMN_NAME_ACCOUNT_TYPE = "account_type"
+            const val COLUMN_NAME_SSN = "ssn"
+            const val COLUMN_NAME_EMAIL = "email"
         }
 
         private const val SQL_CREATE_ENTRIES =
@@ -19,7 +21,9 @@ class db {
                     "${BaseColumns._ID} INTEGER PRIMARY KEY," +
                     "${SessionUserEntry.COLUMN_NAME_USERNAME} TEXT," +
                     "${SessionUserEntry.COLUMN_NAME_AUTH_TOKEN} TEXT," +
-                    "${SessionUserEntry.COLUMN_NAME_ACCOUNT_TYPE} TEXT)"
+                    "${SessionUserEntry.COLUMN_NAME_ACCOUNT_TYPE} TEXT," +
+                    "${SessionUserEntry.COLUMN_NAME_SSN} TEXT," +
+                    "${SessionUserEntry.COLUMN_NAME_EMAIL} TEXT)"
 
         private const val SQL_BOBBY_TABLES =
             "DROP TABLE IF EXISTS ${SessionUserEntry.TABLE_NAME}"
@@ -32,6 +36,7 @@ class db {
 
             override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
                 db.execSQL(SQL_BOBBY_TABLES)
+                db.execSQL(SQL_CREATE_ENTRIES)
             }
 
             override fun onDowngrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
@@ -43,7 +48,7 @@ class db {
             *      Incrementa DATABASE_VERSION
             */
             companion object {
-                const val DATABASE_VERSION = 1
+                const val DATABASE_VERSION = 6
                 const val DATABASE_NAME = "SessionUser.db"
             }
         }

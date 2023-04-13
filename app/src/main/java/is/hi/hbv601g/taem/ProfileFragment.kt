@@ -1,6 +1,7 @@
 package `is`.hi.hbv601g.taem
 
 import android.os.Bundle
+import android.provider.BaseColumns
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,7 @@ import com.google.android.material.textfield.TextInputEditText
 import `is`.hi.hbv601g.taem.Networking.Fetcher
 import `is`.hi.hbv601g.taem.Persistance.Employee
 import `is`.hi.hbv601g.taem.Persistance.EmployeeRTI
+import `is`.hi.hbv601g.taem.Storage.db
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
@@ -44,8 +46,24 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         lifecycleScope.launch {
+            val dbHelper = db.SessionUserContract.DBHelper(requireContext())
+            val db2 = dbHelper.readableDatabase
+            val cursor = db2.query(
+                `is`.hi.hbv601g.taem.Storage.db.SessionUserContract.
+                SessionUserEntry.TABLE_NAME,   // The table to query
+                null,             // The array of columns to return (pass null to get all)
+                null,              // The columns for the WHERE clause
+                null,          // The values for the WHERE clause
+                null,                   // don't group the rows
+                null,                   // don't filter by row groups
+                BaseColumns._ID              // The sort order
+            )
+            with(cursor) {
+                moveToLast()
+            }
             var response : Employee
-            response = async { getEmployeeInformation("https://www.hiv.is/api/employee/", "2911963149") }.await()
+            var ssnToUse = cursor.getString(4)
+            response = async { getEmployeeInformation("https://www.hiv.is/api/employee/", ssnToUse) }.await()
             print(response)
 
             val first_name_field : TextInputEditText = requireView().findViewById(R.id.profieFirstname)
