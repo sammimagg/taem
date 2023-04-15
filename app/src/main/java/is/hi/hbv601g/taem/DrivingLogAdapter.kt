@@ -52,7 +52,7 @@ companion object {
             val url = "https://www.hiv.is/api/driving/ssn"
 
             val request = JsonObjectRequest(
-                Request.Method.GET, url, null,
+                Request.Method.PUT, url, null,
                 { response ->
                     // Handle the JSON response
                     val gson = Gson()

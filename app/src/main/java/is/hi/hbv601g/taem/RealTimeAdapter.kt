@@ -14,7 +14,6 @@ import java.time.Duration
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
-import kotlin.collections.ArrayList
 
 class RealTimeAdapter(private val context: Activity, private val arrayList: ArrayList<EmployeeRTI>) : ArrayAdapter<EmployeeRTI>(context,R.layout.real_time_item, arrayList){
     @RequiresApi(Build.VERSION_CODES.O)
@@ -41,7 +40,8 @@ class RealTimeAdapter(private val context: Activity, private val arrayList: Arra
 
         if (!arrayList[position].clockInTime.isNullOrEmpty()) {
             val clockInTime = arrayList[position].clockInTime;
-            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS")
+            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss[.SSSSSS][.SSSSS][.SSSS][.SSS][.SS][.S]")
+            println(clockInTime)
             val clockInDateTime = LocalDateTime.parse(clockInTime, formatter)
             val currentTime = LocalDateTime.now()
             val duration = Duration.between(clockInDateTime, currentTime)
@@ -51,7 +51,7 @@ class RealTimeAdapter(private val context: Activity, private val arrayList: Arra
             workedHour.text = workedHours;
 
 
-            val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS", Locale.getDefault())
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSS", Locale.getDefault())
             val time = dateFormat.parse(arrayList[position].clockInTime)
             val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
             clockIn.text = timeFormat.format(time)

@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ListView
 import androidx.databinding.DataBindingUtil.setContentView
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.textfield.TextInputEditText
@@ -46,11 +45,9 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         lifecycleScope.launch {
-            val dbHelper = db.SessionUserContract.DBHelper(requireContext())
-            val db2 = dbHelper.readableDatabase
+            val db2 = db.SessionUserContract.DBHelper(requireContext()).readableDatabase
             val cursor = db2.query(
-                `is`.hi.hbv601g.taem.Storage.db.SessionUserContract.
-                SessionUserEntry.TABLE_NAME,   // The table to query
+                `is`.hi.hbv601g.taem.Storage.db.SessionUserContract.SessionUserEntry.TABLE_NAME,   // The table to query
                 null,             // The array of columns to return (pass null to get all)
                 null,              // The columns for the WHERE clause
                 null,          // The values for the WHERE clause
@@ -61,21 +58,29 @@ class ProfileFragment : Fragment() {
             with(cursor) {
                 moveToLast()
             }
-            var response : Employee
             var ssnToUse = cursor.getString(4)
-            response = async { getEmployeeInformation("https://www.hiv.is/api/employee/", ssnToUse) }.await()
+            var response: Employee = async {
+                getEmployeeInformation(
+                    "https://www.hiv.is/api/employee/",
+                    ssnToUse
+                )
+            }.await()
             print(response)
 
-            val first_name_field : TextInputEditText = requireView().findViewById(R.id.profieFirstname)
-            val email_field : TextInputEditText = requireView().findViewById(R.id.profieEmail)
-            val username_field : TextInputEditText = requireView().findViewById(R.id.profieUsername)
-            val last_name_field : TextInputEditText = requireView().findViewById(R.id.profieLastName)
-            val phone_number_field : TextInputEditText = requireView().findViewById(R.id.profiePhoneNumber)
-            val ssn_field : TextInputEditText = requireView().findViewById(R.id.profieSSN)
-            val job_title_field : TextInputEditText = requireView().findViewById(R.id.profieJobtitle)
-            val sick_days_field : TextInputEditText = requireView().findViewById(R.id.profieSickDays)
-            val vacation_days_field : TextInputEditText = requireView().findViewById(R.id.profieVactionDays)
-            val start_date_field : TextInputEditText = requireView().findViewById(R.id.profileStartDate)
+            val first_name_field: TextInputEditText =
+                requireView().findViewById(R.id.profieFirstname)
+            val email_field: TextInputEditText = requireView().findViewById(R.id.profieEmail)
+            val username_field: TextInputEditText = requireView().findViewById(R.id.profieUsername)
+            val last_name_field: TextInputEditText = requireView().findViewById(R.id.profieLastName)
+            val phone_number_field: TextInputEditText =
+                requireView().findViewById(R.id.profiePhoneNumber)
+            val ssn_field: TextInputEditText = requireView().findViewById(R.id.profieSSN)
+            val job_title_field: TextInputEditText = requireView().findViewById(R.id.profieJobtitle)
+            val sick_days_field: TextInputEditText = requireView().findViewById(R.id.profieSickDays)
+            val vacation_days_field: TextInputEditText =
+                requireView().findViewById(R.id.profieVactionDays)
+            val start_date_field: TextInputEditText =
+                requireView().findViewById(R.id.profileStartDate)
             first_name_field.setText(response.firstName)
             last_name_field.setText(response.lastName)
             email_field.setText(response.email)
@@ -88,7 +93,7 @@ class ProfileFragment : Fragment() {
             start_date_field.setText(response.startDate)
 
             val saveButton = requireView().findViewById<Button>(R.id.buttonProfileSave)
-            saveButton.setOnClickListener{ saveButtonHandler(response) }
+            saveButton.setOnClickListener { saveButtonHandler(response) }
         }
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_profile, container, false)

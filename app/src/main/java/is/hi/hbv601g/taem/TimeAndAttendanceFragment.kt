@@ -4,6 +4,7 @@ import android.app.DatePickerDialog
 import android.content.Context
 import android.icu.util.Calendar
 import android.os.Bundle
+import android.provider.BaseColumns
 import android.text.Editable
 import android.text.TextWatcher
 import androidx.fragment.app.Fragment
@@ -14,6 +15,7 @@ import android.widget.TextView
 import `is`.hi.hbv601g.taem.Networking.Fetcher
 import `is`.hi.hbv601g.taem.Persistance.Transaction
 import `is`.hi.hbv601g.taem.Persistance.ViewTransactionUserDAO
+import `is`.hi.hbv601g.taem.Storage.db
 import kotlinx.coroutines.*
 
 
@@ -45,6 +47,21 @@ class TimeAndAttendanceFragment : Fragment() {
         val initialDate2 = "${day2}/${month2 + 1}/$year2"
         dateTextView2.text = initialDate2
 
+        val db2 = db.SessionUserContract.DBHelper(requireContext()).readableDatabase
+        val cursor = db2.query(
+            `is`.hi.hbv601g.taem.Storage.db.SessionUserContract.SessionUserEntry.TABLE_NAME,   // The table to query
+            null,             // The array of columns to return (pass null to get all)
+            null,              // The columns for the WHERE clause
+            null,          // The values for the WHERE clause
+            null,                   // don't group the rows
+            null,                   // don't filter by row groups
+            BaseColumns._ID              // The sort order
+        )
+        with(cursor) {
+            moveToLast()
+        }
+        var ssnToUse = cursor.getString(4)
+
         // Add text watchers to date TextViews
         dateTextView1.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -66,7 +83,7 @@ class TimeAndAttendanceFragment : Fragment() {
                 debounceJob = GlobalScope.launch(Dispatchers.Main) {
                     delay(500) // debounce for 500 milliseconds
                     // perform your suspendable operation here
-                    var resultArray : ViewTransactionUserDAO = fetchyTransy("2911963149",
+                    var resultArray : ViewTransactionUserDAO = fetchyTransy(ssnToUse,
                         dateTextView1.text.toString(),
                         dateTextView2.text.toString(),
                         requireContext())
