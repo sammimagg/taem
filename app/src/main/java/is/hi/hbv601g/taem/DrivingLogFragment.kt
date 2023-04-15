@@ -1,5 +1,6 @@
 import android.content.Context
 import android.os.Bundle
+import android.provider.BaseColumns
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +16,7 @@ import com.google.gson.Gson
 import `is`.hi.hbv601g.taem.DrivingLogAdapter
 import `is`.hi.hbv601g.taem.Networking.Driving
 import `is`.hi.hbv601g.taem.R
+import `is`.hi.hbv601g.taem.Storage.db
 
 class DrivingLogFragment : Fragment() {
     private lateinit var ssn: String
@@ -47,10 +49,26 @@ class DrivingLogFragment : Fragment() {
 
     private fun fetchDrivingLog() {
         val queue = Volley.newRequestQueue(activity)
-        val url = "https://www.hiv.is/api/driving/"
+        var url = "https://www.hiv.is/api/driving/"
+
+        val db2 = db.SessionUserContract.DBHelper(requireContext()).readableDatabase
+        val cursor = db2.query(
+            `is`.hi.hbv601g.taem.Storage.db.SessionUserContract.SessionUserEntry.TABLE_NAME,   // The table to query
+            null,             // The array of columns to return (pass null to get all)
+            null,              // The columns for the WHERE clause
+            null,          // The values for the WHERE clause
+            null,                   // don't group the rows
+            null,                   // don't filter by row groups
+            BaseColumns._ID              // The sort order
+        )
+        with(cursor) {
+            moveToLast()
+        }
+        var ssnToUse = cursor.getString(4)
+        url += ssnToUse
 
         val request = JsonObjectRequest(
-            Request.Method.GET, url, null,
+            Request.Method.PUT, url, null,
             { response ->
                 // Handle the JSON response
                 val gson = Gson()
