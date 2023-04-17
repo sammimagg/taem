@@ -1,5 +1,7 @@
 package `is`.hi.hbv601g.taem.Persistance
-
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+@Parcelize
 data class Employee (
     var username : String,
     var accountType : Int,
@@ -23,7 +25,7 @@ data class Employee (
     var ssnEmployee: Int,
     var status: String,
     var accounttype: Int,
-    )
+    ): Parcelable
 
 
 /**

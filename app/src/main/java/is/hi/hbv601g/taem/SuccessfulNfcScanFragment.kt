@@ -17,7 +17,6 @@ class SuccessfulNfcScanFragment : Fragment() {
 
         // Create the MediaPlayer instance and load the sound effect
         mediaPlayer = MediaPlayer.create(requireContext(), R.raw.sound_effect)
-        mediaPlayer.isLooping = true
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -41,6 +40,9 @@ class SuccessfulNfcScanFragment : Fragment() {
 
     // Call this method to play the sound effect
     private fun playSoundEffect() {
-        mediaPlayer.start()
+        if (!mediaPlayer.isPlaying) {
+            mediaPlayer.start()
+        }
     }
+
 }

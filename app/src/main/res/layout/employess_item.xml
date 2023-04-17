@@ -35,7 +35,7 @@
                     android:layout_weight="8"
                     android:fontFamily="@font/poppins"
                     android:text="Samúel Magnússon"
-                    android:textColor="@color/black"
+                    android:textColor="@color/app_font_color"
                     android:textSize="24dp">
 
                 </TextView>
@@ -46,18 +46,9 @@
                     android:layout_height="match_parent"
                     android:layout_weight="8"
                     android:fontFamily="@font/poppins"
-                    android:text="Admin" />
+                    android:text="Admin"
+                    android:textColor="@color/app_font_secondary_color" />
             </LinearLayout>
-
-            <Button
-                android:id="@+id/button2"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:background="#00FFFFFF"
-                android:backgroundTint="#00FFFFFF"
-                app:icon="@drawable/edit"
-                app:iconTint="@color/app_medium_grey" />
 
         </LinearLayout>
 

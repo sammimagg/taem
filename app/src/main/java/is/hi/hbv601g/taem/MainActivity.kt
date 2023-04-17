@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
     private fun replaceFragment(fragment: Fragment) {
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.frame_layout,fragment)
+        fragmentTransaction.replace(R.id.fragment_container, fragment) // Updated ID here
         fragmentTransaction.commit()
     }
     override fun onNewIntent(intent: Intent) {

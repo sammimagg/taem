@@ -113,9 +113,8 @@ class ProfileFragment : Fragment() {
         response.lastName = last_name_field.text.toString()
         response.phoneNumber = phone_number_field.text.toString()
         response.jobTitle = job_title_field.text.toString()
-        print("takki ýtt")
         val d = Fetcher().postEmployeeProfile("https://www.hiv.is/api/employee/", response, requireContext())
-        // Sammi return eh
+
     }
 
     private suspend fun getEmployeeInformation(url: String, ssn: String) : Employee {

@@ -205,5 +205,26 @@ class Fetcher() {
         queue.add(jsonObjectRequest)
         return employeeProfileResponseDeferred.await()
     }
+    suspend fun getEmployeeList(url: String, context: Context): ArrayList<Employee> {
+        val queue = Volley.newRequestQueue(context)
+        val employeeResponseDeferred = CompletableDeferred<ArrayList<Employee>>()
+
+        val jsonArrayRequest = JsonArrayRequest(Request.Method.GET, url, null,
+            { response ->
+                Log.d("DEBUG", "Response received: $response")
+                val gson = Gson()
+                val type = object : TypeToken<ArrayList<Employee>>() {}.type
+                val employees = gson.fromJson<ArrayList<Employee>>(response.toString(), type)
+                employeeResponseDeferred.complete(employees)
+            },
+            { error ->
+                Log.e("DEBUG", "Error in request: ${error.message}")
+                employeeResponseDeferred.completeExceptionally(error)
+            }
+        )
+
+        queue.add(jsonArrayRequest)
+        return employeeResponseDeferred.await()
+    }
 
 }

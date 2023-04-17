@@ -9,15 +9,13 @@ import android.view.ViewGroup
 import android.widget.ListView
 import androidx.lifecycle.lifecycleScope
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import `is`.hi.hbv601g.taem.Persistance.Employee
 import `is`.hi.hbv601g.taem.Persistance.EmployeeRTI
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 
 class EmployeesFragment : Fragment() {
-
-
-    private lateinit var userArrayList : Array<EmployeeRTI>;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,53 +24,50 @@ class EmployeesFragment : Fragment() {
     override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_employees,container,false)
-
-        val listView = view.findViewById<ListView>(R.id.employeesListview); //R.id.realtimeListview)
-        lifecycleScope.launch {
-            var response = ArrayList<EmployeeRTI>();
-            response = async { getRealTimeInsigtArray("https://www.hiv.is/api/employee/rti") }.await()
-            print(response)
-            var sortedList = sortListByActive(response);
-            val apapter = RealTimeAdapter(requireActivity(),sortedList);
-            listView.adapter =apapter;
-        }
         val swipeRefreshLayout = view.findViewById<SwipeRefreshLayout>(R.id.swipeRefreshLayout)
+        val listView = view.findViewById<ListView>(R.id.employeesListview)
+
+        // Set up the list view adapter and item click listener
+        lifecycleScope.launch {
+            var response = ArrayList<Employee>()
+            response = async { getEmployeeArray("https://www.hiv.is/api/employee/list") }.await()
+
+            val adapter = EmployessAdaptor(requireActivity(), response)
+            listView.adapter = adapter
+        }
+        listView.setOnItemClickListener { parent, view, position, id ->
+            // Get the selected employee
+            val employee = parent.getItemAtPosition(position) as Employee
+
+            // Create a new instance of the EditEmployeeFragment and pass the employee as an argument
+            val editEmployeeFragment = EditEmployeeFragment.newInstance(employee)
+
+            // Navigate to the EditEmployeeFragment
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.frame_layout, editEmployeeFragment)
+                .addToBackStack(null)
+                .commit()
+        }
+
+        // Set up the swipe refresh layout listener
         swipeRefreshLayout.setOnRefreshListener {
             lifecycleScope.launch {
-                var response = ArrayList<EmployeeRTI>();
-                response = async { getRealTimeInsigtArray("https://www.hiv.is/api/employee/rti") }.await()
-                var sortedList = sortListByActive(response);
-                val apapter = RealTimeAdapter(requireActivity(),sortedList);
-                listView.adapter =apapter;
+                var response = ArrayList<Employee>()
+                response = async { getEmployeeArray("https://www.hiv.is/api/employee/list") }.await()
+
+                val adapter = EmployessAdaptor(requireActivity(), response)
+                listView.adapter = adapter
             }
             swipeRefreshLayout.isRefreshing = false
         }
 
         return view
     }
-    private suspend fun getRealTimeInsigtArray(url: String): ArrayList<EmployeeRTI> {
+
+    private suspend fun getEmployeeArray(url: String): ArrayList<Employee> {
         val context = requireContext()
-        val fetcher = Fetcher();
-        val response = fetcher.getRealTimeInsights(url,context);
+        val fetcher = Fetcher()
+        val response = fetcher.getEmployeeList(url, context)
         return response
-
     }
-    private fun sortListByActive (list : ArrayList<EmployeeRTI>): ArrayList<EmployeeRTI> {
-
-        val sortedList = list.sortedWith(Comparator { employee1, employee2 ->
-            if (employee1.clockIn && !employee2.clockIn) {
-                // employee1 is active and employee2 is inactive
-                -1 // return a negative value to indicate that employee1 should come first
-            } else if (!employee1.clockIn && employee2.clockIn) {
-                // employee1 is inactive and employee2 is active
-                1 // return a positive value to indicate that employee1 should come after employee2
-            } else {
-                // Both employees are active or inactive, or both have a clockOut time set
-                employee1.firstName.compareTo(employee2.firstName) // compare the employees based on their first name
-            }
-        }).toCollection(ArrayList())
-        return sortedList
-    }
-
-
 }
