@@ -7,10 +7,13 @@ import android.os.Bundle
 import android.util.Log
 import java.nio.charset.Charset
 import android.os.Vibrator
+import android.provider.BaseColumns
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import `is`.hi.hbv601g.taem.Storage.db
 import `is`.hi.hbv601g.taem.Vibrate;
 
-class MyHostApduService : HostApduService() {
+class MyHostApduService() : HostApduService() {
     override fun processCommandApdu(commandApdu: ByteArray, extras: Bundle?): ByteArray {
         Log.d("MyHostApduService:HCE", "processCommandApdu")
         Log.d("MyHostApduService:HCE2", commandApdu.contentToString())
@@ -30,7 +33,21 @@ class MyHostApduService : HostApduService() {
             val vibrate = Vibrate()
             vibrate.vibrateDevice(this, 300)
         }
-
+        val db2 = db.SessionUserContract.DBHelper(applicationContext).readableDatabase
+        val cursor = db2.query(
+            `is`.hi.hbv601g.taem.Storage.db.SessionUserContract.SessionUserEntry.TABLE_NAME,   // The table to query
+            null,             // The array of columns to return (pass null to get all)
+            null,              // The columns for the WHERE clause
+            null,          // The values for the WHERE clause
+            null,                   // don't group the rows
+            null,                   // don't filter by row groups
+            BaseColumns._ID              // The sort order
+        )
+        with(cursor) {
+            moveToLast()
+        }
+        var kennitala = cursor.getString(4)
+        return ("ssn="+kennitala).toByteArray()
         return "ssn=1602942809".toByteArray()
     }
 
