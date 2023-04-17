@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ListView
 import android.widget.TextView
 import `is`.hi.hbv601g.taem.Networking.Fetcher
 import `is`.hi.hbv601g.taem.Persistance.Transaction
@@ -30,6 +31,7 @@ class TimeAndAttendanceFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_time_and_attendace, container, false)
         val dateTextView1 = view.findViewById<TextView>(R.id.date_text_view1)
         val dateTextView2 = view.findViewById<TextView>(R.id.date_text_view2)
+        val transactionListView = view.findViewById<ListView>(R.id.realtimeListview)
 
         // Set initial dates
         val calendar = Calendar.getInstance()
@@ -91,6 +93,11 @@ class TimeAndAttendanceFragment : Fragment() {
                     for (item in resultArray.transactionList) {
                         print(item.toString())
                     }
+                    val listView = view.findViewById<ListView>(R.id.realtimeListview);
+                    val apapter = TimeAndAttendanceAdapter(requireActivity(),
+                        resultArray.transactionList as ArrayList<Transaction>
+                    );
+                    listView.adapter =apapter;
                 }
             }
 

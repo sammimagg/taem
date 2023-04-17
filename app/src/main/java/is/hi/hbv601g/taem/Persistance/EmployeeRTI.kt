@@ -28,7 +28,8 @@ data class EmployeeRTI(
     val accounttype: Int,
     // Add mutable properties for clockInTime and clockIn
     var clockInTime: String? = null,
-    var clockIn: Boolean = false
+    var clockIn: Boolean = false,
+    var last_transaction : Transaction? = null
 
                     ) {
 
