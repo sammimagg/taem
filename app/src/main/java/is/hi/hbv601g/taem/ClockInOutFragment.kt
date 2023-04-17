@@ -19,7 +19,6 @@ import java.nio.charset.Charset
 class ClockInOutFragment : Fragment() {
 
     private var nfcAdapter: NfcAdapter? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
