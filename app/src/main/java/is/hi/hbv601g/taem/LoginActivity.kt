@@ -15,6 +15,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import `is`.hi.hbv601g.taem.Networking.Fetcher
 import `is`.hi.hbv601g.taem.Networking.SessionUser
+import `is`.hi.hbv601g.taem.Networking.saveLocalUser
+import `is`.hi.hbv601g.taem.Networking.saveSessionUser
 import `is`.hi.hbv601g.taem.Storage.db
 import `is`.hi.hbv601g.taem.databinding.ActivityLoginBinding
 import kotlinx.coroutines.Dispatchers
@@ -32,24 +34,23 @@ class LoginActivity : AppCompatActivity() {
         val registerButton = findViewById<Button>(R.id.signUp_botton)
         registerButton.paintFlags = registerButton.paintFlags or Paint.UNDERLINE_TEXT_FLAG
         registerButton.setOnClickListener{ register()}
+
     }
     private suspend fun login(user: String, password: String): Pair<SessionUser?, Int> {
         val errorMessage = findViewById<TextView>(R.id.error_message)
         val fetcher = Fetcher( )
         val (sessionUser, responseCode) = fetcher.AuthenticationRequest("https://hbv501g-group-8-production.up.railway.app/auth/login", user, password, this )
-        // Dóri hvað viltu gera við sessionUser ?
-        // Ég vil nota það í að vita hvaða user er að sækja t.d. transactions
+
         return Pair(sessionUser, responseCode)
     }
     fun loginButtonHandler() {
         val user = findViewById<EditText>(R.id.username_field).text.toString()
         val password = findViewById<EditText>(R.id.password_field).text.toString()
         val errorMessage = findViewById<TextView>(R.id.error_message)
-        val intent = Intent(this, MainActivity::class.java)
         val intentAdmin = Intent(this, MainAdminActivity::class.java)
-        val dbHelper = db.SessionUserContract.DBHelper(this)
+        val intentUser = Intent(this, MainActivity::class.java)
         if(user.isEmpty()) {
-            errorMessage.text = "Username cant be empty"
+            errorMessage.text = "Username can't be empty"
         }
         if(password.isEmpty()) {
             errorMessage.text = ("Password can't be empty")
@@ -59,44 +60,17 @@ class LoginActivity : AppCompatActivity() {
             if(responseCode == 401) { // 401 Unauthorized
                 errorMessage.text = ("Wrong password or username")
             }
-            else {
-                // TODO Gera pláss f. AccountType í SessionUser
-                val db = dbHelper.writableDatabase
-      
+            else if(sessionUser != null) {
+                saveSessionUser(this@LoginActivity, sessionUser);
+                val employee = Fetcher().fetchEmployeeProfile("https://www.hiv.is/api/employee/",sessionUser.ssn,this@LoginActivity)
+                saveLocalUser(this@LoginActivity,employee);
 
-                val values = ContentValues().apply {
-                    put(`is`.hi.hbv601g.taem.Storage.db.SessionUserContract.SessionUserEntry.COLUMN_NAME_USERNAME,
-                        sessionUser?.username)
-                    put(`is`.hi.hbv601g.taem.Storage.db.SessionUserContract.SessionUserEntry.COLUMN_NAME_AUTH_TOKEN,
-                        sessionUser?.accessToken)
-                    put(`is`.hi.hbv601g.taem.Storage.db.SessionUserContract.SessionUserEntry.COLUMN_NAME_ACCOUNT_TYPE,
-                        sessionUser?.accountType)
-                    put(`is`.hi.hbv601g.taem.Storage.db.SessionUserContract.SessionUserEntry.COLUMN_NAME_SSN,
-                        sessionUser?.ssn)
+                if(sessionUser.accountType == "0") {
+                    startActivity(intentAdmin) // Admin notandi
                 }
-
-                val newRowId = db?.insert(`is`.hi.hbv601g.taem.Storage.db.SessionUserContract.SessionUserEntry.TABLE_NAME,
-                                            null, values)
-
-                val db2 = dbHelper.readableDatabase
-                val cursor = db2.query(
-                    `is`.hi.hbv601g.taem.Storage.db.SessionUserContract.
-                    SessionUserEntry.TABLE_NAME,   // The table to query
-                    arrayOf(`is`.hi.hbv601g.taem.Storage.db.SessionUserContract.SessionUserEntry.COLUMN_NAME_SSN),             // The array of columns to return (pass null to get all)
-                    null,              // The columns for the WHERE clause
-                    null,          // The values for the WHERE clause
-                    null,                   // don't group the rows
-                    null,                   // don't filter by row groups
-                    null
-                )
-
-                with(cursor) {
-                    moveToLast()
-                    println(cursor.getString(0))
+                else {
+                    startActivity(intentAdmin) // Venjulegur notandi
                 }
-
-                //startActivity(intent) // Venjulegur notandi
-                startActivity(intentAdmin) // Admin notandi
             }
         }
     }

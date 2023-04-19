@@ -6,7 +6,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
+import android.widget.TextView
+import `is`.hi.hbv601g.taem.Networking.getSessionUser
 
 
 class SuccessfulNfcScanFragment : Fragment() {
@@ -21,11 +22,22 @@ class SuccessfulNfcScanFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
+
+
+
         return inflater.inflate(R.layout.fragment_succesful_nfc_scan, container, false)
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        val ssnOnCard: TextView = requireView().findViewById(R.id.succesful_card_ssn);
+        val nameOnCard: TextView = requireView().findViewById(R.id.succesful_card_name)
+        val message: TextView = requireView().findViewById(R.id.succesful_card_messages);
+        val sessionUser = getSessionUser(requireContext())
+        if(sessionUser != null) {
+            ssnOnCard.text = sessionUser.ssn
+            nameOnCard.text = sessionUser.username
+            message.text = "Thank you have. Have a nice day, " + sessionUser.username + "!"
+        }
         // Play the sound effect when the fragment becomes visible
         playSoundEffect()
     }

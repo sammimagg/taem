@@ -23,8 +23,6 @@ class MainAdminActivity : AppCompatActivity(), OnScanSuccessListener {
             }
             true
         }
-
-
     }
     private fun replaceFragment(fragment: Fragment, tag: String) {
         val fragmentManager = supportFragmentManager
@@ -43,7 +41,4 @@ class MainAdminActivity : AppCompatActivity(), OnScanSuccessListener {
         val newFragment = SuccessfulNfcScanFragment();
         replaceFragment(newFragment,"successful_nfc_scan")
     }
-
-
-
 }

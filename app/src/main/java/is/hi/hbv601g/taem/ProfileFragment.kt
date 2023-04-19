@@ -11,93 +11,52 @@ import androidx.databinding.DataBindingUtil.setContentView
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.textfield.TextInputEditText
 import `is`.hi.hbv601g.taem.Networking.Fetcher
+import `is`.hi.hbv601g.taem.Networking.getLocalUser
+import `is`.hi.hbv601g.taem.Networking.getSessionUser
 import `is`.hi.hbv601g.taem.Persistance.Employee
 import `is`.hi.hbv601g.taem.Persistance.EmployeeRTI
 import `is`.hi.hbv601g.taem.Storage.db
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [ProfileFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ProfileFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        lifecycleScope.launch {
-            val db2 = db.SessionUserContract.DBHelper(requireContext()).readableDatabase
-            val cursor = db2.query(
-                `is`.hi.hbv601g.taem.Storage.db.SessionUserContract.SessionUserEntry.TABLE_NAME,   // The table to query
-                null,             // The array of columns to return (pass null to get all)
-                null,              // The columns for the WHERE clause
-                null,          // The values for the WHERE clause
-                null,                   // don't group the rows
-                null,                   // don't filter by row groups
-                BaseColumns._ID              // The sort order
-            )
-            with(cursor) {
-                moveToLast()
-            }
-            var ssnToUse = cursor.getString(4)
-            var response: Employee = async {
-                getEmployeeInformation(
-                    "https://www.hiv.is/api/employee/",
-                    ssnToUse
-                )
-            }.await()
-            print(response)
-
-            val first_name_field: TextInputEditText =
-                requireView().findViewById(R.id.profieFirstname)
-            val email_field: TextInputEditText = requireView().findViewById(R.id.profieEmail)
-            val username_field: TextInputEditText = requireView().findViewById(R.id.profieUsername)
-            val last_name_field: TextInputEditText = requireView().findViewById(R.id.profieLastName)
-            val phone_number_field: TextInputEditText =
-                requireView().findViewById(R.id.profiePhoneNumber)
-            val ssn_field: TextInputEditText = requireView().findViewById(R.id.profieSSN)
-            val job_title_field: TextInputEditText = requireView().findViewById(R.id.profieJobtitle)
-            val sick_days_field: TextInputEditText = requireView().findViewById(R.id.profieSickDays)
-            val vacation_days_field: TextInputEditText =
-                requireView().findViewById(R.id.profieVactionDays)
-            val start_date_field: TextInputEditText =
-                requireView().findViewById(R.id.profileStartDate)
-            first_name_field.setText(response.firstName)
-            last_name_field.setText(response.lastName)
-            email_field.setText(response.email)
-            username_field.setText(response.username)
-            phone_number_field.setText(response.phoneNumber)
-            ssn_field.setText(response.ssn)
-            job_title_field.setText(response.jobTitle)
-            sick_days_field.setText(response.sickDaysUsed.toString())
-            vacation_days_field.setText(response.vacationDaysUsed.toString())
-            start_date_field.setText(response.startDate)
-
-            val saveButton = requireView().findViewById<Button>(R.id.buttonProfileSave)
-            saveButton.setOnClickListener { saveButtonHandler(response) }
-        }
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false)
-        //val listView = view.findViewById<ListView>(R.id.employeesListview); //R.id.realtimeListview)
+        val rootView = inflater.inflate(R.layout.fragment_profile, container, false)
+
+        val user = getLocalUser(requireContext())
+
+        val first_name_field: TextInputEditText = rootView.findViewById(R.id.profieFirstname)
+        val email_field: TextInputEditText = rootView.findViewById(R.id.profieEmail)
+        val username_field: TextInputEditText = rootView.findViewById(R.id.profieUsername)
+        val last_name_field: TextInputEditText = rootView.findViewById(R.id.profieLastName)
+        val phone_number_field: TextInputEditText = rootView.findViewById(R.id.profiePhoneNumber)
+        val ssn_field: TextInputEditText = rootView.findViewById(R.id.profieSSN)
+        val job_title_field: TextInputEditText = rootView.findViewById(R.id.profieJobtitle)
+        val sick_days_field: TextInputEditText = rootView.findViewById(R.id.profieSickDays)
+        val vacation_days_field: TextInputEditText = rootView.findViewById(R.id.profieVactionDays)
+        val start_date_field: TextInputEditText = rootView.findViewById(R.id.profileStartDate)
+        if(user != null) {
+            first_name_field.setText(user.firstName)
+            last_name_field.setText(user.lastName)
+            email_field.setText(user.email)
+            username_field.setText(user.username)
+            phone_number_field.setText(user.phoneNumber)
+            ssn_field.setText(user.ssn)
+            job_title_field.setText(user.jobTitle)
+            sick_days_field.setText(user.sickDaysUsed.toString())
+            vacation_days_field.setText(user.vacationDaysUsed.toString())
+            start_date_field.setText(user.startDate)
+            val saveButton = rootView.findViewById<Button>(R.id.buttonProfileSave)
+            saveButton.setOnClickListener { saveButtonHandler(user) }
+        }
+        return rootView
     }
 
     fun saveButtonHandler(response : Employee) {
@@ -124,23 +83,4 @@ class ProfileFragment : Fragment() {
         return response
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ProfileFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ProfileFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
-    }
 }

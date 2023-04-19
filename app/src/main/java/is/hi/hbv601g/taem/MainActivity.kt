@@ -50,6 +50,4 @@ class MainActivity : AppCompatActivity() {
             Log.d("NFC", "Data received: $data")
         }
     }
-
-
 }

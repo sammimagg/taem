@@ -7,13 +7,19 @@ import android.os.Bundle
 import android.util.Log
 import java.nio.charset.Charset
 import android.os.Vibrator
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import fetchEmployeeInfo
+import getSSNFromLocalStorage
+import `is`.hi.hbv601g.taem.Persistance.Employee
 import `is`.hi.hbv601g.taem.Vibrate;
 
 class MyHostApduService : HostApduService() {
     override fun processCommandApdu(commandApdu: ByteArray, extras: Bundle?): ByteArray {
+        val ssn = getSSNFromLocalStorage(this)
         Log.d("MyHostApduService:HCE", "processCommandApdu")
         Log.d("MyHostApduService:HCE2", commandApdu.contentToString())
+        Log.d("SSN from local storage", ssn)
 
 
         val receivedString = commandApdu.toString(Charset.forName("UTF-8"))
@@ -31,7 +37,7 @@ class MyHostApduService : HostApduService() {
             vibrate.vibrateDevice(this, 300)
         }
 
-        return "ssn=1602942809".toByteArray()
+        return "ssn=$ssn".toByteArray()
     }
 
     override fun onDeactivated(reason: Int) {

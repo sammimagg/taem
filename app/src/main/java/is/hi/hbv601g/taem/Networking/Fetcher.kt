@@ -37,7 +37,7 @@ class Fetcher() {
 
         val jsonObjectRequest = JsonObjectRequest(Request.Method.POST, url, json,
             {response ->
-                //Log.d("Reval: ", response.toString())
+                Log.d("Reval: ", response.toString())
                 sessionUser = Gson().fromJson(response.toString(), SessionUser::class.java)
 
                 deferred.complete(Pair(sessionUser, responseCode))

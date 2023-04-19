@@ -41,9 +41,6 @@ class ClockInOutFragment : Fragment() {
         }
     }
 
-
-
-
     override fun onResume() {
         super.onResume()
         LocalBroadcastManager.getInstance(requireContext()).registerReceiver(
@@ -69,11 +66,7 @@ class ClockInOutFragment : Fragment() {
             // Process the payload as a String
             val data = String(payload, Charset.forName("UTF-8"))
             Log.d("NFC", "Data received: $data")
-            print("im here")
         }
     }
-
-
-
 
 }
