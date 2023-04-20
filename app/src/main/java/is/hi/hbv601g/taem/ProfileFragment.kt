@@ -32,7 +32,7 @@ class ProfileFragment : Fragment() {
         val rootView = inflater.inflate(R.layout.fragment_profile, container, false)
         val logOutButton = rootView.findViewById<Button>(R.id.logout);
         logOutButton.setOnClickListener{logOut(context)}
-        val user = getLocalUser(requireContext())
+        val user = getLocalUserFromSharedPreferences(requireContext())
 
         val first_name_field: TextInputEditText = rootView.findViewById(R.id.profieFirstname)
         val email_field: TextInputEditText = rootView.findViewById(R.id.profieEmail)
@@ -63,28 +63,28 @@ class ProfileFragment : Fragment() {
 
     fun saveButtonHandler(response : Employee) {
         val first_name_field : TextInputEditText = requireView().findViewById(R.id.profieFirstname)
-        updateLocalUser(requireContext(), "firstName", first_name_field.text.toString())
+        updateLocalUserInSharedPreferences(requireContext(), "firstName", first_name_field.text.toString())
         val email_field : TextInputEditText = requireView().findViewById(R.id.profieEmail)
-        updateLocalUser(requireContext(), "email",email_field.text.toString() )
+        updateLocalUserInSharedPreferences(requireContext(), "email",email_field.text.toString() )
         val username_field : TextInputEditText = requireView().findViewById(R.id.profieUsername)
-        updateLocalUser(requireContext(), "username", username_field.text.toString())
+        updateLocalUserInSharedPreferences(requireContext(), "username", username_field.text.toString())
         val last_name_field : TextInputEditText = requireView().findViewById(R.id.profieLastName)
-        updateLocalUser(requireContext(), "lastName", last_name_field.text.toString())
+        updateLocalUserInSharedPreferences(requireContext(), "lastName", last_name_field.text.toString())
         val phone_number_field : TextInputEditText = requireView().findViewById(R.id.profiePhoneNumber)
-        updateLocalUser(requireContext(), "phoneNumber", phone_number_field.text.toString())
+        updateLocalUserInSharedPreferences(requireContext(), "phoneNumber", phone_number_field.text.toString())
         val job_title_field : TextInputEditText = requireView().findViewById(R.id.profieJobtitle)
-        updateLocalUser(requireContext(), "jobTitle", job_title_field.text.toString())
+        updateLocalUserInSharedPreferences(requireContext(), "jobTitle", job_title_field.text.toString())
         response.firstName = first_name_field.text.toString()
         response.email = email_field.text.toString()
         response.username = username_field.text.toString()
         response.lastName = last_name_field.text.toString()
         response.phoneNumber = phone_number_field.text.toString()
         response.jobTitle = job_title_field.text.toString()
-        saveLocalUser(requireContext(), response)
+        saveLocalUserInSharedPreferences(requireContext(), response)
         val d = Fetcher().postEmployeeProfile("https://www.hiv.is/api/employee/", response, requireContext())
     }
     fun logOut(context: Context) {
-        clearLocalUser(context)
+        clearLocalUserFromSharedPreferences(context)
         clearUserData(context);
         val intent = Intent(context, LoginActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
