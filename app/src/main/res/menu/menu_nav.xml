@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
     <item
         android:title="Clock in/out"
         android:icon="@drawable/team_clockinout"
@@ -10,7 +11,7 @@
     <item
         android:title="Schedule"
         android:icon="@drawable/taem_schedule"
-        android:id="@+id/employees"
+        android:id="@+id/schedule"
         app:labelVisibilityMode="labeled"
         />
     <item

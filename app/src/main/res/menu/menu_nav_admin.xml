@@ -10,7 +10,7 @@
     <item
         android:title="Employees"
         android:icon="@drawable/taem_profile"
-        android:id="@+id/employees"
+        android:id="@+id/schedule"
         app:labelVisibilityMode="labeled"
         />
     <item

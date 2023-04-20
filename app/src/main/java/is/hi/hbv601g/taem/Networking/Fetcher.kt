@@ -2,9 +2,12 @@ package `is`.hi.hbv601g.taem.Networking
 
 import android.content.Context
 import android.util.Log
+import com.android.volley.NetworkResponse
 import com.android.volley.Request
+import com.android.volley.Response
 import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
@@ -226,5 +229,30 @@ class Fetcher() {
         queue.add(jsonArrayRequest)
         return employeeResponseDeferred.await()
     }
+    suspend fun isAuthenticated(accessToken: String, context: Context): String {
+        val queue = Volley.newRequestQueue(context)
+        val url = "https://www.hiv.is/auth/verify"
+        val responseDeferred = CompletableDeferred<String>()
+
+        val stringRequest = object : StringRequest(Method.POST, url,
+            { response ->
+                Log.d("DEBUG", "Response received: $response")
+                responseDeferred.complete(response)
+            },
+            { error ->
+                Log.e("DEBUG", "Error in request: ${error.message}")
+                responseDeferred.completeExceptionally(error)
+            }
+        ) {
+            override fun getBody(): ByteArray {
+                return accessToken.toByteArray()
+            }
+        }
+
+        queue.add(stringRequest)
+        return responseDeferred.await()
+    }
+
+
 
 }

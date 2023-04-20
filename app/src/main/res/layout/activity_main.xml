@@ -23,7 +23,7 @@
         android:id="@+id/bottomNavigationView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/app_cell"
+        android:background="@color/app_menu"
         android:outlineProvider="background"
         app:labelVisibilityMode="labeled"
         app:layout_constraintBottom_toBottomOf="parent"

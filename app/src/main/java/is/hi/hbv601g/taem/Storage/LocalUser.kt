@@ -16,6 +16,12 @@ fun saveLocalUser(context: Context, employee: Employee) {
     editor.putString(KEY_EMPLOYEE, employeeJson)
     editor.apply()
 }
+fun updateLocalUser(context: Context, key: String, newValue: String) {
+    val sharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+    val editor = sharedPreferences.edit()
+    editor.putString(key, newValue)
+    editor.apply()
+}
 
 fun getLocalUser(context: Context): Employee? {
     val sharedPreferences: SharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
@@ -27,4 +33,10 @@ fun getLocalUser(context: Context): Employee? {
     } else {
         null
     }
+}
+fun clearLocalUser(context: Context) {
+    val sharedPreferences: SharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+    val editor = sharedPreferences.edit()
+    editor.remove(KEY_EMPLOYEE)
+    editor.apply()
 }

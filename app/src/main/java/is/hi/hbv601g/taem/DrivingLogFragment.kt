@@ -75,7 +75,7 @@ class DrivingLogFragment : Fragment() {
                 drivingSessions =
                     gson.fromJson(response.toString(), Array<Driving>::class.java).toList()
                 Log.d("DrivingLogFragment", "drivingSessions: $drivingSessions")
-                drivingLogAdapter.drivingSessions = drivingSessions
+                //drivingLogAdapter.drivingSessions = drivingSessions
                 drivingLogAdapter.notifyDataSetChanged()
             },
             { error ->

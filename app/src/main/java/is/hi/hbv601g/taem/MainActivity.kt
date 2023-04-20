@@ -20,21 +20,21 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         binding.bottomNavigationView.setOnItemSelectedListener {
             when(it.itemId) {
-                R.id.clockinout -> replaceFragment(ClockInOutFragment())
-                R.id.employees -> replaceFragment(EmployeesFragment())
-                R.id.time_and_attendance -> replaceFragment(TimeAndAttendanceFragment())
-                R.id.profile -> replaceFragment(ProfileFragment())
-                R.id.drivinglog -> replaceFragment(DrivingLogFragment())
+                R.id.clockinout -> replaceFragment(ClockInOutFragment(), "clock_in_out_fragment")
+                R.id.schedule -> replaceFragment(EmployeesFragment(),"employees_fragment")
+                R.id.time_and_attendance -> replaceFragment(TimeAndAttendanceFragment(),"time_and_attendance")
+                R.id.profile -> replaceFragment(ProfileFragment(), "profile_fragment")
+                R.id.drivinglog -> replaceFragment(DrivingLogFragment(),"driving_log")
                 else -> {
                 }
             }
             true
         }
     }
-    private fun replaceFragment(fragment: Fragment) {
+    private fun replaceFragment(fragment: Fragment, tag: String) {
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.fragment_container, fragment) // Updated ID here
+        fragmentTransaction.replace(R.id.frame_layout, fragment, tag)
         fragmentTransaction.commit()
     }
     override fun onNewIntent(intent: Intent) {

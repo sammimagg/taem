@@ -22,4 +22,5 @@
     <color name="app_background">#201A30</color>
     <color name="app_background_secondary">#201A30</color>
     <color name="app_cell">#38304C</color>
+    <color name="app_menu">#201A30</color>
 </resources>

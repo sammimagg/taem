@@ -10,9 +10,7 @@ import android.widget.Button
 import androidx.databinding.DataBindingUtil.setContentView
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.textfield.TextInputEditText
-import `is`.hi.hbv601g.taem.Networking.Fetcher
-import `is`.hi.hbv601g.taem.Networking.getLocalUser
-import `is`.hi.hbv601g.taem.Networking.getSessionUser
+import `is`.hi.hbv601g.taem.Networking.*
 import `is`.hi.hbv601g.taem.Persistance.Employee
 import `is`.hi.hbv601g.taem.Persistance.EmployeeRTI
 import `is`.hi.hbv601g.taem.Storage.db
@@ -61,19 +59,25 @@ class ProfileFragment : Fragment() {
 
     fun saveButtonHandler(response : Employee) {
         val first_name_field : TextInputEditText = requireView().findViewById(R.id.profieFirstname)
+        updateLocalUser(requireContext(), "firstName", first_name_field.text.toString())
         val email_field : TextInputEditText = requireView().findViewById(R.id.profieEmail)
+        updateLocalUser(requireContext(), "email",email_field.text.toString() )
         val username_field : TextInputEditText = requireView().findViewById(R.id.profieUsername)
+        updateLocalUser(requireContext(), "username", username_field.text.toString())
         val last_name_field : TextInputEditText = requireView().findViewById(R.id.profieLastName)
+        updateLocalUser(requireContext(), "lastName", last_name_field.text.toString())
         val phone_number_field : TextInputEditText = requireView().findViewById(R.id.profiePhoneNumber)
+        updateLocalUser(requireContext(), "phoneNumber", phone_number_field.text.toString())
         val job_title_field : TextInputEditText = requireView().findViewById(R.id.profieJobtitle)
+        updateLocalUser(requireContext(), "jobTitle", job_title_field.text.toString())
         response.firstName = first_name_field.text.toString()
         response.email = email_field.text.toString()
         response.username = username_field.text.toString()
         response.lastName = last_name_field.text.toString()
         response.phoneNumber = phone_number_field.text.toString()
         response.jobTitle = job_title_field.text.toString()
+        saveLocalUser(requireContext(), response)
         val d = Fetcher().postEmployeeProfile("https://www.hiv.is/api/employee/", response, requireContext())
-
     }
 
     private suspend fun getEmployeeInformation(url: String, ssn: String) : Employee {
@@ -82,5 +86,4 @@ class ProfileFragment : Fragment() {
         val response = fetcher.fetchEmployeeProfile(url,ssn,context);
         return response
     }
-
 }
