@@ -13,14 +13,20 @@ import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import `is`.hi.hbv601g.taem.DrivingLogAdapter
 import `is`.hi.hbv601g.taem.Networking.Driving
+import `is`.hi.hbv601g.taem.Networking.SessionUser
+import `is`.hi.hbv601g.taem.Networking.getSessionUser
 import `is`.hi.hbv601g.taem.R
 import `is`.hi.hbv601g.taem.Storage.db
+import kotlinx.coroutines.*
+import org.json.JSONObject
 
 class DrivingLogFragment : Fragment() {
-    private lateinit var ssn: String
-    private lateinit var drivingSessions: List<Driving>
+
+    //private lateinit var ssn: String
+    private lateinit var sessionUser: SessionUser
     private lateinit var drivingLogAdapter: DrivingLogAdapter
 
     override fun onCreateView(
@@ -28,61 +34,113 @@ class DrivingLogFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_driving_log, container, false)
-
-        // Retrieve the ssn from the session
-        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
-        ssn = sharedPref?.getString("ssn", "") ?: ""
-
         val recyclerView = view.findViewById<RecyclerView>(R.id.drivingLogRecyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(activity)
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
         drivingLogAdapter = DrivingLogAdapter(emptyList())
         recyclerView.adapter = drivingLogAdapter
-
-        // Fetch the driving log
-        fetchDrivingLog()
-
         return view
     }
 
-
-    private fun fetchDrivingLog() {
-        val queue = Volley.newRequestQueue(activity)
-        var url = "https://www.hiv.is/api/driving/"
-
-        val db2 = db.SessionUserContract.DBHelper(requireContext()).readableDatabase
-        val cursor = db2.query(
-            `is`.hi.hbv601g.taem.Storage.db.SessionUserContract.SessionUserEntry.TABLE_NAME,   // The table to query
-            null,             // The array of columns to return (pass null to get all)
-            null,              // The columns for the WHERE clause
-            null,          // The values for the WHERE clause
-            null,                   // don't group the rows
-            null,                   // don't filter by row groups
-            BaseColumns._ID              // The sort order
-        )
-        with(cursor) {
-            moveToLast()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        sessionUser = getSessionUser(requireContext()) ?: throw IllegalStateException("SessionUser not found in SharedPreferences")
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val drivingSessions = fetchDrivingLog(sessionUser, sessionUser.ssn, requireContext())
+                withContext(Dispatchers.Main) {
+                    if (drivingSessions != null) {
+                        drivingLogAdapter.setData(drivingSessions)
+                    } else {
+                        Toast.makeText(
+                            requireContext(),
+                            "Failed to fetch driving sessions",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(
+                        requireContext(),
+                        "Failed to fetch driving sessions",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
         }
-        var ssnToUse = cursor.getString(4)
-        url += ssnToUse
+    }
 
-        val request = JsonObjectRequest(
-            Request.Method.PUT, url, null,
+    suspend fun fetchDrivingLog(sessionUser: SessionUser, ssn: String, context: Context): List<Driving>? {
+        val url = "hiv.is/api/driving/$ssn"
+
+        val queue = Volley.newRequestQueue(context)
+        val drivingLogDeferred = CompletableDeferred<List<Driving>?>()
+
+        val jsonObjectRequest = object : JsonObjectRequest(Method.PUT, url, null,
             { response ->
-                // Handle the JSON response
+                Log.d("DEBUG", "Response received: $response")
                 val gson = Gson()
-                drivingSessions =
-                    gson.fromJson(response.toString(), Array<Driving>::class.java).toList()
-                Log.d("DrivingLogFragment", "drivingSessions: $drivingSessions")
-                //drivingLogAdapter.drivingSessions = drivingSessions
-                drivingLogAdapter.notifyDataSetChanged()
+                val type = object : TypeToken<List<Driving>>() {}.type
+                val drivingLog = gson.fromJson<List<Driving>>(response.toString(), type)
+                Log.d("DEBUG", "Driving log parsed: $drivingLog")
+
+                drivingLogDeferred.complete(drivingLog)
             },
             { error ->
-                // Handle the error
-                Toast.makeText(activity, "Error: ${error.message}", Toast.LENGTH_SHORT).show()
-            })
+                Log.e("DEBUG", "Error in request: ${error.message}")
+                drivingLogDeferred.completeExceptionally(error)
+            }
+        ) {
+            override fun getHeaders(): MutableMap<String, String> {
+                val headers = HashMap<String, String>()
+                headers["Authorization"] = "Bearer ${sessionUser.accessToken}"
+                return headers
+            }
+        }
 
-        queue.add(request)
+
+
+        queue.add(jsonObjectRequest)
+        val result = drivingLogDeferred.await()
+        Log.d("DEBUG", "Result: $result")
+        return result
+    }
+
+
+
+    suspend fun appendDrivingLog(sessionUser: SessionUser, drivingSession: Driving, context: Context): Boolean {
+        val url = "https://hiv.is/api/driving"
+
+        val queue = Volley.newRequestQueue(context)
+        val successDeferred = CompletableDeferred<Boolean>()
+
+        val jsonObject = JSONObject()
+        jsonObject.put("ssn", drivingSession.ssn)
+        jsonObject.put("date", drivingSession.date)
+        jsonObject.put("startTime", drivingSession.startTime)
+        jsonObject.put("endTime", drivingSession.endTime)
+        jsonObject.put("distance", drivingSession.distance)
+
+        val jsonObjectRequest = object : JsonObjectRequest(Method.POST, url, jsonObject,
+            { response ->
+                Log.d("DEBUG", "Response received: $response")
+                successDeferred.complete(true)
+            },
+            { error ->
+                Log.e("DEBUG", "Error in request: ${error.message}")
+                successDeferred.complete(false)
+            }
+        ) {
+            override fun getHeaders(): MutableMap<String, String> {
+                val headers = HashMap<String, String>()
+                headers["Authorization"] = "Bearer ${sessionUser.accessToken}"
+                headers["Content-Type"] = "application/json"
+                return headers
+            }
+        }
+
+        queue.add(jsonObjectRequest)
+        return successDeferred.await()
     }
 }

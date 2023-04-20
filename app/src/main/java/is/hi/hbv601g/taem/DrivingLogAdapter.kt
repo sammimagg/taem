@@ -20,12 +20,12 @@ import `is`.hi.hbv601g.taem.Storage.db
 
 import java.time.format.DateTimeFormatter
 
-class DrivingLogAdapter(private var drivingSessions: List<Driving>) : RecyclerView.Adapter<DrivingLogAdapter.ViewHolder>() {
+class DrivingLogAdapter(var drivingSessions: List<Driving>) : RecyclerView.Adapter<DrivingLogAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val dateTextView: TextView = view.findViewById(R.id.dateTextView)
         val distanceTextView: TextView = view.findViewById(R.id.distanceTextView)
-       // val timeTextView: TextView = view.findViewById(R.id.timeTextView)
+        val timeTextView: TextView = view.findViewById(R.id.timeTextView)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -39,7 +39,7 @@ class DrivingLogAdapter(private var drivingSessions: List<Driving>) : RecyclerVi
         // Set the date, distance, and time
         holder.dateTextView.text = drivingSession.date
         holder.distanceTextView.text = drivingSession.distance.toString()
-       // holder.timeTextView.text = "${drivingSession.startTime} - ${drivingSession.endTime}"
+        holder.timeTextView.text = "${drivingSession.startTime} - ${drivingSession.endTime}"
     }
 
     override fun getItemCount(): Int = drivingSessions.size

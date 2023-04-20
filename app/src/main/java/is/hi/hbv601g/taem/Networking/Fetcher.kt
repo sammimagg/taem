@@ -10,15 +10,18 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.google.gson.annotations.SerializedName
 import com.google.gson.reflect.TypeToken
 import `is`.hi.hbv601g.taem.Persistance.Employee
 import `is`.hi.hbv601g.taem.Persistance.EmployeeRTI
 import `is`.hi.hbv601g.taem.Persistance.ViewTransactionUserDAO
 import kotlinx.coroutines.CompletableDeferred
+//import kotlinx.coroutines.flow.internal.NoOpContinuation.context
 import org.json.JSONObject
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+//import kotlin.coroutines.jvm.internal.CompletedContinuation.context
 
 /*
 * ATH: Það þarf eitthvað að yfirfæra þetta í Async call.
@@ -252,7 +255,40 @@ class Fetcher() {
         queue.add(stringRequest)
         return responseDeferred.await()
     }
+    suspend fun fetchDrivingLog(sessionUser: SessionUser, ssn: String, context: Context): List<Driving>? {
+        val url = "hiv.is/api/driving/$ssn"
+
+        val queue = Volley.newRequestQueue(context)
+        val drivingLogDeferred = CompletableDeferred<List<Driving>?>()
+
+        val jsonObjectRequest = object : JsonObjectRequest(Method.PUT, url, null,
+            { response ->
+                Log.d("DEBUG", "Response received: $response")
+                val gson = Gson()
+                val type = object : TypeToken<List<Driving>>() {}.type
+                val drivingLog = gson.fromJson<List<Driving>>(response.toString(), type)
+                Log.d("DEBUG", "Driving log parsed: $drivingLog")
+
+                drivingLogDeferred.complete(drivingLog)
+            },
+            { error ->
+                Log.e("DEBUG", "Error in request: ${error.message}")
+                drivingLogDeferred.completeExceptionally(error)
+            }
+        ) {
+            override fun getHeaders(): MutableMap<String, String> {
+                val headers = HashMap<String, String>()
+                headers["Authorization"] = "Bearer ${sessionUser.accessToken}"
+                return headers
+            }
+        }
 
 
+
+        queue.add(jsonObjectRequest)
+        val result = drivingLogDeferred.await()
+        Log.d("DEBUG", "Result: $result")
+        return result
+    }
 
 }
