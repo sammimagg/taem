@@ -70,6 +70,7 @@ class LoginActivity : AppCompatActivity() {
             }
             else if(sessionUser != null) {
                 clearLocalUser(this@LoginActivity);
+                clearUserData(this@LoginActivity)
                 saveSessionUser(this@LoginActivity, sessionUser);
 
                 val employee = Fetcher().fetchEmployeeProfile("https://www.hiv.is/api/employee/",sessionUser.ssn,this@LoginActivity)
@@ -77,9 +78,9 @@ class LoginActivity : AppCompatActivity() {
                 saveLocalUser(this@LoginActivity,employee);
 
                 if(sessionUser.accountType == "0") {
-                    startActivity(intentUser) // Admin notandi
+                    startActivity(intentAdmin) // Admin notandi
                 }
-                else {
+                else if(sessionUser.accountType == "2"){
                     startActivity(intentUser) // Venjulegur notandi
                 }
             }

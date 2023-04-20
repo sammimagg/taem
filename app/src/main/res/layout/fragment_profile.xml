@@ -4,12 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/app_background"
     tools:context=".ProfileFragment">
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="148dp"
+        tools:layout_editor_absoluteY="-52dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -225,10 +226,10 @@
                 style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10sp"
-                android:layout_marginRight="10sp"
-                android:text="Logout"
-                />
+                android:layout_marginLeft="5sp"
+                android:layout_marginRight="5sp"
+                android:background="@color/black"
+                android:text="Logout" />
 
         </LinearLayout>
 
