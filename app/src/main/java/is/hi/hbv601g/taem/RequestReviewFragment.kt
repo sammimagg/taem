@@ -20,6 +20,7 @@ class RequestReviewFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        val view = inflater.inflate(R.layout.fragment_request_reviews, container, false)
         var debounceJob : Job? = null;
         debounceJob?.cancel()
         debounceJob = GlobalScope.launch(Dispatchers.Main) {
@@ -31,11 +32,11 @@ class RequestReviewFragment : Fragment() {
                 print(item.toString())
             }
             val listView = view.findViewById<ListView>(R.id.realtimeListview2);
-            val apapter = TimeAndAttendanceAdapter(requireActivity(),
+            val apapter = RequestReviewAdapter(requireActivity(),
                 reval as ArrayList<MappedRequestUserDAO>
             );
             listView.adapter =apapter;
         }
-        return inflater.inflate(R.layout.fragment_request_reviews, container, false)
+        return view
     }
 }
