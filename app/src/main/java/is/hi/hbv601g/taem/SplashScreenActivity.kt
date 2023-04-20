@@ -21,9 +21,7 @@ import kotlinx.coroutines.launch
 
 @Suppress("DEPRECATION")
 class SplashScreenActivity : AppCompatActivity() {
-
     private val SPLASH_SCREEN_TIMEOUT: Long = 2000 // 3 seconds
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash_screen)
@@ -32,14 +30,10 @@ class SplashScreenActivity : AppCompatActivity() {
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         )
         val sessionUser: SessionUser? = getSessionUser(this)
-
         Handler(Looper.getMainLooper()).postDelayed({
-            // Start main activity
             if(sessionUser != null) {
-                Log.d("Statuts account type",sessionUser.accountType )
                 lifecycleScope.launch{
                     val res = Fetcher().isAuthenticated(sessionUser.accessToken,this@SplashScreenActivity)
-
                     if(sessionUser.accountType == "0") {
                         val intent = Intent(this@SplashScreenActivity, MainAdminActivity::class.java)
                     }
@@ -51,10 +45,8 @@ class SplashScreenActivity : AppCompatActivity() {
             else {
                 val intent = Intent(this@SplashScreenActivity, LoginActivity::class.java)
             }
-
             val intent = Intent(this@SplashScreenActivity, LoginActivity::class.java)
             startActivity(intent)
-            // Close splash screen activity
             finish()
         }, SPLASH_SCREEN_TIMEOUT)
     }

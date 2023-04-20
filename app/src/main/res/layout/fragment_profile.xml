@@ -220,6 +220,16 @@
                     android:textColorHighlight="#009688" />
             </LinearLayout>
 
+            <Button
+                android:id="@+id/logout"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10sp"
+                android:layout_marginRight="10sp"
+                android:text="Logout"
+                />
+
         </LinearLayout>
 
     </ScrollView>
