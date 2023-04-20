@@ -60,6 +60,7 @@ fun clearUserData(context: Context) {
     editor.remove(KEY_AUTH_TOKEN)
     editor.remove(KEY_USERNAME)
     editor.remove(KEY_EMAIL)
+    editor.remove(KEY_ACCOUNT_TYPE)
     // ... add any other keys you want to remove
 
     // Apply the changes

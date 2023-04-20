@@ -13,10 +13,7 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.annotations.SerializedName
 import com.google.gson.reflect.TypeToken
-import `is`.hi.hbv601g.taem.Persistance.Driving
-import `is`.hi.hbv601g.taem.Persistance.Employee
-import `is`.hi.hbv601g.taem.Persistance.EmployeeRTI
-import `is`.hi.hbv601g.taem.Persistance.ViewTransactionUserDAO
+import `is`.hi.hbv601g.taem.Persistance.*
 import kotlinx.coroutines.CompletableDeferred
 //import kotlinx.coroutines.flow.internal.NoOpContinuation.context
 import org.json.JSONObject
@@ -290,6 +287,25 @@ class Fetcher() {
         val result = drivingLogDeferred.await()
         Log.d("DEBUG", "Result: $result")
         return result
+    }
+
+    suspend fun fetchPendingReviews(url: String, context: Context) : List<MappedRequestUserDAO> {
+        val queue = Volley.newRequestQueue(context)
+        val employeeProfileResponseDeferred = CompletableDeferred<List<MappedRequestUserDAO>>()
+
+        val jsonArrayRequest = JsonArrayRequest(Request.Method.GET, url, null,
+            {response ->
+                Log.d("Reval: ", response.toString())
+                val type = object : TypeToken<List<MappedRequestUserDAO>>() {}.type
+                val reval = Gson().fromJson<List<MappedRequestUserDAO>>(response.toString(), type)
+                employeeProfileResponseDeferred.complete(reval)
+            },
+            {error ->
+                employeeProfileResponseDeferred.completeExceptionally(error)
+            })
+
+        queue.add(jsonArrayRequest)
+        return employeeProfileResponseDeferred.await()
     }
 
 }

@@ -9,10 +9,6 @@ import android.view.WindowManager
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
 import `is`.hi.hbv601g.taem.Networking.Fetcher
 import `is`.hi.hbv601g.taem.Networking.SessionUser
 import `is`.hi.hbv601g.taem.Networking.getSessionUser

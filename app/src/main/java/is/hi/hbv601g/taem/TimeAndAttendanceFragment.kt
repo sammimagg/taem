@@ -14,6 +14,7 @@ import android.view.ViewGroup
 import android.widget.ListView
 import android.widget.TextView
 import `is`.hi.hbv601g.taem.Networking.Fetcher
+import `is`.hi.hbv601g.taem.Networking.getLocalUser
 import `is`.hi.hbv601g.taem.Persistance.Transaction
 import `is`.hi.hbv601g.taem.Persistance.ViewTransactionUserDAO
 import `is`.hi.hbv601g.taem.Storage.db
@@ -63,6 +64,8 @@ class TimeAndAttendanceFragment : Fragment() {
             moveToLast()
         }
         var ssnToUse = cursor.getString(4)
+
+        ssnToUse = getLocalUser(requireContext())?.ssn.toString()
 
         // Add text watchers to date TextViews
         dateTextView1.addTextChangedListener(object : TextWatcher {
