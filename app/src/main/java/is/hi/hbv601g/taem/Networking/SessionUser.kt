@@ -16,14 +16,6 @@ data class SessionUser(
     }
 }
 
-data class Driving(
-    val ssn: String,
-    val date: String,
-    val startTime: String,
-    val endTime: String,
-    val distance: Double
-)
-
 const val PREF_NAME = "MyAppPrefs"
 private const val KEY_USERNAME = "username"
 private const val KEY_AUTH_TOKEN = "authToken"

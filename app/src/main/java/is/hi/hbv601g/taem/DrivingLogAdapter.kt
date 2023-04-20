@@ -11,7 +11,7 @@ import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
-import `is`.hi.hbv601g.taem.Networking.Driving
+import `is`.hi.hbv601g.taem.Persistance.Driving
 import `is`.hi.hbv601g.taem.R
 import `is`.hi.hbv601g.taem.Storage.db
 
@@ -37,9 +37,9 @@ class DrivingLogAdapter(var drivingSessions: List<Driving>) : RecyclerView.Adapt
         val drivingSession = drivingSessions[position]
 
         // Set the date, distance, and time
-        holder.dateTextView.text = drivingSession.date
-        holder.distanceTextView.text = drivingSession.distance.toString()
-        holder.timeTextView.text = "${drivingSession.startTime} - ${drivingSession.endTime}"
+        holder.dateTextView.text = drivingSession.dags
+        holder.distanceTextView.text = drivingSession.distanceDriven.toString()
+        holder.timeTextView.text = "${drivingSession.odometerEnd} - ${drivingSession.odometerStart}"
     }
 
     override fun getItemCount(): Int = drivingSessions.size
