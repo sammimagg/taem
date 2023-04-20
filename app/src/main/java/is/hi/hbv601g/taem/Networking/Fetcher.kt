@@ -7,6 +7,7 @@ import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.JsonRequest
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
@@ -15,6 +16,7 @@ import com.google.gson.annotations.SerializedName
 import com.google.gson.reflect.TypeToken
 import `is`.hi.hbv601g.taem.Persistance.*
 import kotlinx.coroutines.CompletableDeferred
+import kotlinx.serialization.json.Json
 //import kotlinx.coroutines.flow.internal.NoOpContinuation.context
 import org.json.JSONObject
 import java.time.LocalDate
@@ -306,6 +308,26 @@ class Fetcher() {
 
         queue.add(jsonArrayRequest)
         return employeeProfileResponseDeferred.await()
+    }
+
+    fun handleReviewRequest(url : String, requestId : Long, context: Context, approved : String) {
+        val queue = Volley.newRequestQueue(context)
+        var sendit = url + requestId
+
+        val json = JSONObject()
+        json.put("approved", approved)
+
+        val jsonObjectRequest = JsonObjectRequest(Request.Method.POST, sendit, json,
+            { response ->
+                Log.d("Reval: ", response.toString())
+            },
+            { error ->
+                Log.d("eððoð: ", error.toString())
+            })
+
+        queue.add(jsonObjectRequest)
+
+        return
     }
 
 }
