@@ -90,8 +90,5 @@ class LoginActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    private fun drivinglog() {
-        val intent = Intent(this, DrivingLogFragment::class.java)
-        startActivity(intent)
-    }
+
 }

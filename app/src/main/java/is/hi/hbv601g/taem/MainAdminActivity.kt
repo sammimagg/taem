@@ -15,7 +15,7 @@ class MainAdminActivity : AppCompatActivity(), OnScanSuccessListener {
         binding.bottomNavigationView.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.clockinout -> replaceFragment(ClockInOutFragment(), "clock_in_out_fragment")
-                R.id.schedule -> replaceFragment(ScheduleFragment(), "schedule_fragment")
+                R.id.employees -> replaceFragment(EmployeesFragment(), "employees_fragment")
                 R.id.real_time_insights -> replaceFragment(RealTimeIngsightsFragment(), "real_time_insights_fragment")
                 R.id.profile -> replaceFragment(ProfileFragment(), "profile_fragment")
                 R.id.more -> replaceFragment(MoreFragment(), "more_fragment")

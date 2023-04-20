@@ -12,8 +12,7 @@ data class SessionUser(
     var email: String
 ) {
     override fun toString(): String {
-        return "SessionUser(username='$username', authToken='$accessToken', " +
-                "accountType='$accountType' ssn='$ssn', email='$email')"
+        return "SessionUser(username='$username', authToken='$accessToken', " + "accountType='$accountType' ssn='$ssn', email='$email')"
     }
 }
 

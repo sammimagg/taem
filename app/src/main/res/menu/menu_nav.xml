@@ -11,7 +11,7 @@
     <item
         android:title="Schedule"
         android:icon="@drawable/taem_schedule"
-        android:id="@+id/schedule"
+        android:id="@+id/employees"
         app:labelVisibilityMode="labeled"
         />
     <item
