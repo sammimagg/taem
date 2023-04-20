@@ -19,9 +19,9 @@ import `is`.hi.hbv601g.taem.Networking.getSessionUser
 import `is`.hi.hbv601g.taem.databinding.ActivitySplashScreenBinding
 import kotlinx.coroutines.launch
 
-@Suppress("DEPRECATION")
 class SplashScreenActivity : AppCompatActivity() {
-    private val SPLASH_SCREEN_TIMEOUT: Long = 5000 // 3 seconds
+    private val SPLASH_SCREEN_TIMEOUT: Long = 3000 // 5 seconds
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash_screen)
@@ -29,29 +29,32 @@ class SplashScreenActivity : AppCompatActivity() {
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         )
+
         val sessionUser: SessionUser? = getSessionUser(this)
-        Handler(Looper.getMainLooper()).postDelayed({
-            if(sessionUser != null) {
-                lifecycleScope.launch{
-                    Log.d("TESt", sessionUser.accountType)
-                    val res = Fetcher().isAuthenticated(sessionUser.accessToken,this@SplashScreenActivity)
-                    if(sessionUser.accountType == "0") {
-                        val intent = Intent(this@SplashScreenActivity, MainAdminActivity::class.java)
-                        startActivity(intent)
-                    }
-                    else if(sessionUser.accountType == "2") {
-                        val intent = Intent(this@SplashScreenActivity, MainActivity::class.java)
-                        startActivity(intent)
-                    }
+        if (sessionUser != null) {
+            // Launch a new coroutine to make the network call
+            lifecycleScope.launch {
+                val res = Fetcher().isAuthenticated(sessionUser.accessToken, this@SplashScreenActivity)
+                if (sessionUser.accountType == "0") {
+                    val intent = Intent(this@SplashScreenActivity, MainAdminActivity::class.java)
+                    startActivity(intent)
+                } else if (sessionUser.accountType == "2") {
+                    val intent = Intent(this@SplashScreenActivity, MainActivity::class.java)
+                    startActivity(intent)
                 }
+                finish()
             }
-            else {
-                val intent = Intent(this@SplashScreenActivity, LoginActivity::class.java)
-                startActivity(intent)
-            }
+        } else {
+            val intent = Intent(this@SplashScreenActivity, LoginActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
 
-
+        // Set a timeout for the splash screen
+        Handler(Looper.getMainLooper()).postDelayed({
             finish()
         }, SPLASH_SCREEN_TIMEOUT)
     }
 }
+
+
