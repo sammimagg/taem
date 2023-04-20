@@ -30,7 +30,8 @@ fun getLocalUser(context: Context): Employee? {
 
     return if (employeeJson != null) {
         gson.fromJson(employeeJson, Employee::class.java)
-    } else {
+    }
+    else {
         null
     }
 }
