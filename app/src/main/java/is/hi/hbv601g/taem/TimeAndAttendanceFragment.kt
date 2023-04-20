@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.provider.BaseColumns
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,7 @@ import android.view.ViewGroup
 import android.widget.ListView
 import android.widget.TextView
 import `is`.hi.hbv601g.taem.Networking.Fetcher
+import `is`.hi.hbv601g.taem.Networking.getLocalUserFromSharedPreferences
 import `is`.hi.hbv601g.taem.Persistance.Transaction
 import `is`.hi.hbv601g.taem.Persistance.ViewTransactionUserDAO
 import `is`.hi.hbv601g.taem.Storage.db
@@ -32,7 +34,10 @@ class TimeAndAttendanceFragment : Fragment() {
         val dateTextView1 = view.findViewById<TextView>(R.id.date_text_view1)
         val dateTextView2 = view.findViewById<TextView>(R.id.date_text_view2)
         val transactionListView = view.findViewById<ListView>(R.id.realtimeListview)
-
+        val user = getLocalUserFromSharedPreferences(requireContext());
+        if (user != null) {
+            Log.d("Nýtt",user.ssn)
+        }
         // Set initial dates
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)

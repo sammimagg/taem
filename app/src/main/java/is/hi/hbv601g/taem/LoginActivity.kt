@@ -69,13 +69,13 @@ class LoginActivity : AppCompatActivity() {
                 errorMessage.text = ("Wrong password or username")
             }
             else if(sessionUser != null) {
-                clearLocalUser(this@LoginActivity);
+                clearLocalUserFromSharedPreferences(this@LoginActivity);
                 clearUserData(this@LoginActivity)
                 saveSessionUser(this@LoginActivity, sessionUser);
 
                 val employee = Fetcher().fetchEmployeeProfile("https://www.hiv.is/api/employee/",sessionUser.ssn,this@LoginActivity)
-                print(employee.accountType)
-                saveLocalUser(this@LoginActivity,employee);
+                Log.d("TESTið",employee.ssn)
+                saveLocalUserInSharedPreferences(this@LoginActivity,employee);
 
                 if(sessionUser.accountType == "0") {
                     startActivity(intentAdmin) // Admin notandi
