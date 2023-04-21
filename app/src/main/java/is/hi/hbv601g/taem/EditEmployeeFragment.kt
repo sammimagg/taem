@@ -14,14 +14,26 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 
 
+/**
+* A fragment that allows the user to edit an employee's profile.
+ */
 class EditEmployeeFragment : Fragment() {
 
-
-
+    /**
+    * Called to do initial creation of the fragment.
+    * @param savedInstanceState If the fragment is being re-created from a previous saved state, this is the state.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
 
+    /**
+    *Called to have the fragment instantiate its user interface view.
+    *@param inflater The LayoutInflater object that can be used to inflate any views in the fragment.
+    *@param container If non-null, this is the parent view that the fragment's UI should be attached to.
+    *@param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state as given here.
+    *@return Return the View for the fragment's UI, or null.
+     */
     override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_edit_employee, container, false)
@@ -62,10 +74,10 @@ class EditEmployeeFragment : Fragment() {
             startDateEditText.setText(employee.startDate)
             if(employee.accountType == 0) {
                 Log.d("EditEmployeeFragment", "Setting spinner selection to Admin")
-                spinner.setSelection(0);
+                spinner.setSelection(0)
             } else if (employee.accountType == 2) {
                 Log.d("EditEmployeeFragment", "Setting spinner selection to User")
-                spinner.setSelection(1);
+                spinner.setSelection(1)
             }
 
         }
@@ -106,5 +118,4 @@ class EditEmployeeFragment : Fragment() {
             return fragment
         }
     }
-
 }

@@ -9,10 +9,23 @@ import android.widget.ArrayAdapter
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import `is`.hi.hbv601g.taem.Persistance.Employee
-import `is`.hi.hbv601g.taem.Persistance.EmployeeRTI
 import java.util.*
 
+/**
+* A custom ArrayAdapter class that displays a list of employees in a ListView.
+* @param context the activity context
+* @param arrayList the list of employees to be displayed
+ */
 class EmployessAdaptor(private val context: Activity, private val arrayList: ArrayList<Employee>) : ArrayAdapter<Employee>(context,R.layout.employess_item, arrayList) {
+
+    /**
+    *Creates a View for the specified position in the ListView.
+    *@param position the position of the item in the list
+    *@param convertView the old view to reuse, if possible
+    *@param parent the parent view that the new view will be attached to
+    *@return the created View for the specified position
+     */
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val inflater : LayoutInflater = LayoutInflater.from(context);
