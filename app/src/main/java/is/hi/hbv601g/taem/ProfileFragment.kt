@@ -19,13 +19,29 @@ import `is`.hi.hbv601g.taem.Storage.db
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
-
+/**
+* A Fragment subclass that represents the user profile screen.
+ */
 class ProfileFragment : Fragment() {
 
+    /**
+    * Called to do initial creation of a fragment. This is called after the Activity's onCreate method
+    * has returned.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
 
+    /**
+    * Called to have the fragment instantiate its user interface view. This is optional, and non-graphical
+    * fragments can return null (which is the default implementation). This will be called between onCreate(Bundle)
+    * and onActivityCreated(Bundle).
+    * @param inflater The LayoutInflater object that can be used to inflate any views in the fragment
+    * @param container If non-null, this is the parent view that the fragment's UI should be attached to.
+    * The fragment should not add the view itself, but this can be used to generate markdown the LayoutParams of the view.
+    * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state as given here.
+    * @return Return the View for the fragment's UI, or null.
+     */
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         val context = requireContext();
@@ -60,7 +76,11 @@ class ProfileFragment : Fragment() {
         }
         return rootView
     }
-
+    /**
+    * Handler for the save button. Saves the changes made by the user to their profile in the local storage
+    * and also sends the updated profile to the server.
+    * @param response The Employee object containing the user's profile data.
+     */
     fun saveButtonHandler(response : Employee) {
         val first_name_field : TextInputEditText = requireView().findViewById(R.id.profieFirstname)
         updateLocalUserInSharedPreferences(requireContext(), "firstName", first_name_field.text.toString())

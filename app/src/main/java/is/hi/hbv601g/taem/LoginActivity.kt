@@ -1,22 +1,29 @@
 package `is`.hi.hbv601g.taem
 
-import DrivingLogFragment
-import android.content.ContentValues
 import android.content.Intent
 import android.graphics.Paint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.lifecycle.lifecycleScope
 import `is`.hi.hbv601g.taem.Networking.*
-import `is`.hi.hbv601g.taem.Storage.db
 import `is`.hi.hbv601g.taem.databinding.ActivityLoginBinding
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.*
 
+/**
+*This is the LoginActivity class, responsible for handling user login, displaying appropriate error messages,
+*and launching the appropriate activity based on the user's account type.
+*This class extends AppCompatActivity and overrides the onCreate() method to set up the user interface
+*and handle user interactions.
+*This class contains the following functions:
+*onCreate() - sets up the UI and handles user interactions
+*login() - authenticates the user's credentials and returns the session user and response code
+*loginButtonHandler() - handles the login button click event, retrieves user input, and launches appropriate activity
+*register() - launches the RegisterActivity when the register button is clicked
+ */
 class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

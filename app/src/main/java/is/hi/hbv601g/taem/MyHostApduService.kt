@@ -17,7 +17,21 @@ import `is`.hi.hbv601g.taem.Networking.getLocalUserFromSharedPreferences
 import `is`.hi.hbv601g.taem.Persistance.Employee
 
 
+/**
+* A HostApduService for handling communication between an Android device and an external NFC reader.
+* This service is responsible for processing incoming commands sent by the NFC reader and sending responses back to it.
+* It also shows a notification and vibrates the device when specific commands are received.
+* @constructor Creates a new instance of MyHostApduService.
+ */
 class MyHostApduService : HostApduService() {
+
+
+    /**
+    * This method is called when a command is received from the NFC reader.
+    * @param commandApdu the command received from the NFC reader
+    * @param extras additional data associated with the command
+    * @return a byte array containing the response to the command
+     */
     override fun processCommandApdu(commandApdu: ByteArray, extras: Bundle?): ByteArray {
 
         val prefs = applicationContext.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
@@ -49,9 +63,19 @@ class MyHostApduService : HostApduService() {
         return "".toByteArray();
     }
 
+    /**
+    * This method is called when the service is deactivated, either by the system or the NFC reader.
+    * @param reason the reason for deactivation
+     */
     override fun onDeactivated(reason: Int) {
         Log.d("MyHostApduService:HCE", "Deactivated: $reason")
     }
+
+    /**
+    * Displays a notification with the specified title and message.
+    * @param title the title of the notification
+    * @param message the message to display in the notification
+     */
     private fun showNotification(title: String, message: String) {
         val notificationId = 100
 

@@ -10,8 +10,18 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import `is`.hi.hbv601g.taem.databinding.ActivityMainAdminBinding
 
+/**
+*This class represents the MainAdminActivity which is the main activity for the admin user.
+*It extends the AppCompatActivity class and implements the OnScanSuccessListener interface.
+ */
 class MainAdminActivity : AppCompatActivity(), OnScanSuccessListener {
     private lateinit var binding: ActivityMainAdminBinding
+
+    /**
+    This method is called when the activity is first created. It initializes the layout,
+    sets up the bottom navigation, and initializes the ClockInOutFragment.
+    @param savedInstanceState The saved instance state bundle
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         createNotificationChannel()
         super.onCreate(savedInstanceState)
@@ -30,6 +40,11 @@ class MainAdminActivity : AppCompatActivity(), OnScanSuccessListener {
             true
         }
     }
+    /**
+    * This method is used to replace the current fragment with the specified fragment.
+    * @param fragment The fragment to replace the current fragment with
+    * @param tag The tag to identify the fragment
+     */
     private fun replaceFragment(fragment: Fragment, tag: String) {
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
@@ -37,16 +52,28 @@ class MainAdminActivity : AppCompatActivity(), OnScanSuccessListener {
         fragmentTransaction.commit()
     }
 
+    /**
+    * This method is called when a new intent is received.
+    * It passes the intent to the ClockInOutFragment if it is currently active.
+    * @param intent The new intent that was received
+     */
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         val clockInOutFragment = supportFragmentManager.findFragmentByTag("clock_in_out_fragment") as? ClockInOutFragment
         clockInOutFragment?.handleNfcIntent(intent)
     }
+    /**
+    * This method is called when an NFC scan is successful.
+    * It performs the fragment transaction to replace the current fragment with SuccessfulNfcScanFragment.
+     */
     override fun onScanSuccess() {
         // Perform the fragment transaction here
         val newFragment = SuccessfulNfcScanFragment();
         replaceFragment(newFragment,"successful_nfc_scan")
     }
+    /**
+    This method is used to create a notification channel for Android Oreo and above.
+     */
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val name = getString(R.string.channel_name)

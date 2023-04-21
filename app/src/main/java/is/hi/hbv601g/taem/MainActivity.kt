@@ -11,7 +11,15 @@ import androidx.fragment.app.Fragment
 import `is`.hi.hbv601g.taem.databinding.ActivityMainBinding
 import java.nio.charset.Charset
 
-
+/**
+* This is the MainActivity class, responsible for managing the main user interface of the application.
+* This class extends AppCompatActivity and overrides the onCreate() method to set up the user interface,
+* and onNewIntent() method to handle the NFC intent.
+* This class contains the following functions:
+* onCreate() - sets up the UI and handles user interactions
+* replaceFragment() - replaces the current fragment with a new fragment
+* onNewIntent() - handles the NFC intent when the application is already running
+ */
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {

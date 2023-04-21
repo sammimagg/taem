@@ -8,13 +8,22 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 
 
+/**
+* A fragment that displays additional options and actions available to the user.
+ */
 class MoreFragment : Fragment() {
 
+    /**
+    *Called when the fragment is created.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
     }
 
+    /**
+    * Called when the view for the fragment is created.
+     */
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -23,7 +32,9 @@ class MoreFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_more, container, false)
     }
 
-
+    /**
+    * Called after the view is created to set up any UI components and event listeners.
+     */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -46,6 +57,9 @@ class MoreFragment : Fragment() {
 
 
     }
+    /**
+    * Helper function to replace the current fragment with a new fragment in the specified container.
+     */
     fun AppCompatActivity.replaceFragment(fragment: Fragment, containerId: Int) {
         supportFragmentManager.beginTransaction().apply {
             replace(containerId, fragment)
@@ -53,6 +67,4 @@ class MoreFragment : Fragment() {
             commit()
         }
     }
-
-
 }
