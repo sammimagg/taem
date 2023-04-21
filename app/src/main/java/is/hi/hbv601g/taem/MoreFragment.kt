@@ -30,7 +30,7 @@ class MoreFragment : Fragment() {
         val timeAndAttendance: LinearLayout = view.findViewById(R.id.time_and_attednace)
         val requestReviews: LinearLayout = view.findViewById(R.id.request_reviews)
         val drivingLog: LinearLayout = view.findViewById(R.id.driving_log)
-        val makeSchedule: LinearLayout = view.findViewById(R.id.make_schedule)
+
 
         timeAndAttendance.setOnClickListener {
             (activity as? AppCompatActivity)?.replaceFragment(TimeAndAttendanceFragment(), R.id.frame_layout);
@@ -44,9 +44,7 @@ class MoreFragment : Fragment() {
             (activity as? AppCompatActivity)?.replaceFragment(DrivingLogFragment(), R.id.frame_layout);
         }
 
-        makeSchedule.setOnClickListener {
-            (activity as? AppCompatActivity)?.replaceFragment(MakeScheduleFragment(), R.id.frame_layout);
-        }
+
     }
     fun AppCompatActivity.replaceFragment(fragment: Fragment, containerId: Int) {
         supportFragmentManager.beginTransaction().apply {
