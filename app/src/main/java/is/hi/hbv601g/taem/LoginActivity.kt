@@ -47,7 +47,7 @@ class LoginActivity : AppCompatActivity() {
     private suspend fun login(user: String, password: String): Pair<SessionUser?, Int> {
         val errorMessage = findViewById<TextView>(R.id.error_message)
         val fetcher = Fetcher( )
-        val (sessionUser, responseCode) = fetcher.AuthenticationRequest("https://hbv501g-group-8-production.up.railway.app/auth/login", user, password, this )
+        val (sessionUser, responseCode) = fetcher.AuthenticationRequest( user, password, this )
 
         return Pair(sessionUser, responseCode)
     }
@@ -72,9 +72,7 @@ class LoginActivity : AppCompatActivity() {
                 clearLocalUserFromSharedPreferences(this@LoginActivity);
                 clearUserData(this@LoginActivity)
                 saveSessionUser(this@LoginActivity, sessionUser);
-
-                val employee = Fetcher().fetchEmployeeProfile("https://www.hiv.is/api/employee/",sessionUser.ssn,this@LoginActivity)
-                Log.d("TESTið",employee.ssn)
+                val employee = Fetcher().fetchEmployeeProfile(sessionUser.ssn,this@LoginActivity)
                 saveLocalUserInSharedPreferences(this@LoginActivity,employee);
 
                 if(sessionUser.accountType == "0") {

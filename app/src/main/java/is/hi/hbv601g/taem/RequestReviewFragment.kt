@@ -26,7 +26,7 @@ class RequestReviewFragment : Fragment() {
         debounceJob = GlobalScope.launch(Dispatchers.Main) {
             delay(500) // debounce for 500 milliseconds
             // Inflate the layout for this fragment
-            val reval = Fetcher().fetchPendingReviews("https://www.hiv.is/api/review", requireContext())
+            val reval = Fetcher().fetchPendingReviews( requireContext())
 
             for (item in reval) {
                 print(item.toString())

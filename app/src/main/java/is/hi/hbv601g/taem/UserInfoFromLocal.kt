@@ -27,7 +27,6 @@ suspend fun fetchEmployeeInfo(context: Context): Employee = withContext(Dispatch
     return@withContext runBlocking {
         async {
             getEmployeeInformation(
-                "https://www.hiv.is/api/employee/",
                 ssnToUse,
                 context
             )
@@ -52,9 +51,9 @@ fun getSSNFromLocalStorage(context: Context):String {
     return ssnToUse
 }
 
-private suspend fun getEmployeeInformation(url: String, ssn: String,context: Context) : Employee {
+private suspend fun getEmployeeInformation( ssn: String,context: Context) : Employee {
     val fetcher = Fetcher();
-    val response = fetcher.fetchEmployeeProfile(url,ssn,context);
+    val response = fetcher.fetchEmployeeProfile(ssn,context);
     return response
 }
 

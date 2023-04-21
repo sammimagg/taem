@@ -37,7 +37,6 @@ class RegisterActivity : AppCompatActivity() {
         val errorMessage = findViewById<TextView>(R.id.error_message)
         val fetcher = Fetcher()
         val success = fetcher.registerRequest(
-            "https://www.hiv.is/api/user/register/",
             user,
             password,
             email,

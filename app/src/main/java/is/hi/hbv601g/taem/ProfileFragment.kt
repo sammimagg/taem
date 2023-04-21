@@ -81,7 +81,7 @@ class ProfileFragment : Fragment() {
         response.phoneNumber = phone_number_field.text.toString()
         response.jobTitle = job_title_field.text.toString()
         saveLocalUserInSharedPreferences(requireContext(), response)
-        val d = Fetcher().postEmployeeProfile("https://www.hiv.is/api/employee/", response, requireContext())
+        val d = Fetcher().postEmployeeProfile( response, requireContext())
     }
     fun logOut(context: Context) {
         clearLocalUserFromSharedPreferences(context)
@@ -93,10 +93,10 @@ class ProfileFragment : Fragment() {
 
     }
 
-    private suspend fun getEmployeeInformation(url: String, ssn: String) : Employee {
+    private suspend fun getEmployeeInformation( ssn: String) : Employee {
         val context = requireContext()
         val fetcher = Fetcher();
-        val response = fetcher.fetchEmployeeProfile(url,ssn,context);
+        val response = fetcher.fetchEmployeeProfile(ssn,context);
         return response
     }
 }

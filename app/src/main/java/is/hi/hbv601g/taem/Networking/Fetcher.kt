@@ -30,7 +30,7 @@ import java.time.format.DateTimeFormatter
 
 class Fetcher() {
 
-    suspend fun AuthenticationRequest(url: String, username: String, password: String, context: Context) : Pair<SessionUser?, Int> {
+    suspend fun AuthenticationRequest( username: String, password: String, context: Context) : Pair<SessionUser?, Int> {
         val queue = Volley.newRequestQueue(context)
         val json = JSONObject()
         json.put("username", username)
@@ -41,7 +41,7 @@ class Fetcher() {
 
         val deferred = CompletableDeferred<Pair<SessionUser?, Int>>()
 
-        val jsonObjectRequest = JsonObjectRequest(Request.Method.POST, url, json,
+        val jsonObjectRequest = JsonObjectRequest(Request.Method.POST, Constants.API_URL+"/auth/login", json,
             {response ->
                 Log.d("Reval: ", response.toString())
                 sessionUser = Gson().fromJson(response.toString(), SessionUser::class.java)
@@ -67,11 +67,11 @@ class Fetcher() {
         @SerializedName("clocked_in") val clocked_in: Boolean
     )
 
-    suspend fun getRealTimeInsights(url: String, context: Context): ArrayList<EmployeeRTI> {
+    suspend fun getRealTimeInsights( context: Context): ArrayList<EmployeeRTI> {
         val queue = Volley.newRequestQueue(context)
         val employeeRTIResponseDeferred = CompletableDeferred<ArrayList<EmployeeRTI>>()
 
-        val jsonArrayRequest = JsonArrayRequest(Request.Method.GET, url, null,
+        val jsonArrayRequest = JsonArrayRequest(Request.Method.GET, Constants.API_URL+"/api/employee/rti", null,
             { response ->
                 Log.d("DEBUG", "Response received: $response")
                 val gson = Gson()
@@ -105,13 +105,13 @@ class Fetcher() {
     }
 
 
-    suspend fun fetchEmployeeProfile(url: String, ssn: String, context: Context) : Employee {
+    suspend fun fetchEmployeeProfile( ssn: String, context: Context) : Employee {
         val queue = Volley.newRequestQueue(context)
         val employeeProfileResponseDeferred = CompletableDeferred<Employee>()
         val jsonReq = JSONObject()
         jsonReq.put("ssn", ssn)
         //print(jsonReq)
-        val jsonObjectRequest = JsonObjectRequest(Request.Method.PUT, url, jsonReq,
+        val jsonObjectRequest = JsonObjectRequest(Request.Method.PUT, Constants.API_URL+"/api/employee/", jsonReq,
             {response ->
                 Log.d("Reval: ", response.toString())
                 val employee = Gson().fromJson(response.toString(), Employee::class.java)
@@ -125,10 +125,10 @@ class Fetcher() {
         return employeeProfileResponseDeferred.await()
     }
 
-    fun postEmployeeProfile(url : String, emp : Employee, context: Context) : String {
+    fun postEmployeeProfile(emp : Employee, context: Context) : String {
         val queue = Volley.newRequestQueue(context)
         // @TODO breyta fallinu í bakenda, bara uppfæra gildi sem eru ekki nöll
-        //Log.d("ég er hérna", "")
+
         val jsonReq = JSONObject()
         jsonReq.put("username", emp.username)
         jsonReq.put("ssn", emp.ssn)
@@ -137,6 +137,7 @@ class Fetcher() {
         jsonReq.put("email", emp.email)
         jsonReq.put("jobTitle", emp.jobTitle)
         jsonReq.put("phoneNumber", emp.phoneNumber)
+        jsonReq.put("account_type",emp.accountType)
         /**
          *    response.email = email_field.text.toString()
         response.username = username_field.text.toString()
@@ -144,7 +145,7 @@ class Fetcher() {
         response.phoneNumber = phone_number_field.toString()
         response.jobTitle = job_title_field.toString()
          */
-        val jsonObjectRequest = JsonObjectRequest(Request.Method.POST, url, jsonReq,
+        val jsonObjectRequest = JsonObjectRequest(Request.Method.POST, Constants.API_URL+"/api/employee/", jsonReq,
             { response ->
                 Log.d("Reval: ", response.toString())
         },
@@ -155,7 +156,7 @@ class Fetcher() {
         return "null";
     }
 
-    suspend fun registerRequest(url: String, username: String, password: String, email: String, ssn: String, context: Context) : Boolean {
+    suspend fun registerRequest( username: String, password: String, email: String, ssn: String, context: Context) : Boolean {
         val queue = Volley.newRequestQueue(context)
         val json = JSONObject()
         json.put("username", username)
@@ -167,7 +168,7 @@ class Fetcher() {
 
         val deferred = CompletableDeferred<Boolean>()
 
-        val jsonObjectRequest = JsonObjectRequest(Request.Method.POST, url, json,
+        val jsonObjectRequest = JsonObjectRequest(Request.Method.POST, Constants.API_URL+"/api/user/register/", json,
             { response ->
                 //Log.d("Reval: ", response.toString())
                 success = true
@@ -184,7 +185,7 @@ class Fetcher() {
         return deferred.await()
     }
 
-    suspend fun fetchTransactions(url: String, ssn: String, dateFrom: String, dateTo: String, context: Context) : ViewTransactionUserDAO {
+    suspend fun fetchTransactions( ssn: String, dateFrom: String, dateTo: String, context: Context) : ViewTransactionUserDAO {
         val inputFormatter = DateTimeFormatter.ofPattern("d/M/yyyy")
         val outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
 
@@ -192,13 +193,12 @@ class Fetcher() {
         val employeeProfileResponseDeferred = CompletableDeferred<ViewTransactionUserDAO>()
         val json = JSONObject()
         json.put("ssn", ssn)
-        if(dateFrom != null) json.put("dateFrom",
-            outputFormatter.format(
-                LocalDate.parse(dateFrom, inputFormatter)))
-        if(dateTo != null) json.put("dateTo", outputFormatter.format(
-            LocalDate.parse(dateTo, inputFormatter)))
+        if(dateFrom != null) json.put("dateFrom",outputFormatter.format(LocalDate.parse(dateFrom, inputFormatter)))
 
-        val jsonObjectRequest = JsonObjectRequest(Request.Method.PUT, url, json,
+        if(dateTo != null) json.put("dateTo", outputFormatter.format(LocalDate.parse(dateTo, inputFormatter)))
+
+        Log.d("Data", json.toString())
+        val jsonObjectRequest = JsonObjectRequest(Request.Method.PUT, Constants.API_URL+"/api/transaction/list", json,
             {response ->
                 Log.d("Reval: ", response.toString())
                 val reval = Gson().fromJson(response.toString(), ViewTransactionUserDAO::class.java)
@@ -211,11 +211,11 @@ class Fetcher() {
         queue.add(jsonObjectRequest)
         return employeeProfileResponseDeferred.await()
     }
-    suspend fun getEmployeeList(url: String, context: Context): ArrayList<Employee> {
+    suspend fun getEmployeeList( context: Context): ArrayList<Employee> {
         val queue = Volley.newRequestQueue(context)
         val employeeResponseDeferred = CompletableDeferred<ArrayList<Employee>>()
 
-        val jsonArrayRequest = JsonArrayRequest(Request.Method.GET, url, null,
+        val jsonArrayRequest = JsonArrayRequest(Request.Method.GET, Constants.API_URL+"/api/employee/list", null,
             { response ->
                 Log.d("DEBUG", "Response received: $response")
                 val gson = Gson()
@@ -234,10 +234,9 @@ class Fetcher() {
     }
     suspend fun isAuthenticated(accessToken: String, context: Context): String {
         val queue = Volley.newRequestQueue(context)
-        val url = "https://www.hiv.is/auth/verify"
         val responseDeferred = CompletableDeferred<String>()
 
-        val stringRequest = object : StringRequest(Method.POST, url,
+        val stringRequest = object : StringRequest(Method.POST, Constants.API_URL+"/auth/verify",
             { response ->
                 Log.d("DEBUG", "Response received: $response")
                 responseDeferred.complete(response)
@@ -256,12 +255,11 @@ class Fetcher() {
         return responseDeferred.await()
     }
     suspend fun fetchDrivingLog(sessionUser: SessionUser, ssn: String, context: Context): List<Driving>? {
-        val url = "hiv.is/api/driving/$ssn"
 
         val queue = Volley.newRequestQueue(context)
         val drivingLogDeferred = CompletableDeferred<List<Driving>?>()
 
-        val jsonObjectRequest = object : JsonObjectRequest(Method.PUT, url, null,
+        val jsonObjectRequest = object : JsonObjectRequest(Method.PUT, Constants.API_URL+"/api/driving/"+ssn, null,
             { response ->
                 Log.d("DEBUG", "Response received: $response")
                 val gson = Gson()
@@ -291,11 +289,11 @@ class Fetcher() {
         return result
     }
 
-    suspend fun fetchPendingReviews(url: String, context: Context) : List<MappedRequestUserDAO> {
+    suspend fun fetchPendingReviews( context: Context) : List<MappedRequestUserDAO> {
         val queue = Volley.newRequestQueue(context)
         val employeeProfileResponseDeferred = CompletableDeferred<List<MappedRequestUserDAO>>()
 
-        val jsonArrayRequest = JsonArrayRequest(Request.Method.GET, url, null,
+        val jsonArrayRequest = JsonArrayRequest(Request.Method.GET, Constants.API_URL+"/api/review", null,
             {response ->
                 Log.d("Reval: ", response.toString())
                 val type = object : TypeToken<List<MappedRequestUserDAO>>() {}.type
@@ -310,14 +308,14 @@ class Fetcher() {
         return employeeProfileResponseDeferred.await()
     }
 
-    fun handleReviewRequest(url : String, requestId : Long, context: Context, approved : String) {
+    fun handleReviewRequest(requestId : Long, context: Context, approved : String) {
         val queue = Volley.newRequestQueue(context)
-        var sendit = url + requestId
+        //var sendit = url + requestId
 
         val json = JSONObject()
         json.put("approved", approved)
 
-        val jsonObjectRequest = JsonObjectRequest(Request.Method.POST, sendit, json,
+        val jsonObjectRequest = JsonObjectRequest(Request.Method.POST, Constants.API_URL+"/api/review/"+requestId, json,
             { response ->
                 Log.d("Reval: ", response.toString())
             },

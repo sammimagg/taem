@@ -30,7 +30,7 @@ class EmployeesFragment : Fragment() {
         // Set up the list view adapter and item click listener
         lifecycleScope.launch {
             var response = ArrayList<Employee>()
-            response = async { getEmployeeArray("https://www.hiv.is/api/employee/list") }.await()
+            response = async { getEmployeeArray() }.await()
 
             val adapter = EmployessAdaptor(requireActivity(), response)
             listView.adapter = adapter
@@ -53,7 +53,7 @@ class EmployeesFragment : Fragment() {
         swipeRefreshLayout.setOnRefreshListener {
             lifecycleScope.launch {
                 var response = ArrayList<Employee>()
-                response = async { getEmployeeArray("https://www.hiv.is/api/employee/list") }.await()
+                response = async { getEmployeeArray() }.await()
 
                 val adapter = EmployessAdaptor(requireActivity(), response)
                 listView.adapter = adapter
@@ -64,10 +64,10 @@ class EmployeesFragment : Fragment() {
         return view
     }
 
-    private suspend fun getEmployeeArray(url: String): ArrayList<Employee> {
+    private suspend fun getEmployeeArray(): ArrayList<Employee> {
         val context = requireContext()
         val fetcher = Fetcher()
-        val response = fetcher.getEmployeeList(url, context)
+        val response = fetcher.getEmployeeList(context)
         return response
     }
 }

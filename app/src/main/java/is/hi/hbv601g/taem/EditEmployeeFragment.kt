@@ -38,11 +38,10 @@ class EditEmployeeFragment : Fragment() {
         val saveButton = view.findViewById<Button>(R.id.buttonProfileSave)
         val cancelButton = view.findViewById<Button>(R.id.buttonProfileCancel)
         val spinner: Spinner = view.findViewById(R.id.employeeRole)
-        Log.d("EditEmployeeFragment", "spinner initialized")
-        print("Hérna")
+
         val employee = arguments?.getParcelable<Employee>("employee")
         val roles = arrayOf("Admin",  "User")
-        Log.d("EmployeeFragment", "Employee account type: " + employee?.accountType.toString())
+
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, roles).also { adapter ->
             // Specify the layout to use when the list of choices appears
@@ -52,7 +51,7 @@ class EditEmployeeFragment : Fragment() {
         }
 
         if (employee != null) {
-            print("Employee is " + employee.accountType)
+
             firstNameEditText.setText(employee.firstName)
             lastNameEditText.setText(employee.lastName)
             usernameEditText.setText(employee.username)
@@ -86,7 +85,7 @@ class EditEmployeeFragment : Fragment() {
                 employee.accountType = if (selectedValue == "Admin") 0 else 2
                 Log.d("EditEmployeeFragment", "New account type: " + employee.accountType.toString())
                 // Call a function to update the employee information in the database
-                Fetcher().postEmployeeProfile("https://www.hiv.is/api/employee/", employee, requireContext())
+                Fetcher().postEmployeeProfile( employee, requireContext())
             }
         }
 

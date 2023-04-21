@@ -77,7 +77,7 @@ class DrivingLogFragment : Fragment() {
         var url = "https://www.hiv.is/api/driving/"
         url += ssn;
 
-        println(url);
+
         val queue = Volley.newRequestQueue(context)
         val drivingLogDeferred = CompletableDeferred<List<Driving>?>()
 

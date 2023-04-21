@@ -43,7 +43,7 @@ class RealTimeIngsightsFragment : Fragment() {
         val listView = view.findViewById<ListView>(R.id.realtimeListview);
         lifecycleScope.launch {
             var response = ArrayList<EmployeeRTI>();
-            response = async { getRealTimeInsigtArray("https://www.hiv.is/api/employee/rti") }.await()
+            response = async { getRealTimeInsigtArray() }.await()
             //println("Hérna")
             //println(response)
             var sortedList = sortListByActive(response);
@@ -54,7 +54,7 @@ class RealTimeIngsightsFragment : Fragment() {
         swipeRefreshLayout.setOnRefreshListener {
             lifecycleScope.launch {
                 var response = ArrayList<EmployeeRTI>();
-                response = async { getRealTimeInsigtArray("https://www.hiv.is/api/employee/rti") }.await()
+                response = async { getRealTimeInsigtArray() }.await()
                 var sortedList = sortListByActive(response);
                 val apapter = RealTimeAdapter(requireActivity(),sortedList);
                 listView.adapter =apapter;
@@ -64,10 +64,10 @@ class RealTimeIngsightsFragment : Fragment() {
 
         return view
     }
-    private suspend fun getRealTimeInsigtArray(url: String): ArrayList<EmployeeRTI> {
+    private suspend fun getRealTimeInsigtArray(): ArrayList<EmployeeRTI> {
         val context = requireContext()
         val fetcher = Fetcher();
-        val response = fetcher.getRealTimeInsights(url,context);
+        val response = fetcher.getRealTimeInsights(context);
         return response
 
     }

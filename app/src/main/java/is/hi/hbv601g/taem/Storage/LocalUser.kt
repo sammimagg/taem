@@ -34,7 +34,7 @@ fun getLocalUserFromSharedPreferences(context: Context): Employee? {
         gson.fromJson(employeeJson, Employee::class.java)
     }
     else {
-        null
+        return null
     }
 }
 fun clearLocalUserFromSharedPreferences(context: Context) {

@@ -18,6 +18,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        replaceFragment(ClockInOutFragment(), "clock_in_out_fragment")
         binding.bottomNavigationView.setOnItemSelectedListener {
             when(it.itemId) {
                 R.id.clockinout -> replaceFragment(ClockInOutFragment(), "clock_in_out_fragment")
