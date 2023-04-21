@@ -9,12 +9,6 @@
         app:labelVisibilityMode="labeled"
         />
     <item
-        android:title="Schedule"
-        android:icon="@drawable/taem_schedule"
-        android:id="@+id/employees"
-        app:labelVisibilityMode="labeled"
-        />
-    <item
         android:title="Attendance"
         android:icon="@drawable/taem_time_and_attendace"
         android:id="@+id/time_and_attendance"

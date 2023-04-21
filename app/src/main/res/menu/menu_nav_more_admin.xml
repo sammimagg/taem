@@ -21,10 +21,4 @@
         android:id="@+id/driving_log_admin"
         app:showAsAction="never"
         />
-    <item
-        android:title="Make schedule"
-        android:icon="@drawable/taem_time_and_attendace"
-        android:id="@+id/make_schdule"
-        app:showAsAction="never"
-        />
 </menu>
