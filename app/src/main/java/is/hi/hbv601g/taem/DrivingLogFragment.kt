@@ -1,9 +1,6 @@
-import android.app.DatePickerDialog
 import android.content.Context
-import android.content.Intent
 import android.icu.text.SimpleDateFormat
 import android.os.Bundle
-import android.provider.BaseColumns
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +9,6 @@ import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.android.volley.Request
 import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
@@ -23,18 +19,30 @@ import `is`.hi.hbv601g.taem.Persistance.Driving
 import `is`.hi.hbv601g.taem.Networking.SessionUser
 import `is`.hi.hbv601g.taem.Networking.getSessionUser
 import `is`.hi.hbv601g.taem.R
-import `is`.hi.hbv601g.taem.Storage.db
 import kotlinx.coroutines.*
 import org.json.JSONObject
 import java.util.*
 import kotlin.collections.HashMap
 
+/**
+* This class represents a fragment that displays the user's driving log. It retrieves and displays the log from the
+* API, and also allows the user to add new entries to the log.
+ */
 class DrivingLogFragment : Fragment() {
 
-    //private lateinit var ssn: String
     private lateinit var sessionUser: SessionUser
     private lateinit var drivingLogAdapter: DrivingLogAdapter
 
+    /**
+    * Called to have the fragment instantiate its user interface view. This method is called between
+    * [onCreate] and [onViewCreated].
+    * @param inflater The LayoutInflater object that can be used to inflate any views in the fragment,
+    * @param container If non-null, this is the parent view that the fragment's UI should be attached to. The fragment
+    * should not add the view itself, but this can be used to generate the LayoutParams of the view.
+    * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state as
+    * given here.
+    * @return Return the View for the fragment's UI, or null.
+     */
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -47,7 +55,14 @@ class DrivingLogFragment : Fragment() {
         recyclerView.adapter = drivingLogAdapter
         return view
     }
-
+    /**
+    Called immediately after [onCreateView] has returned, but before any saved state has been restored in to the view.
+    This gives subclasses a chance to initialize themselves once they know their view hierarchy has been completely
+    created. The fragment's view hierarchy is not attached to its parent yet.
+    @param view The View returned by [onCreateView].
+    @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state as
+    given here.
+     */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         sessionUser = getSessionUser(requireContext())
@@ -84,6 +99,12 @@ class DrivingLogFragment : Fragment() {
             drivinglogappendHandler(view)
         }
     }
+
+    /**
+     * Appends a new driving log entry to the user's session.
+     *
+     * @param view The view that triggered the function call.
+     */
     fun drivinglogappendHandler(view: View) {
         val startText = view.findViewById<EditText>(R.id.OdometerStartText)
         val endText = view.findViewById<EditText>(R.id.OdometerEndText)
@@ -132,13 +153,18 @@ class DrivingLogFragment : Fragment() {
             }
         }
     }
+}
 
-
-    }
-
+    /**
+    * Fetches the driving log data from the API for the given session user and social security number.
+    * @param sessionUser the session user to authenticate the request
+    * @param ssn the social security number of the user to fetch the driving log for
+    * @param context the context of the calling activity
+    * @return the list of [Driving] objects parsed from the API response, or null if the request failed
+    */
     suspend fun fetchDrivingLog(sessionUser: SessionUser, ssn: String, context: Context): List<Driving>? {
         var url = "https://www.hiv.is/api/driving/"
-        url += ssn;
+        url += ssn
 
 
         val queue = Volley.newRequestQueue(context)
@@ -166,17 +192,20 @@ class DrivingLogFragment : Fragment() {
                 return headers
             }
         }
-
-
-
         queue.add(jsonArrayRequest)
         val result = drivingLogDeferred.await()
         Log.d("DEBUG", "Result: $result")
         return result
     }
 
-
-
+    /**
+    * Asynchronously appends a new driving session to the user's driving log on the server.
+    * @param sessionUser the user session to authenticate the request
+    * @param ssn the social security number of the user
+    * @param drivingSession the driving session object to append
+    * @param context the application context
+    * @return true if the driving session was successfully appended, false otherwise
+    */
     suspend fun appendDrivingLog(sessionUser: SessionUser, ssn: String, drivingSession: Driving, context: Context): Boolean {
         val url = "https://www.hiv.is/api/driving/new"
 
@@ -208,7 +237,6 @@ class DrivingLogFragment : Fragment() {
                 return headers
             }
         }
-
         queue.add(jsonObjectRequest)
         return successDeferred.await()
     }
