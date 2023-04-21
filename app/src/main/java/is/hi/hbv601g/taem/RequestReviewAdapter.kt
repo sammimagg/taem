@@ -4,6 +4,8 @@ import android.animation.Animator
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.AlertDialog
+import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -61,18 +63,16 @@ class RequestReviewAdapter(private val context: Activity, private val arrayList:
                 downX = motionEvent.x
                 return true
             }
-
             MotionEvent.ACTION_MOVE -> {
                 val translationX = motionEvent.rawX - downX
                 view.translationX = translationX
                 return true
             }
-
             MotionEvent.ACTION_UP -> {
                 if (!isAnimatingOffScreen) {
                     val translationX = view.translationX
                     val viewWidth = view.width
-                    val threshold = viewWidth/8
+                    val threshold = viewWidth/64
                     if (translationX > threshold) {
                         val animator = ObjectAnimator.ofFloat(view, View.TRANSLATION_X, translationX, viewWidth.toFloat())
                         animator.duration = 100
@@ -81,7 +81,9 @@ class RequestReviewAdapter(private val context: Activity, private val arrayList:
                             override fun onAnimationEnd(animation: Animator) {
                                 view.visibility = View.GONE
                                 Log.d("translationX", translationX.toString())
-                                onSwipeComplete(view, "RIGHT")
+                                val reqIdView = view.findViewById<TextView>(R.id.request_id)
+                                val reqId = reqIdView.text.toString()
+                                onSwipeComplete(view, "RIGHT",reqId,context)
                             }
                             override fun onAnimationCancel(animation: Animator) {}
                             override fun onAnimationRepeat(animation: Animator) {}
@@ -89,22 +91,23 @@ class RequestReviewAdapter(private val context: Activity, private val arrayList:
                         animator.start()
                     }
                     else if(translationX < 0) {
-                        val animator = ObjectAnimator.ofFloat(view, View.TRANSLATION_X, viewWidth.toFloat(), translationX)
+                        val tes: Double = 10000.0
+                        val animator = ObjectAnimator.ofFloat(view, View.TRANSLATION_X, viewWidth.toFloat(), tes.toFloat())
                         animator.duration = 100
                         animator.addListener(object : Animator.AnimatorListener {
                             override fun onAnimationStart(animation: Animator) {}
                             override fun onAnimationEnd(animation: Animator) {
+
                                 view.visibility = View.GONE
-                                Log.d("translationX", translationX.toString())
-                                onSwipeComplete(view, "LEFT")
+                                val reqIdView = view.findViewById<TextView>(R.id.request_id)
+                                val reqId = reqIdView.text.toString()
+                                onSwipeComplete(view, "LEFT",reqId,context)
                             }
                             override fun onAnimationCancel(animation: Animator) {}
                             override fun onAnimationRepeat(animation: Animator) {}
                         })
                         animator.start()
                     }
-
-
                     else {
                         // Slide back to original position
                         val animator = ObjectAnimator.ofFloat(view, View.TRANSLATION_X, translationX, 0f)
@@ -112,28 +115,38 @@ class RequestReviewAdapter(private val context: Activity, private val arrayList:
                         animator.start()
                     }
                 }
-
                 return true
             }
-
-
         }
         return false
     }
-
-
 }
-private fun onSwipeComplete(view: View, direction: String) {
+private fun onSwipeComplete(view: View, direction: String,reqId:String,context: Context) {
+    val userName: TextView = view.findViewById(R.id.user_first_name)
+
     when(direction) {
         "LEFT" -> {
-            // Do something when swiped to the left
-            Log.d("DONE", "Swiped left")
+            Fetcher().handleReviewRequest(
+                (reqId).toLong(), context, "false")
+            showAlert("Rejected request", context)
+            println("swiped left")
         }
         "RIGHT" -> {
-            // Do something when swiped to the right
-            Log.d("DONE", "Swiped right")
+            Fetcher().handleReviewRequest(
+                (reqId).toLong(), context, "true")
+            showAlert("Approved request", context)
+
         }
     }
     view.translationX = 0f // Set translationX back to 0
 }
 
+private fun showAlert(message: String, context: Context) {
+    val builder = AlertDialog.Builder(context)
+    builder.setTitle("Swipe Event")
+    builder.setMessage(message)
+    builder.setPositiveButton("OK") { dialog, which ->
+        // Do something when the positive button is clicked
+    }
+    builder.show()
+}

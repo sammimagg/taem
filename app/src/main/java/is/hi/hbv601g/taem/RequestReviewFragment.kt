@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
+import androidx.lifecycle.lifecycleScope
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import `is`.hi.hbv601g.taem.Networking.Fetcher
 import `is`.hi.hbv601g.taem.Persistance.MappedRequestUserDAO
 import `is`.hi.hbv601g.taem.Persistance.Transaction
@@ -16,10 +18,7 @@ class RequestReviewFragment : Fragment() {
         super.onCreate(savedInstanceState)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_request_reviews, container, false)
         var debounceJob : Job? = null;
         debounceJob?.cancel()
@@ -36,7 +35,26 @@ class RequestReviewFragment : Fragment() {
                 reval as ArrayList<MappedRequestUserDAO>
             );
             listView.adapter =apapter;
+
         }
+        val swipeRefreshLayout = view.findViewById<SwipeRefreshLayout>(R.id.swipeRefreshLayout)
+        swipeRefreshLayout.setOnRefreshListener {
+            lifecycleScope.launch{
+                val reval = Fetcher().fetchPendingReviews( requireContext())
+
+                for (item in reval) {
+                    print(item.toString())
+                }
+                val listView = view.findViewById<ListView>(R.id.realtimeListview2);
+                val apapter = RequestReviewAdapter(requireActivity(),
+                    reval as ArrayList<MappedRequestUserDAO>
+                );
+                listView.adapter =apapter;
+            }
+            swipeRefreshLayout.isRefreshing = false
+
+        }
+
         return view
     }
 }
