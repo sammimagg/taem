@@ -49,8 +49,14 @@ class DrivingLogAdapter(var drivingSessions: List<Driving>) : RecyclerView.Adapt
         notifyDataSetChanged()
     }
 
+    fun addData(drivingSession: Driving) {
+        drivingSessions = drivingSessions.plus(drivingSession)
+        notifyDataSetChanged()
+    }
+
     fun appendDrivingSession(drivingSession: Driving) {
         drivingSessions += drivingSession
         notifyItemInserted(drivingSessions.lastIndex)
+
     }
 }

@@ -4,20 +4,82 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <!-- A RecyclerView to display the list of driving logs -->
+    <TextView
+        android:id="@+id/drivingLogTitleTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Driving Log"
+        android:textSize="24sp"
+        android:gravity="center"
+        android:padding="16dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1"
+            android:background="@android:color/black"/>
+
+        <DatePicker
+            android:id="@+id/datePicker"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:calendarViewShown="false"
+            android:datePickerMode="spinner"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1"
+            android:background="@android:color/black"/>
+
+    </LinearLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/drivingLogRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_gravity="center_horizontal"
         android:layout_weight="1"
         android:padding="16dp"
         android:clipToPadding="false"
-        android:scrollbars="vertical" />
+        android:scrollbars="vertical"
+        android:background="@drawable/border"/>
+
+    <EditText
+        android:id="@+id/OdometerStartText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Odometer Start"
+        android:padding="16dp"/>
+
+    <EditText
+        android:id="@+id/OdometerEndText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Odometer End"
+        android:padding="16dp"/>
+
+    <Button
+        android:id="@+id/addDrivingLogButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Append"
+        android:layout_gravity="center_horizontal"
+        android:padding="16dp"/>
+
+</LinearLayout>
+
+
 
     <!-- A progress bar to show while the data is being loaded -->
-    <ProgressBar
+    <!--<ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center" />
-</LinearLayout>
+        android:layout_gravity="center" />-->

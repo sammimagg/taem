@@ -1,11 +1,14 @@
+import android.app.DatePickerDialog
 import android.content.Context
+import android.content.Intent
+import android.icu.text.SimpleDateFormat
 import android.os.Bundle
 import android.provider.BaseColumns
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,6 +26,8 @@ import `is`.hi.hbv601g.taem.R
 import `is`.hi.hbv601g.taem.Storage.db
 import kotlinx.coroutines.*
 import org.json.JSONObject
+import java.util.*
+import kotlin.collections.HashMap
 
 class DrivingLogFragment : Fragment() {
 
@@ -45,11 +50,13 @@ class DrivingLogFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        sessionUser = getSessionUser(requireContext()) ?: throw IllegalStateException("SessionUser not found in SharedPreferences")
+        sessionUser = getSessionUser(requireContext())
+            ?: throw IllegalStateException("SessionUser not found in SharedPreferences")
         println(sessionUser.ssn)
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val drivingSessions = fetchDrivingLog(sessionUser, sessionUser.ssn, requireContext())
+                val drivingSessions =
+                    fetchDrivingLog(sessionUser, sessionUser.ssn, requireContext())
                 withContext(Dispatchers.Main) {
                     if (drivingSessions != null) {
                         drivingLogAdapter.setData(drivingSessions)
@@ -71,6 +78,62 @@ class DrivingLogFragment : Fragment() {
                 }
             }
         }
+
+        val addButton = view.findViewById<Button>(R.id.addDrivingLogButton)
+        addButton.setOnClickListener {
+            drivinglogappendHandler(view)
+        }
+    }
+    fun drivinglogappendHandler(view: View) {
+        val startText = view.findViewById<EditText>(R.id.OdometerStartText)
+        val endText = view.findViewById<EditText>(R.id.OdometerEndText)
+        val datePicker = view.findViewById<DatePicker>(R.id.datePicker)
+
+        val start = startText.text.toString().toIntOrNull() ?: 0
+        val end = endText.text.toString().toIntOrNull() ?: 0
+
+        val day = datePicker.dayOfMonth
+        val month = datePicker.month
+        val year = datePicker.year
+        val selectedDate = Date(year - 1900, month, day)
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val formattedDate = dateFormat.format(selectedDate)
+
+        Log.d("DEBUG", "Selected date: $selectedDate")
+        Log.d("DEBUG", "Formatted date: $formattedDate")
+
+        val driving = Driving("", start, end, formattedDate.toString(), 0.0, 0, sessionUser.ssn)
+
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                if (appendDrivingLog(sessionUser, sessionUser.ssn, driving, requireContext())) {
+                    withContext(Dispatchers.Main) {
+                        drivingLogAdapter.addData(driving)
+                        startText.text = null
+                        endText.text = null
+                    }
+                } else {
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(
+                            requireContext(),
+                            "Failed to append driving session",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(
+                        requireContext(),
+                        "Failed to append driving session",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        }
+    }
+
+
     }
 
     suspend fun fetchDrivingLog(sessionUser: SessionUser, ssn: String, context: Context): List<Driving>? {
@@ -114,13 +177,14 @@ class DrivingLogFragment : Fragment() {
 
 
 
-    suspend fun appendDrivingLog(sessionUser: SessionUser, drivingSession: Driving, context: Context): Boolean {
-        val url = "https://hiv.is/api/driving"
+    suspend fun appendDrivingLog(sessionUser: SessionUser, ssn: String, drivingSession: Driving, context: Context): Boolean {
+        val url = "https://www.hiv.is/api/driving/new"
 
         val queue = Volley.newRequestQueue(context)
         val successDeferred = CompletableDeferred<Boolean>()
 
         val jsonObject = JSONObject()
+        jsonObject.put("licencePlate", drivingSession.licencePlate)
         jsonObject.put("ssn", drivingSession.ssn)
         jsonObject.put("dags", drivingSession.dags)
         jsonObject.put("odometerStart", drivingSession.odometerStart)
@@ -148,4 +212,3 @@ class DrivingLogFragment : Fragment() {
         queue.add(jsonObjectRequest)
         return successDeferred.await()
     }
-}

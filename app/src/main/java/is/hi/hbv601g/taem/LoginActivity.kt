@@ -7,17 +7,13 @@ import android.graphics.Paint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import `is`.hi.hbv601g.taem.Networking.*
 import `is`.hi.hbv601g.taem.Storage.db
 import `is`.hi.hbv601g.taem.databinding.ActivityLoginBinding
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.*
 
@@ -88,6 +84,4 @@ class LoginActivity : AppCompatActivity() {
         val intent = Intent(this, RegisterActivity::class.java)
         startActivity(intent)
     }
-
-
 }
