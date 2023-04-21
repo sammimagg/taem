@@ -1,5 +1,6 @@
 package `is`.hi.hbv601g.taem.Persistance
 
+import android.os.Parcelable
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer
 import com.google.gson.JsonElement
@@ -9,9 +10,10 @@ import java.time.Duration
 import java.time.LocalDate
 import java.time.LocalTime
 import com.fasterxml.jackson.annotation.JsonFormat
+import kotlinx.parcelize.Parcelize
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-
+@Parcelize
 data class Transaction(
     val status: String,
     val clockIn: String,
@@ -26,7 +28,7 @@ data class Transaction(
     val duration: Double?,
     val id: Long,
     val ssn: String
-) {
+): Parcelable {
     override fun toString(): String {
         return "Transaction(status='$status', clockIn=$clockIn, clockOut=$clockOut, finished=$finished, clockInDate=$clockInDate, clockInTime=$clockInTime, clockOutTime=$clockOutTime, workedTime=$workedTime, workedHours=$workedHours, workedMinutes=$workedMinutes, duration=$duration, id=$id, ssn='$ssn')"
     }

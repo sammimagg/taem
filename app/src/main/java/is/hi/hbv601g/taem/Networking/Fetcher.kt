@@ -159,18 +159,22 @@ class Fetcher() {
     suspend fun registerRequest( username: String, password: String, email: String, ssn: String, context: Context) : Boolean {
         val queue = Volley.newRequestQueue(context)
         val json = JSONObject()
-        json.put("username", username)
-        json.put("password", password)
-        json.put("email", email)
+        Log.d("ssn",ssn)
+        Log.d("username",username)
+        Log.d("email",email)
+        Log.d("password",password)
         json.put("ssn", ssn)
+        json.put("username", username)
 
-        var success = false
+        json.put("email", email)
+        json.put("password", password)
+        var success = true
 
         val deferred = CompletableDeferred<Boolean>()
 
-        val jsonObjectRequest = JsonObjectRequest(Request.Method.POST, Constants.API_URL+"/api/user/register/", json,
+        val jsonObjectRequest = JsonObjectRequest(Request.Method.POST, Constants.API_URL+"/api/user/register", json,
             { response ->
-                //Log.d("Reval: ", response.toString())
+                Log.d("Reval: ", response.toString())
                 success = true
                 deferred.complete(success)
             },
@@ -179,7 +183,6 @@ class Fetcher() {
                 Log.d("Error: ", error.toString())
                 deferred.complete(success)
             })
-
         queue.add(jsonObjectRequest)
 
         return deferred.await()

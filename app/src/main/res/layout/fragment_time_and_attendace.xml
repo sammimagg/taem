@@ -20,7 +20,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/date_text_view1"
+            android:id="@+id/newTimeFrom"
             android:layout_width="150sp"
             android:layout_height="wrap_content"
             android:text="Date From"
@@ -28,7 +28,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/date_text_view2"
+            android:id="@+id/newTimeTo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Date To"
@@ -48,7 +48,7 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
 
         <ListView
-            android:id="@+id/realtimeListview"
+            android:id="@+id/realtimeListview1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:cacheColorHint="#00FFFFFF"

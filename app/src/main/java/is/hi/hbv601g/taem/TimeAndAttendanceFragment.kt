@@ -5,10 +5,8 @@ import android.content.Context
 import android.content.Intent
 import android.icu.util.Calendar
 import android.os.Bundle
-import android.provider.BaseColumns
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,12 +14,11 @@ import android.view.ViewGroup
 import android.widget.ListView
 import android.widget.TextView
 import `is`.hi.hbv601g.taem.Networking.Fetcher
-import `is`.hi.hbv601g.taem.Networking.clearLocalUserFromSharedPreferences
-import `is`.hi.hbv601g.taem.Networking.clearUserData
 import `is`.hi.hbv601g.taem.Networking.getLocalUserFromSharedPreferences
 import `is`.hi.hbv601g.taem.Persistance.Transaction
 import `is`.hi.hbv601g.taem.Persistance.ViewTransactionUserDAO
-import `is`.hi.hbv601g.taem.Storage.db
+import android.util.Log
+import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.*
 
 
@@ -34,9 +31,8 @@ class TimeAndAttendanceFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_time_and_attendace, container, false)
-        val dateTextView1 = view.findViewById<TextView>(R.id.date_text_view1)
-        val dateTextView2 = view.findViewById<TextView>(R.id.date_text_view2)
-        val transactionListView = view.findViewById<ListView>(R.id.realtimeListview)
+        val dateTextView1 = view.findViewById<TextView>(R.id.newTimeFrom)
+        val dateTextView2 = view.findViewById<TextView>(R.id.newTimeTo)
         val user = getLocalUserFromSharedPreferences(requireContext());
 
         // Set initial dates
@@ -77,27 +73,34 @@ class TimeAndAttendanceFragment : Fragment() {
         })
 
         dateTextView2.addTextChangedListener(object : TextWatcher {
-            var debounceJob : Job? = null;
+            private var debounceJob : Job? = null
+
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 printSelectedDates(dateTextView1.text.toString(), dateTextView2.text.toString())
-                debounceJob?.cancel() // cancel the previous debounce job if it exists
-                debounceJob = GlobalScope.launch(Dispatchers.Main) {
-                    delay(500) // debounce for 500 milliseconds
-                    // perform your suspendable operation here
+
+                // Cancel the previous debounce job if it exists
+                debounceJob?.cancel()
+
+                // Launch a coroutine with a debounce time of 500 milliseconds
+                debounceJob = viewLifecycleOwner.lifecycleScope.launch {
+                    delay(500)
                     if(ssnToUse != null) {
-                        var resultArray : ViewTransactionUserDAO = fetchyTransy(ssnToUse,dateTextView1.text.toString(),dateTextView2.text.toString(),requireContext())
-                        for (item in resultArray.transactionList) {
-                            print(item.toString())
+                        try {
+                            val resultArray: ViewTransactionUserDAO = fetchyTransy(ssnToUse, dateTextView1.text.toString(), dateTextView2.text.toString(), requireContext())
+                            val listView = view?.findViewById<ListView>(R.id.realtimeListview1)
+                            val apapter = TimeAndAttendanceAdapter(requireActivity(), resultArray.transactionList as ArrayList<Transaction>)
+                            listView?.adapter = apapter
+                        } catch (e: Exception) {
+                            // Handle any errors
                         }
-                        val listView = view.findViewById<ListView>(R.id.realtimeListview);
-                        val apapter = TimeAndAttendanceAdapter(requireActivity(), resultArray.transactionList as ArrayList<Transaction>);
-                        listView.adapter =apapter;
                     }
                 }
             }
+
             override fun afterTextChanged(s: Editable?) {}
         })
+
 
         // Add click listeners to date TextViews
         dateTextView1.setOnClickListener {
@@ -117,6 +120,21 @@ class TimeAndAttendanceFragment : Fragment() {
                 }, year2, month2, day2)
             datePickerDialog.show()
         }
+        val listView = view.findViewById<ListView>(R.id.realtimeListview1)
+
+        listView.setOnItemClickListener { parent, view, position, id ->
+            val transaction = parent.getItemAtPosition(position) as Transaction
+            if (transaction != null) {
+                Log.d("Debug", "Transaction at position $position: ${transaction.clockInTime}")
+                //...
+            } else {
+                Log.d("Debug", "Transaction is null at position $position")
+            }
+        }
+
+
+
+
         return view
     }
 
