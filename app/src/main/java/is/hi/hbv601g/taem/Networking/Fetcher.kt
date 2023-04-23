@@ -27,9 +27,18 @@ import java.time.format.DateTimeFormatter
 * ATH: Það þarf eitthvað að yfirfæra þetta í Async call.
  */
 
-
+/**
+* A class that handles fetching data from an API using the Volley library and suspending functions.
+ */
 class Fetcher() {
 
+    /**
+    * A suspend function that makes an authentication request to the API.
+    * @param username The username for the authentication request.
+    * @param password The password for the authentication request.
+    * @param context The context of the application.
+    * @return A Pair containing a SessionUser object and an integer representing the response code.
+     */
     suspend fun AuthenticationRequest( username: String, password: String, context: Context) : Pair<SessionUser?, Int> {
         val queue = Volley.newRequestQueue(context)
         val json = JSONObject()
@@ -67,6 +76,11 @@ class Fetcher() {
         @SerializedName("clocked_in") val clocked_in: Boolean
     )
 
+    /**
+    * A suspend function that retrieves the real-time insights for all employees.
+    * @param context The context of the application.
+    * @return An ArrayList of EmployeeRTI objects representing the real-time insights for all employees.
+     */
     suspend fun getRealTimeInsights( context: Context): ArrayList<EmployeeRTI> {
         val queue = Volley.newRequestQueue(context)
         val employeeRTIResponseDeferred = CompletableDeferred<ArrayList<EmployeeRTI>>()
@@ -105,6 +119,15 @@ class Fetcher() {
     }
 
 
+    /**
+     * Fetches an employee's profile data from the API using their SSN as a parameter.
+     *
+     * @param ssn the SSN of the employee whose profile data is to be fetched
+     * @param context the Android context of the calling Activity or Fragment
+     * @return an Employee object containing the employee's profile data
+     * @throws ExecutionException if an error occurs while executing the request
+     * @throws InterruptedException if the request is interrupted while waiting for a response
+     */
     suspend fun fetchEmployeeProfile( ssn: String, context: Context) : Employee {
         val queue = Volley.newRequestQueue(context)
         val employeeProfileResponseDeferred = CompletableDeferred<Employee>()
@@ -125,6 +148,13 @@ class Fetcher() {
         return employeeProfileResponseDeferred.await()
     }
 
+    /**
+     * Posts an Employee object to the API to update the employee's profile data.
+     *
+     * @param emp an Employee object containing the updated profile data to be posted
+     * @param context the Android context of the calling Activity or Fragment
+     * @return a String containing the response from the API (in this implementation, always "null")
+     */
     fun postEmployeeProfile(emp : Employee, context: Context) : String {
         val queue = Volley.newRequestQueue(context)
         // @TODO breyta fallinu í bakenda, bara uppfæra gildi sem eru ekki nöll
@@ -156,6 +186,18 @@ class Fetcher() {
         return "null";
     }
 
+    /**
+     * Sends a registration request to the API with the provided user data.
+     *
+     * @param username the desired username for the new user account
+     * @param password the desired password for the new user account
+     * @param email the email address associated with the new user account
+     * @param ssn the SSN associated with the new user account
+     * @param context the Android context of the calling Activity or Fragment
+     * @return true if the registration was successful, false otherwise
+     * @throws ExecutionException if an error occurs while executing the request
+     * @throws InterruptedException if the request is interrupted while waiting for a response
+     */
     suspend fun registerRequest( username: String, password: String, email: String, ssn: String, context: Context) : Boolean {
         val queue = Volley.newRequestQueue(context)
         val json = JSONObject()
@@ -188,6 +230,15 @@ class Fetcher() {
         return deferred.await()
     }
 
+    /**
+     * Fetches transactions for a given social security number and date range.
+     *
+     * @param ssn The social security number to fetch transactions for.
+     * @param dateFrom The start date of the date range to fetch transactions for, in the format "d/M/yyyy". Optional, can be null.
+     * @param dateTo The end date of the date range to fetch transactions for, in the format "d/M/yyyy". Optional, can be null.
+     * @param context The context of the calling activity.
+     * @return A ViewTransactionUserDAO object representing the fetched transactions.
+     */
     suspend fun fetchTransactions( ssn: String, dateFrom: String, dateTo: String, context: Context) : ViewTransactionUserDAO {
         val inputFormatter = DateTimeFormatter.ofPattern("d/M/yyyy")
         val outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
@@ -214,6 +265,12 @@ class Fetcher() {
         queue.add(jsonObjectRequest)
         return employeeProfileResponseDeferred.await()
     }
+    /**
+     * Fetches a list of employees.
+     *
+     * @param context The context of the calling activity.
+     * @return An ArrayList of Employee objects representing the fetched employees.
+     */
     suspend fun getEmployeeList( context: Context): ArrayList<Employee> {
         val queue = Volley.newRequestQueue(context)
         val employeeResponseDeferred = CompletableDeferred<ArrayList<Employee>>()
@@ -235,6 +292,14 @@ class Fetcher() {
         queue.add(jsonArrayRequest)
         return employeeResponseDeferred.await()
     }
+
+    /**
+     * Authenticates an access token.
+     *
+     * @param accessToken The access token to authenticate.
+     * @param context The context of the calling activity.
+     * @return A String representing the authenticated access token.
+     */
     suspend fun isAuthenticated(accessToken: String, context: Context): String {
         val queue = Volley.newRequestQueue(context)
         val responseDeferred = CompletableDeferred<String>()
@@ -257,6 +322,15 @@ class Fetcher() {
         queue.add(stringRequest)
         return responseDeferred.await()
     }
+
+    /**
+     * Fetches the driving log for a given social security number.
+     *
+     * @param sessionUser The SessionUser object representing the current user session.
+     * @param ssn The social security number to fetch the driving log for.
+     * @param context The context of the calling activity.
+     * @return A List of Driving objects representing the fetched driving log.
+     */
     suspend fun fetchDrivingLog(sessionUser: SessionUser, ssn: String, context: Context): List<Driving>? {
 
         val queue = Volley.newRequestQueue(context)
@@ -292,6 +366,12 @@ class Fetcher() {
         return result
     }
 
+    /**
+     * Fetches a list of pending reviews.
+     *
+     * @param context The context of the calling activity.
+     * @return A List of MappedRequestUserDAO objects representing the fetched pending reviews.
+     */
     suspend fun fetchPendingReviews( context: Context) : List<MappedRequestUserDAO> {
         val queue = Volley.newRequestQueue(context)
         val employeeProfileResponseDeferred = CompletableDeferred<List<MappedRequestUserDAO>>()
@@ -311,6 +391,13 @@ class Fetcher() {
         return employeeProfileResponseDeferred.await()
     }
 
+    /**
+    * Sends a review request for the specified requestId to the API server using Volley library.
+    * @param requestId The ID of the review request to be sent.
+    * @param context The context of the calling activity or fragment.
+    * @param approved The approval status of the review request ("yes" or "no").
+    * @return Void.
+     */
     fun handleReviewRequest(requestId : Long, context: Context, approved : String) {
         val queue = Volley.newRequestQueue(context)
         //var sendit = url + requestId

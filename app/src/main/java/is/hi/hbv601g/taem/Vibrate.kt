@@ -5,8 +5,16 @@ import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
 
+/**
+ * Class Vibrate
+*/
 class Vibrate {
 
+    /**
+    * Vibrates the device for a specified amount of time.
+    * @param context the context of the calling activity or fragment.
+    * @param number the duration of the vibration in milliseconds.
+     */
     fun vibrateDevice(context: Context, number: Long) {
         val vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
 

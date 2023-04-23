@@ -22,6 +22,12 @@ import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.*
 
 
+/**
+* This class represents the Time and Attendance Fragment of the application.
+* It displays a screen where the user can view their time and attendance records between two selected dates.
+* The class implements various listeners and watchers to update the UI and fetch data from the server.
+* @constructor Creates a new instance of TimeAndAttendanceFragment.
+ */
 class TimeAndAttendanceFragment : Fragment() {
 
 
@@ -29,6 +35,14 @@ class TimeAndAttendanceFragment : Fragment() {
         super.onCreate(savedInstanceState)
     }
 
+    /**
+    * This method is called when the fragment's UI is being created.
+    * It inflates the fragment's layout and sets up various listeners and watchers.
+    * @param inflater The LayoutInflater used to inflate the fragment's layout.
+    * @param container The parent ViewGroup of the fragment's UI.
+    * @param savedInstanceState A Bundle containing the saved state of the fragment's UI.
+    * @return The View representing the fragment's UI.
+     */
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_time_and_attendace, container, false)
         val dateTextView1 = view.findViewById<TextView>(R.id.newTimeFrom)
@@ -152,10 +166,4 @@ class TimeAndAttendanceFragment : Fragment() {
             context
         )
     }
-
-
-
-
-
-
 }

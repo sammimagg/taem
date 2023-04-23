@@ -9,10 +9,16 @@ import android.view.ViewGroup
 import android.widget.TextView
 import `is`.hi.hbv601g.taem.Networking.getSessionUser
 
-
+/**
+* A fragment to display a success message and sound effect after a successful NFC scan.
+ */
 class SuccessfulNfcScanFragment : Fragment() {
 
     private lateinit var mediaPlayer: MediaPlayer
+
+    /**
+    * Called when the fragment is being created.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -20,6 +26,9 @@ class SuccessfulNfcScanFragment : Fragment() {
         mediaPlayer = MediaPlayer.create(requireContext(), R.raw.sound_effect)
     }
 
+    /**
+    * Called when the view for the fragment is being created.
+     */
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
 
@@ -27,6 +36,10 @@ class SuccessfulNfcScanFragment : Fragment() {
 
         return inflater.inflate(R.layout.fragment_succesful_nfc_scan, container, false)
     }
+
+    /**
+    * Called when the view is created and ready to be displayed.
+     */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val ssnOnCard: TextView = requireView().findViewById(R.id.succesful_card_ssn);
@@ -42,7 +55,9 @@ class SuccessfulNfcScanFragment : Fragment() {
         playSoundEffect()
     }
 
-
+    /**
+    Called when the fragment is being destroyed.
+     */
     override fun onDestroy() {
         super.onDestroy()
 
@@ -50,7 +65,9 @@ class SuccessfulNfcScanFragment : Fragment() {
         mediaPlayer.release()
     }
 
-    // Call this method to play the sound effect
+    /**
+    * Plays the sound effect.
+     */
     private fun playSoundEffect() {
         if (!mediaPlayer.isPlaying) {
             mediaPlayer.start()

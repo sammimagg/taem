@@ -64,6 +64,10 @@ class RealTimeIngsightsFragment : Fragment() {
 
         return view
     }
+    /**
+    * A suspend function that retrieves the real-time insights array from the server.
+    * @return The real-time insights array.
+     */
     private suspend fun getRealTimeInsigtArray(): ArrayList<EmployeeRTI> {
         val context = requireContext()
         val fetcher = Fetcher();
@@ -71,6 +75,12 @@ class RealTimeIngsightsFragment : Fragment() {
         return response
 
     }
+
+    /**
+    * A function that sorts the list of employees by their status (active/inactive) and then by their first name.
+    * @param list The list of employees to be sorted.
+    * @return The sorted list of employees.
+     */
     private fun sortListByActive (list : ArrayList<EmployeeRTI>): ArrayList<EmployeeRTI> {
 
         val sortedList = list.sortedWith(Comparator { employee1, employee2 ->

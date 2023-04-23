@@ -15,6 +15,14 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 
+/**
+* The RealTimeAdapter class is an ArrayAdapter that displays real-time employee data in a list view.
+* It takes an activity context and an ArrayList of EmployeeRTI objects as parameters.
+* It overrides the getView() method to customize the list view item layout and content.
+* The class is used to display employee name, clock-in time, clock-out time, worked hours, and status.
+* @param context the activity context
+* @param arrayList the ArrayList of EmployeeRTI objects
+ */
 class RealTimeAdapter(private val context: Activity, private val arrayList: ArrayList<EmployeeRTI>) : ArrayAdapter<EmployeeRTI>(context,R.layout.real_time_item, arrayList){
     @RequiresApi(Build.VERSION_CODES.O)
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {

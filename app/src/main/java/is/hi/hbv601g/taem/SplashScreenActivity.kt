@@ -12,9 +12,18 @@ import `is`.hi.hbv601g.taem.Networking.SessionUser
 import `is`.hi.hbv601g.taem.Networking.getSessionUser
 import kotlinx.coroutines.launch
 
+/**
+* This activity represents the splash screen displayed at app launch. It checks if the user is already authenticated
+* and redirects to the appropriate activity if so, otherwise redirects to the login activity.
+* @constructor Creates a new instance of SplashScreenActivity
+ */
 class SplashScreenActivity : AppCompatActivity() {
     private val SPLASH_SCREEN_TIMEOUT: Long = 3000 // 5 seconds
 
+    /**
+    * Called when the activity is starting. It sets up the layout and checks if the user is already authenticated.
+    * @param savedInstanceState the previously saved state of the activity
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash_screen)

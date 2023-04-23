@@ -14,6 +14,13 @@ import `is`.hi.hbv601g.taem.Storage.db
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
+
+/**
+* This activity allows users to register for an account. It contains fields for the username, password,
+* email, and SSN. When the register button is pressed, the app attempts to register the user by making a
+* request to the server using the [Fetcher] class. If the registration is successful, the user is taken to
+* the login screen.
+ */
 class RegisterActivity : AppCompatActivity() {
 
     private lateinit var usernameEditText: EditText
@@ -33,6 +40,11 @@ class RegisterActivity : AppCompatActivity() {
         registerButton = findViewById(R.id.login_button)
         registerButton.setOnClickListener{ registerButtonHandler() }
     }
+
+    /**
+    * Attempts to register the user with the given information. If the registration is successful,
+    * returns true. Otherwise, returns false.
+     */
     private suspend fun register(user: String, password: String, email: String, SSN: String): Boolean {
         val errorMessage = findViewById<TextView>(R.id.error_message)
         val fetcher = Fetcher()
@@ -45,6 +57,10 @@ class RegisterActivity : AppCompatActivity() {
         )
         return success
     }
+    /**
+    * Handles the click event for the register button. Validates the input fields and attempts
+    * to register the user using the [register] function.
+     */
     fun registerButtonHandler() {
         val user = findViewById<EditText>(R.id.username_field).text.toString()
         val password = findViewById<EditText>(R.id.password_field).text.toString()
